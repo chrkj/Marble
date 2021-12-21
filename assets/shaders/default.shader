@@ -3,9 +3,12 @@
 
 layout (location=0) in vec3 aPos;
 layout (location=1) in vec4 aColor;
-uniform mat4 uProjection;
+
 uniform mat4 uView;
+uniform mat4 uProjection;
+
 out vec4 fColor;
+out float fTime;
 
 void main()
 {
@@ -17,9 +20,17 @@ void main()
 #version 330 core
 
 in vec4 fColor;
+in float fTime;
+
+uniform float uTime;
+
 out vec4 color;
+
+float rand(vec2 co){
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
 
 void main()
 {
-    color = fColor;
+    color = fColor * rand(fColor.xy);
 }

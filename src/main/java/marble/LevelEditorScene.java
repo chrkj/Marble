@@ -3,6 +3,7 @@ package marble;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import renderer.Shader;
+import util.Time;
 
 import java.awt.event.KeyEvent;
 import java.nio.FloatBuffer;
@@ -16,15 +17,16 @@ public class LevelEditorScene extends Scene {
 
     private boolean changingScene = false;
     private float timeToChangeScene = 2.0f;
+    private float camSpeed = 50.0f;
     private int vaoID, vboID, eboID;
     private Shader defaultShader;
 
     private float[] vertexArray = {
-            // Position           // Color
-             100.5f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f, // Bottom right
+            // Position              // Color
+             100.5f, 0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom right
             -0.5f,   100.5f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f, // Top left
              100.5f, 100.5f, 0.0f,   1.0f, 0.0f, 1.0f, 1.0f, // Top right
-            -0.5f,  -0.5f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f // Bottom left
+            -0.5f,  -0.5f, 0.0f,     0.0f, 0.0f, 0.0f, 1.0f // Bottom left
     };
     private int[] elementArray = {
             2, 1, 0,
@@ -79,12 +81,19 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(float dt)
     {
-        camera.position.x -= dt * 50.0f;
-        // System.out.println("" + (1.0f / dt) + "FPS");
-        defaultShader.use();
-        defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
-        defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+        if (KeyListener.isKeyPressed(KeyEvent.VK_W))
+            camera.position.y -= dt * camSpeed;
+        if (KeyListener.isKeyPressed(KeyEvent.VK_S))
+            camera.position.y += dt * camSpeed;
+        if (KeyListener.isKeyPressed(KeyEvent.VK_A))
+            camera.position.x += dt * camSpeed;
+        if (KeyListener.isKeyPressed(KeyEvent.VK_D))
+            camera.position.x -= dt * camSpeed;
 
+        defaultShader.use();
+        defaultShader.uploadFloat("uTime", Time.getTime());
+        defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+        defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
 
         // Bind VAO
         glBindVertexArray(vaoID);
@@ -100,6 +109,8 @@ public class LevelEditorScene extends Scene {
         glDisableVertexAttribArray(1);
         glBindVertexArray(0);
 
+        defaultShader.detach();
+
         if (!changingScene && KeyListener.isKeyPressed(KeyEvent.VK_SPACE))
             changingScene = true;
 
@@ -107,7 +118,5 @@ public class LevelEditorScene extends Scene {
             timeToChangeScene -= dt;
         else if (changingScene)
             Window.changeScene(1);
-
-        defaultShader.detach();
     }
 }
