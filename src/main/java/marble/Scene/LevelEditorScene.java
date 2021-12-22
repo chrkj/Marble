@@ -1,5 +1,11 @@
-package marble;
+package marble.Scene;
 
+import marble.Camera.Camera;
+import marble.Components.FontRenderer;
+import marble.Components.SpriteRenderer;
+import marble.GameObject;
+import marble.Listeners.KeyListener;
+import marble.Window;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import renderer.Shader;
@@ -41,6 +47,10 @@ public class LevelEditorScene extends Scene {
     @Override
     public void init()
     {
+        GameObject testObj = new GameObject("testObj");
+        testObj.addComponent(new FontRenderer());
+        addGameObjectToScene(testObj);
+
         this.camera = new Camera(new Vector2f());
         defaultShader = new Shader("assets/shaders/default.shader");
         defaultShader.compile();
@@ -118,5 +128,9 @@ public class LevelEditorScene extends Scene {
             timeToChangeScene -= dt;
         else if (changingScene)
             Window.changeScene(1);
+
+        for (GameObject gameObject : gameObjects) {
+            gameObject.update(dt);
+        }
     }
 }

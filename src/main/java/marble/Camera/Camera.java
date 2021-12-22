@@ -1,4 +1,4 @@
-package marble;
+package marble.Camera;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

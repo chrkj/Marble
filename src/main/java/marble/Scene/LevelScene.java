@@ -1,4 +1,6 @@
-package marble;
+package marble.Scene;
+
+import marble.Window;
 
 public class LevelScene extends Scene {
 
