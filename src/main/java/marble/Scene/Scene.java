@@ -8,17 +8,13 @@ import java.util.List;
 
 public abstract class Scene {
 
-    private boolean isRunning = false;
     protected Camera camera;
     protected List<GameObject> gameObjects = new ArrayList<>();
 
-    public Scene()
-    {
-    }
+    private boolean isRunning = false;
 
     public void init()
     {
-
     }
 
     public void start()
@@ -42,6 +38,11 @@ public abstract class Scene {
     public boolean isRunning()
     {
         return isRunning;
+    }
+
+    public Camera getCamera()
+    {
+        return camera;
     }
 
     public abstract void update(float dt);

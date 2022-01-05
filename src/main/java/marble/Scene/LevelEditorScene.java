@@ -129,8 +129,7 @@ public class LevelEditorScene extends Scene {
         else if (changingScene)
             Window.changeScene(1);
 
-        for (GameObject gameObject : gameObjects) {
+        for (GameObject gameObject : gameObjects)
             gameObject.update(dt);
-        }
     }
 }

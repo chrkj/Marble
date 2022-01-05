@@ -2,17 +2,30 @@ package marble;
 
 import marble.Components.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class GameObject {
+
+    public Transform transform;
 
     private String name;
     private List<Component> components;
 
     public GameObject(String name)
     {
+        init(name, new Transform());
+    }
+
+    public GameObject(String name, Transform transform)
+    {
+        init(name, transform);
+    }
+
+    public void init(String name, Transform transform)
+    {
         this.name = name;
+        this.transform = transform;
         this.components = new ArrayList<>();
     }
 
@@ -56,6 +69,11 @@ public class GameObject {
         for (Component component : components) {
             component.update(dt);
         }
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
 }

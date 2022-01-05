@@ -2,9 +2,10 @@ package marble;
 
 import marble.Listeners.KeyListener;
 import marble.Listeners.MouseListener;
-import marble.Scene.LevelEditorScene;
-import marble.Scene.LevelScene;
 import marble.Scene.Scene;
+import marble.Scene.LevelScene;
+import marble.Scene.LevelEditorScene;
+
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -20,16 +21,9 @@ public class Window {
 
     private final int width;
     private final int height;
-
-    public float r = 1.0f;
-    public float g = 1.0f;
-    public float b = 1.0f;
-    public float a = 1.0f;
-
     private final String title;
 
     private static Window window;
-
     private static Scene currentScene;
 
     public static void changeScene(int newScene)
@@ -48,7 +42,11 @@ public class Window {
             default:
                 assert false : "Unknown scene '" + newScene + "'";
         }
+    }
 
+    public static Scene getScene()
+    {
+        return Window.currentScene;
     }
 
     private Window()
@@ -60,16 +58,14 @@ public class Window {
 
     public static Window get()
     {
-        if (Window.window == null) {
+        if (Window.window == null)
             Window.window = new Window();
-        }
         return Window.window;
     }
 
     public void run()
     {
         System.out.println("LWJGL Version: " + Version.getVersion() + "!");
-
         init();
         loop();
     }
@@ -80,9 +76,8 @@ public class Window {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW
-        if (!glfwInit()) {
+        if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW.");
-        }
 
         // Configure GLFW
         glfwDefaultWindowHints();
@@ -92,9 +87,8 @@ public class Window {
 
         // Create the window
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
-        if (glfwWindow == NULL) {
+        if (glfwWindow == NULL)
             throw new IllegalStateException("Failed to create the GLFW window.");
-        }
 
         // Set callback
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
@@ -136,9 +130,8 @@ public class Window {
             //glClearColor(r, g, b, a);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            if (dt >= 0) {
+            if (dt >= 0)
                 currentScene.update(dt);
-            }
 
             glfwSwapBuffers(glfwWindow);
 
@@ -148,5 +141,4 @@ public class Window {
         }
 
     }
-
 }

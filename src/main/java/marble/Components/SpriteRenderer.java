@@ -1,19 +1,34 @@
 package marble.Components;
 
+import org.joml.Vector4f;
+
 public class SpriteRenderer extends Component {
 
-    private boolean firstTime = true;
+    private Vector4f color;
 
-    @Override
-    public void start() {
-        System.out.println("Spriterender starting!");
+    public SpriteRenderer(Vector4f color)
+    {
+        this.color = color;
     }
 
     @Override
-    public void update(float dt) {
-        if (firstTime) {
-            System.out.println("Spriterenderer updating!");
-            firstTime = false;
-        }
+    public void start()
+    {
     }
+
+    @Override
+    public void update(float dt)
+    {
+    }
+
+    public Vector4f getColor()
+    {
+        return color;
+    }
+
+    public void setColor(Vector4f color)
+    {
+        this.color = color;
+    }
+
 }
