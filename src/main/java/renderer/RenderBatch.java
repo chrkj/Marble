@@ -44,7 +44,7 @@ public class RenderBatch {
         this.hasRoom = true;
     }
 
-    public void Start()
+    public void start()
     {
         // Generate and bind VAO
         vaoID = glGenVertexArrays();
@@ -53,7 +53,7 @@ public class RenderBatch {
         // Allocate space on the GPU
         vboID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, (long) vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
         // Create and upload indices buffer
         int eboID = glGenBuffers();
@@ -75,9 +75,9 @@ public class RenderBatch {
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 
         shader.use();
-        shader.uploadFloat("uTime", Time.getTime());
-        shader.uploadMat4f("uView", Window.getScene().getCamera().getViewMatrix());
+        // shader.uploadFloat("uTime", Time.getTime());
         shader.uploadMat4f("uProjection", Window.getScene().getCamera().getProjectionMatrix());
+        shader.uploadMat4f("uView", Window.getScene().getCamera().getViewMatrix());
 
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
@@ -106,9 +106,9 @@ public class RenderBatch {
 
     private void loadVertexProperties(int index)
     {
-        SpriteRenderer spriteRenderer = sprites[index];
+        SpriteRenderer sprite = sprites[index];
         int offset = index * 4 * VERTEX_SIZE;
-        Vector4f color = spriteRenderer.getColor();
+        Vector4f color = sprite.getColor();
 
         float xAdd = 1.0f;
         float yAdd = 1.0f;
@@ -123,14 +123,16 @@ public class RenderBatch {
         }
 
         // Load position
-        vertices[offset] = spriteRenderer.getGameObject().transform.position.x + (xAdd * spriteRenderer.getGameObject().transform.scale.x);
-        vertices[offset + 1] = spriteRenderer.getGameObject().transform.position.y + (yAdd * spriteRenderer.getGameObject().transform.scale.y);
+        vertices[offset] = sprite.getGameObject().transform.position.x + (xAdd * sprite.getGameObject().transform.scale.x);
+        vertices[offset + 1] = sprite.getGameObject().transform.position.y + (yAdd * sprite.getGameObject().transform.scale.y);
 
         // Load color
         vertices[offset + 2] = color.x;
         vertices[offset + 3] = color.y;
         vertices[offset + 4] = color.z;
         vertices[offset + 5] = color.w;
+
+        offset += VERTEX_SIZE;
     }
 
     private int[] generateIndices()
@@ -151,12 +153,17 @@ public class RenderBatch {
         // Triangle 1
         elements[offsetArrayIndex] = offset + 3;
         elements[offsetArrayIndex + 1] = offset + 2;
-        elements[offsetArrayIndex + 2] = offset;
+        elements[offsetArrayIndex + 2] = offset + 0;
 
         // Triangle 2
-        elements[offsetArrayIndex + 3] = offset;
+        elements[offsetArrayIndex + 3] = offset + 0;
         elements[offsetArrayIndex + 4] = offset + 2;
         elements[offsetArrayIndex + 5] = offset + 1;
+    }
+
+    public boolean hasRoom()
+    {
+        return hasRoom;
     }
 
 }

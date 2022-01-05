@@ -3,7 +3,6 @@ package marble;
 import marble.Listeners.KeyListener;
 import marble.Listeners.MouseListener;
 import marble.Scene.Scene;
-import marble.Scene.LevelScene;
 import marble.Scene.LevelEditorScene;
 
 import org.lwjgl.Version;
@@ -31,11 +30,6 @@ public class Window {
         switch (newScene) {
             case 0:
                 currentScene = new LevelEditorScene();
-                currentScene.init();
-                currentScene.start();
-                break;
-            case 1:
-                currentScene = new LevelScene();
                 currentScene.init();
                 currentScene.start();
                 break;
@@ -127,7 +121,7 @@ public class Window {
             // Poll events
             glfwPollEvents();
 
-            //glClearColor(r, g, b, a);
+            //glClearColor(1, 1, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
             if (dt >= 0)
