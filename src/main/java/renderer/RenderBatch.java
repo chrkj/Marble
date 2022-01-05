@@ -34,14 +34,14 @@ public class RenderBatch {
     {
         shader = new Shader("assets/shaders/default.shader");
         shader.compile();
-        this.sprites = new SpriteRenderer[maxBatchSize];
+        sprites = new SpriteRenderer[maxBatchSize];
         this.maxBatchSize = maxBatchSize;
 
         // 4 vertices quads
         vertices = new float[maxBatchSize * 4 * VERTEX_SIZE];
 
-        this.numSprites = 0;
-        this.hasRoom = true;
+        numSprites = 0;
+        hasRoom = true;
     }
 
     public void start()
@@ -53,7 +53,7 @@ public class RenderBatch {
         // Allocate space on the GPU
         vboID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferData(GL_ARRAY_BUFFER, vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, (long) vertices.length * Float.BYTES, GL_DYNAMIC_DRAW);
 
         // Create and upload indices buffer
         int eboID = glGenBuffers();
@@ -75,7 +75,6 @@ public class RenderBatch {
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 
         shader.use();
-        // shader.uploadFloat("uTime", Time.getTime());
         shader.uploadMat4f("uProjection", Window.getScene().getCamera().getProjectionMatrix());
         shader.uploadMat4f("uView", Window.getScene().getCamera().getViewMatrix());
 
@@ -92,16 +91,17 @@ public class RenderBatch {
         shader.detach();
     }
 
-    public void addSprite(SpriteRenderer spriteRenderer)
+    public void addSprite(SpriteRenderer spr)
     {
         int index = numSprites;
-        sprites[index] = spriteRenderer;
+        sprites[index] = spr;
         numSprites++;
 
         loadVertexProperties(index);
 
-        if (numSprites >= maxBatchSize)
+        if (numSprites >= maxBatchSize) {
             hasRoom = false;
+        }
     }
 
     private void loadVertexProperties(int index)
@@ -120,19 +120,19 @@ public class RenderBatch {
             } else if (i == 3) {
                 yAdd = 1.0f;
             }
+
+            // Load position
+            vertices[offset] = sprite.getGameObject().transform.position.x + (xAdd * sprite.getGameObject().transform.scale.x);
+            vertices[offset + 1] = sprite.getGameObject().transform.position.y + (yAdd * sprite.getGameObject().transform.scale.y);
+
+            // Load color
+            vertices[offset + 2] = color.x;
+            vertices[offset + 3] = color.y;
+            vertices[offset + 4] = color.z;
+            vertices[offset + 5] = color.w;
+
+            offset += VERTEX_SIZE;
         }
-
-        // Load position
-        vertices[offset] = sprite.getGameObject().transform.position.x + (xAdd * sprite.getGameObject().transform.scale.x);
-        vertices[offset + 1] = sprite.getGameObject().transform.position.y + (yAdd * sprite.getGameObject().transform.scale.y);
-
-        // Load color
-        vertices[offset + 2] = color.x;
-        vertices[offset + 3] = color.y;
-        vertices[offset + 4] = color.z;
-        vertices[offset + 5] = color.w;
-
-        offset += VERTEX_SIZE;
     }
 
     private int[] generateIndices()

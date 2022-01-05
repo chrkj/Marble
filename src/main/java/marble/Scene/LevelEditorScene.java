@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 
 public class LevelEditorScene extends Scene {
 
-    // private float camSpeed = 40f;
+    private float camSpeed = 40f;
 
     public LevelEditorScene()
     {
@@ -40,26 +40,25 @@ public class LevelEditorScene extends Scene {
                 addGameObjectToScene(gameObject);
             }
         }
-        System.out.println();
     }
 
     @Override
     public void update(float dt)
     {
-       // if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-       //     camera.position.y -= dt * camSpeed;
-       // if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-       //     camera.position.y += dt * camSpeed;
-       // if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-       //     camera.position.x += dt * camSpeed;
-       // if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-       //     camera.position.x -= dt * camSpeed;
+       if (KeyListener.isKeyPressed(KeyEvent.VK_W))
+           camera.position.y -= dt * camSpeed;
+       if (KeyListener.isKeyPressed(KeyEvent.VK_S))
+           camera.position.y += dt * camSpeed;
+       if (KeyListener.isKeyPressed(KeyEvent.VK_A))
+           camera.position.x += dt * camSpeed;
+       if (KeyListener.isKeyPressed(KeyEvent.VK_D))
+           camera.position.x -= dt * camSpeed;
 
         for (GameObject gameObject : gameObjects) {
             gameObject.update(dt);
         }
 
         renderer.render();
-        //System.out.println("FPS: " + 1/dt);
+        System.out.println("FPS: " + 1/dt);
     }
 }
