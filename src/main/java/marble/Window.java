@@ -78,7 +78,6 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        // glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE); // start maximized
 
         // Create the window
         glfwWindow = glfwCreateWindow(width, height, this.title, NULL, NULL);
@@ -130,7 +129,6 @@ public class Window {
             dt = endTime - beginTime;
             beginTime = endTime;
         }
-        // CleanUp(); ???
     }
 
     public static int getWidth()
