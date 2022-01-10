@@ -35,8 +35,17 @@ public class Transform {
         this.scale = scale;
     }
 
-    public void setRotation(Vector3f rotation)
+    public void setRotation(float x, float y, float z)
     {
-        this.rotation = rotation;
+        rotation.x = x;
+        rotation.y = y;
+        rotation.z = z;
+    }
+
+    public void setPosition(float x, float y, float z)
+    {
+        position.x = x;
+        position.y = y;
+        position.z = z;
     }
 }

@@ -1,54 +1,61 @@
 package marble.Camera;
 
-import marble.Window;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Camera {
 
     public Vector3f position;
-    private final Matrix4f viewMatrix;
-    private static Matrix4f worldMatrix = new Matrix4f();
-    private static Matrix4f projectionMatrix = new Matrix4f();
+    public Vector3f rotation;
 
-    private static final float Z_NEAR = 0.01f;
-    private static final float Z_FAR = 1000.f;
-    private static final float FOV = (float) Math.toRadians(60.0f);
+    public final float Z_NEAR = 0.01f;
+    public final float Z_FAR = 1000.f;
+    public final float FOV = (float) Math.toRadians(60.0f);
 
     public Camera(Vector3f position)
     {
+        init(position, new Vector3f());
+    }
+
+    public Camera(Vector3f position, Vector3f rotation)
+    {
+        init(position, rotation);
+    }
+
+    private void init(Vector3f position, Vector3f rotation)
+    {
         this.position = position;
-        this.viewMatrix = new Matrix4f();
-        this.worldMatrix = new Matrix4f();
-        adjustProjectionMatrix();
+        this.rotation = rotation;
     }
 
-    public static void adjustProjectionMatrix()
+    public void move(float x, float y, float z, float dt)
     {
-        float aspectRatio = (float) Window.get().getWidth() / Window.get().getHeight();
-        projectionMatrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        if (z != 0) {
+            position.x += ((float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * z) * dt;
+            position.z += ((float) Math.cos(Math.toRadians(rotation.y)) * z) * dt;
+        }
+        if (x != 0) {
+            position.x += ((float) Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * x) * dt;
+            position.z += ((float) Math.cos(Math.toRadians(rotation.y - 90)) * x) * dt;
+        }
+        position.y += y * dt;
     }
 
-    public Matrix4f getViewMatrix()
+    public void rotate(float x, float y, float z, float dt)
     {
-        Vector3f cameraUp = new Vector3f(0.0f, 1.0f, 0.0f);
-        Vector3f cameraFront = new Vector3f(0.0f, 0.0f, -1.0f);
-        viewMatrix.identity();
-        viewMatrix.lookAt(new Vector3f(position.x, position.y, position.z), cameraFront.add(position.x, position.y, position.z), cameraUp);
-        return viewMatrix;
+        rotation.x += x * dt;
+        rotation.y += y * dt;
+        rotation.z += z * dt;
     }
 
-    public static Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
-        return worldMatrix.translation(offset).
-                rotateX((float)Math.toRadians(rotation.x)).
-                rotateY((float)Math.toRadians(rotation.y)).
-                rotateZ((float)Math.toRadians(rotation.z)).
-                scale(scale);
-    }
-
-    public static Matrix4f getProjectionMatrix()
+    public Vector3f getPosition()
     {
-        return projectionMatrix;
+        return position;
     }
+
+    public Vector3f getRotation()
+    {
+        return rotation;
+    }
+
 }
 

@@ -4,14 +4,14 @@ import marble.Camera.Camera;
 import marble.GameObject;
 import renderer.Renderer;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Scene {
 
     protected Camera camera;
     protected Renderer renderer = new Renderer();
-    protected List<GameObject> gameObjects = new ArrayList<>();
+    protected final List<GameObject> gameObjects = new ArrayList<>();
 
     private boolean isRunning = false;
 

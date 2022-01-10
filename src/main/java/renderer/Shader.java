@@ -124,7 +124,6 @@ public class Shader {
 
     public void bind()
     {
-        // Bind shader program
         if (!inUse)
             inUse = true;
             glUseProgram(shaderProgramID);
@@ -132,7 +131,6 @@ public class Shader {
 
     public void unbind()
     {
-        // Unbind
         glUseProgram(0);
         inUse = false;
     }

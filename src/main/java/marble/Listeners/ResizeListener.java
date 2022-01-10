@@ -11,7 +11,6 @@ public class ResizeListener {
     {
         Window.get().setWidth(width);
         Window.get().setHeight(height);
-        glViewport(0, 0, width, height);
-        Camera.adjustProjectionMatrix();
+        Window.get().setResized(true);
     }
 }

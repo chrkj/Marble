@@ -29,6 +29,7 @@ public class Window {
 
     private static Window window;
     private static Scene currentScene;
+    private boolean resized;
 
     public static void changeScene(int newScene)
     {
@@ -53,6 +54,7 @@ public class Window {
         this.width = 1280;
         this.height = 720;
         this.title = "Title";
+        this.resized = false;
     }
 
     public static Window get()
@@ -106,8 +108,10 @@ public class Window {
         // Make the window visible
         glfwShowWindow(glfwWindow);
 
-        // Set initial scene
+        // Enable depth-buffer
         glEnable(GL_DEPTH_TEST);
+
+        // Set initial scene
         Window.changeScene(0);
     }
 
@@ -122,11 +126,11 @@ public class Window {
             // Poll events
             glfwPollEvents();
 
-            if (dt >= 0)
+            if (dt >= 0) {
                 currentScene.update(dt);
-
+                glfwSetWindowTitle(glfwWindow, title + " - " + (int)(1/dt) + " fps");
+            }
             glfwSwapBuffers(glfwWindow);
-            glfwSetWindowTitle(glfwWindow, title + " - " + (int)(1/dt) + " fps");
 
             endTime = Time.getTime();
             dt = endTime - beginTime;
@@ -153,5 +157,15 @@ public class Window {
     public void setHeight(int height)
     {
         this.height = height;
+    }
+
+    public void setResized(boolean resized)
+    {
+        this.resized = resized;
+    }
+
+    public boolean isResized()
+    {
+        return resized;
     }
 }
