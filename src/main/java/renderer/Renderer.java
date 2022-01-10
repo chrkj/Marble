@@ -48,25 +48,16 @@ public class Renderer {
         shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
         shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
 
-        // Render each gameItem
+        // Render each game object
         for (GameObject gameObject : gameObjects) {
-            // Set world matrix for this item
             Matrix4f worldMatrix = Transformation.getWorldMatrix(
                     gameObject.getTransform().position,
                     gameObject.getTransform().rotation,
                     gameObject.getTransform().scale);
             shader.setUniformMat4("uWorld", worldMatrix);
-            // Render the mes for this game item
             gameObject.getComponent(Mesh.class).render();
         }
-
         shader.unbind();
-    }
-
-    public void cleanup() {
-        if (shader != null) {
-            shader.cleanup();
-        }
     }
 
 }

@@ -136,7 +136,7 @@ public class Window {
             dt = endTime - beginTime;
             beginTime = endTime;
         }
-
+        // CleanUp(); ???
     }
 
     public int getWidth()
