@@ -73,4 +73,8 @@ public class GameObject {
         return name;
     }
 
+    public Transform getTransform()
+    {
+        return transform;
+    }
 }

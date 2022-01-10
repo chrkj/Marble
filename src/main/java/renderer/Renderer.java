@@ -1,77 +1,68 @@
 package renderer;
 
+import marble.Camera.Camera;
 import marble.Components.Mesh;
-import marble.Components.SpriteRenderer;
 import marble.GameObject;
+import marble.Window;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Renderer {
-    private final int MAX_BATCH_SIZE = 1000;
-    private List<RenderBatch> batches;
+
+    private Shader shader;
+    ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     public Renderer()
     {
-        this.batches = new ArrayList<>();
+        shader = new Shader("assets/shaders/default.shader");
+        shader.compile();
     }
 
     public void add(GameObject gameObject)
     {
-        SpriteRenderer spr = gameObject.getComponent(SpriteRenderer.class);
-        if (spr != null)
-            add(spr);
+        gameObjects.add(gameObject);
     }
 
-    private void add(SpriteRenderer sprite)
-    {
-        boolean added = false;
-        for (RenderBatch batch : batches ) {
-            if (batch.hasRoom()) {
-                batch.addSprite(sprite);
-                added = true;
-                break;
-            }
-        }
-
-        if (!added) {
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE);
-            newBatch.start();
-            batches.add(newBatch);
-            newBatch.addSprite(sprite);
-        }
+    public void clear() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render()
-    {
-        for (RenderBatch batch : batches) {
-            batch.render();
-        }
-    }
-
-    public void renderMesh(Mesh mesh) {
-        //clear();
-
+    public void render() {
+        clear();
+        //
         //if (window.isResized()) {
         //    glViewport(0, 0, window.getWidth(), window.getHeight());
         //    window.setResized(false);
         //}
 
-        shaderProgram.bind();
+        shader.bind();
 
-        // Draw the mesh
-        glBindVertexArray(mesh.getVaoId());
-        glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
+        // Update projection Matrix
+        Matrix4f projectionMatrix = Camera.getProjectionMatrix();
+        shader.setUniformMat4("uProjection", projectionMatrix);
+        shader.setUniformMat4("uView", Window.getScene().getCamera().getViewMatrix());
 
-        // Restore state
-        glBindVertexArray(0);
+        // Render each gameItem
+        for (GameObject gameObject : gameObjects) {
+            // Set world matrix for this item
+            Matrix4f worldMatrix = Camera.getWorldMatrix(
+                    gameObject.getTransform().position,
+                    gameObject.getTransform().rotation,
+                    gameObject.getTransform().scale);
+            shader.setUniformMat4("uWorld", worldMatrix);
+            // Render the mes for this game item
+            gameObject.getComponent(Mesh.class).render();
+        }
 
-        shaderProgram.unbind();
+        shader.unbind();
     }
 
     public void cleanup() {
-        if (shaderProgram != null) {
-            shaderProgram.cleanup();
+        if (shader != null) {
+            shader.cleanup();
         }
     }
 

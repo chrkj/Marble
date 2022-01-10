@@ -191,4 +191,11 @@ public class Shader {
         uniformLocationCache.put(varName, location);
         return location;
     }
+
+    public void cleanup() {
+        unbind();
+        if (shaderProgramID != 0) {
+            glDeleteProgram(shaderProgramID);
+        }
+    }
 }

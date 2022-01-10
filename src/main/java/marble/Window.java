@@ -107,6 +107,7 @@ public class Window {
         glfwShowWindow(glfwWindow);
 
         // Set initial scene
+        glEnable(GL_DEPTH_TEST);
         Window.changeScene(0);
     }
 
@@ -120,8 +121,6 @@ public class Window {
         while (!glfwWindowShouldClose(glfwWindow)) {
             // Poll events
             glfwPollEvents();
-
-            glClear(GL_COLOR_BUFFER_BIT);
 
             if (dt >= 0)
                 currentScene.update(dt);

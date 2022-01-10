@@ -8,8 +8,8 @@ public class Camera {
 
     public Vector3f position;
     private final Matrix4f viewMatrix;
-    private final Matrix4f worldMatrix;
-    private static Matrix4f projectionMatrix;
+    private static Matrix4f worldMatrix = new Matrix4f();
+    private static Matrix4f projectionMatrix = new Matrix4f();
 
     private static final float Z_NEAR = 0.01f;
     private static final float Z_FAR = 1000.f;
@@ -26,7 +26,7 @@ public class Camera {
     public static void adjustProjectionMatrix()
     {
         float aspectRatio = (float) Window.get().getWidth() / Window.get().getHeight();
-        projectionMatrix = new Matrix4f().setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+        projectionMatrix.setPerspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
     }
 
     public Matrix4f getViewMatrix()
@@ -38,7 +38,7 @@ public class Camera {
         return viewMatrix;
     }
 
-    public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
+    public static Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, float scale) {
         return worldMatrix.translation(offset).
                 rotateX((float)Math.toRadians(rotation.x)).
                 rotateY((float)Math.toRadians(rotation.y)).
@@ -46,7 +46,7 @@ public class Camera {
                 scale(scale);
     }
 
-    public Matrix4f getProjectionMatrix()
+    public static Matrix4f getProjectionMatrix()
     {
         return projectionMatrix;
     }

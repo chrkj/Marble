@@ -26,7 +26,7 @@ public class LevelEditorScene extends Scene {
     @Override
     public void init()
     {
-        camera = new Camera(new Vector3f(0,0,800));
+        camera = new Camera(new Vector3f(0,0,20));
 
         //int xOffset = 10;
         //int yOffset = 10;
@@ -45,23 +45,51 @@ public class LevelEditorScene extends Scene {
         //    }
         //}
 
-        float[] positions = new float[]{
-                -0.5f,  0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.5f,  0.5f, 0.0f,
+        float[] positions = new float[] {
+                // VO
+                -0.5f,  0.5f,  0.5f,
+                // V1
+                -0.5f, -0.5f,  0.5f,
+                // V2
+                0.5f, -0.5f,  0.5f,
+                // V3
+                0.5f,  0.5f,  0.5f,
+                // V4
+                -0.5f,  0.5f, -0.5f,
+                // V5
+                0.5f,  0.5f, -0.5f,
+                // V6
+                -0.5f, -0.5f, -0.5f,
+                // V7
+                0.5f, -0.5f, -0.5f,
         };
-        int[] indices = new int[]{
+        int[] indices = new int[] {
+                // Front face
                 0, 1, 3, 3, 1, 2,
+                // Top Face
+                4, 0, 3, 5, 4, 3,
+                // Right face
+                3, 2, 7, 5, 3, 7,
+                // Left face
+                6, 1, 0, 6, 0, 4,
+                // Bottom face
+                2, 1, 6, 2, 6, 7,
+                // Back face
+                7, 6, 4, 7, 4, 5,
         };
-        float[] color = new float[]{
+        float[] colors = new float[]{
+                0.5f, 0.0f, 0.0f,
+                0.0f, 0.5f, 0.0f,
+                0.0f, 0.0f, 0.5f,
+                0.0f, 0.5f, 0.5f,
                 0.5f, 0.0f, 0.0f,
                 0.0f, 0.5f, 0.0f,
                 0.0f, 0.0f, 0.5f,
                 0.0f, 0.5f, 0.5f,
         };
         GameObject go = new GameObject("Obj1");
-        go.addComponent(new Mesh(positions, color, indices));
+        go.getTransform().position = new Vector3f(0,0,-2);
+        go.addComponent(new Mesh(positions, colors, indices));
         addGameObjectToScene(go);
     }
 
@@ -81,8 +109,14 @@ public class LevelEditorScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_E))
             camera.position.z -= dt * camSpeed;
 
-        for (GameObject gameObject : gameObjects)
+        for (GameObject gameObject : gameObjects) {
             gameObject.update(dt);
+            float rotation = gameObject.getTransform().rotation.z + 0.5f;
+            if (rotation > 360) {
+                rotation = 0;
+            }
+            gameObject.getTransform().setRotation(new Vector3f(rotation, rotation, rotation));
+        }
 
         renderer.render();
     }
