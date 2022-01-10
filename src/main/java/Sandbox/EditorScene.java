@@ -1,25 +1,22 @@
-package marble.Scene;
+package Sandbox;
 
 import marble.Camera.Camera;
-import marble.Components.Component;
-import marble.Components.Mesh;
-import marble.Components.SpriteRenderer;
-import marble.GameObject;
+import marble.GameObject.Components.Mesh;
+import marble.GameObject.GameObject;
 import marble.Listeners.KeyListener;
-import marble.Transform;
-import org.joml.Vector2f;
+import marble.GameObject.Transform;
+import marble.Scene.Scene;
+import marble.Window;
+import marble.util.Time;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
-import renderer.Renderer;
 
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Type;
 
-public class LevelEditorScene extends Scene {
+public class EditorScene extends Scene {
 
-    public LevelEditorScene()
+    public EditorScene()
     {
-        System.out.println("Inside level editor scene.");
+        System.out.println("Inside editor scene.");
     }
 
     @Override
@@ -88,6 +85,8 @@ public class LevelEditorScene extends Scene {
             camera.move(0,0, -camSpeed, dt);
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
             camera.move(0,0, camSpeed, dt);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
+            Window.changeScene(1);
 
         for (GameObject gameObject : gameObjects)
             gameObject.update(dt);

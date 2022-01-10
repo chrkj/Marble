@@ -3,7 +3,7 @@ import marble.Window;
 public class Main {
     public static void main(String[] args)
     {
-        Window window = Window.get();
+        Window window = new Window("Window_1");
         window.run();
     }
 }

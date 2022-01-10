@@ -1,8 +1,9 @@
 package marble.Scene;
 
 import marble.Camera.Camera;
-import marble.GameObject;
-import renderer.Renderer;
+import marble.GameObject.GameObject;
+import marble.Renderer.Renderer;
+import marble.util.Time;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -13,14 +14,14 @@ public abstract class Scene {
     protected Renderer renderer = new Renderer();
     protected final List<GameObject> gameObjects = new ArrayList<>();
 
+    private float sceneStartedTime;
     private boolean isRunning = false;
 
-    public void init()
-    {
-    }
+    public abstract void init();
 
     public void start()
     {
+        sceneStartedTime = Time.getTime();
         for (GameObject gameObject : gameObjects) {
             gameObject.start();
             renderer.add(gameObject);
@@ -50,5 +51,10 @@ public abstract class Scene {
     }
 
     public abstract void update(float dt);
+
+    public float timeSinceSceneStarted()
+    {
+        return Time.getTime() - sceneStartedTime;
+    }
 
 }

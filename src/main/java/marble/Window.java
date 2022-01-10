@@ -1,20 +1,17 @@
 package marble;
 
-import marble.Camera.Camera;
+import Sandbox.GameScene;
 import marble.Listeners.KeyListener;
 import marble.Listeners.MouseListener;
 import marble.Listeners.ResizeListener;
 import marble.Scene.Scene;
-import marble.Scene.LevelEditorScene;
+import Sandbox.EditorScene;
 
 import org.lwjgl.Version;
-import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import util.Time;
-
-import java.nio.ByteBuffer;
+import marble.util.Time;
 
 import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -23,19 +20,23 @@ import static org.lwjgl.opengl.GL11.*;
 public class Window {
     private long glfwWindow;
 
-    private int width;
-    private int height;
+    private static int width;
+    private static int height;
     private final String title;
 
-    private static Window window;
+    private static boolean resized;
     private static Scene currentScene;
-    private boolean resized;
 
     public static void changeScene(int newScene)
     {
         switch (newScene) {
             case 0:
-                currentScene = new LevelEditorScene();
+                currentScene = new EditorScene();
+                currentScene.init();
+                currentScene.start();
+                break;
+            case 1:
+                currentScene = new GameScene();
                 currentScene.init();
                 currentScene.start();
                 break;
@@ -49,19 +50,12 @@ public class Window {
         return Window.currentScene;
     }
 
-    private Window()
+    public Window(String title)
     {
-        this.width = 1280;
-        this.height = 720;
-        this.title = "Title";
-        this.resized = false;
-    }
-
-    public static Window get()
-    {
-        if (Window.window == null)
-            Window.window = new Window();
-        return Window.window;
+       width = 1280;
+       height = 720;
+       resized = false;
+       this.title = title;
     }
 
     public void run()
@@ -87,7 +81,7 @@ public class Window {
         // glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE); // start maximized
 
         // Create the window
-        glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
+        glfwWindow = glfwCreateWindow(width, height, this.title, NULL, NULL);
         if (glfwWindow == NULL)
             throw new IllegalStateException("Failed to create the GLFW window.");
 
@@ -139,32 +133,32 @@ public class Window {
         // CleanUp(); ???
     }
 
-    public int getWidth()
+    public static int getWidth()
     {
         return width;
     }
 
-    public int getHeight()
+    public static int getHeight()
     {
         return height;
     }
 
-    public void setWidth(int width)
+    public static void setWidth(int w)
     {
-        this.width = width;
+        width = w;
     }
 
-    public void setHeight(int height)
+    public static void setHeight(int h)
     {
-        this.height = height;
+        height = h;
     }
 
-    public void setResized(boolean resized)
+    public static void setResized(boolean r)
     {
-        this.resized = resized;
+        resized = r;
     }
 
-    public boolean isResized()
+    public static boolean isResized()
     {
         return resized;
     }

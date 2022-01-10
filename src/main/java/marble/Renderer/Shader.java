@@ -1,4 +1,4 @@
-package renderer;
+package marble.Renderer;
 
 import org.joml.*;
 import org.lwjgl.BufferUtils;

@@ -1,9 +1,9 @@
-package renderer;
+package marble.Renderer;
 
 import marble.Camera.Camera;
-import marble.Components.Mesh;
-import marble.GameObject;
-import marble.Transformation;
+import marble.GameObject.Components.Mesh;
+import marble.GameObject.GameObject;
+import marble.util.Transformation;
 import marble.Window;
 import org.joml.Matrix4f;
 
@@ -36,10 +36,10 @@ public class Renderer {
     {
         clear();
 
-        if (Window.get().isResized()) {
-            glViewport(0, 0, Window.get().getWidth(), Window.get().getHeight());
+        if (Window.isResized()) {
+            glViewport(0, 0, Window.getWidth(), Window.getHeight());
             Transformation.adjustProjectionMatrix(camera);
-            Window.get().setResized(false);
+            Window.setResized(false);
         }
 
         shader.bind();

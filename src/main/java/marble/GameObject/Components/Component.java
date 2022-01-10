@@ -1,6 +1,6 @@
-package marble.Components;
+package marble.GameObject.Components;
 
-import marble.GameObject;
+import marble.GameObject.GameObject;
 
 public abstract class Component {
 

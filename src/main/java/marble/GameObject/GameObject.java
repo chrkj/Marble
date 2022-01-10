@@ -1,6 +1,6 @@
-package marble;
+package marble.GameObject;
 
-import marble.Components.Component;
+import marble.GameObject.Components.Component;
 
 import java.util.List;
 import java.util.ArrayList;

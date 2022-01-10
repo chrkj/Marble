@@ -1,4 +1,4 @@
-package marble.Components;
+package marble.GameObject.Components;
 
 public class FontRenderer extends Component {
 
@@ -6,7 +6,7 @@ public class FontRenderer extends Component {
     public void start()
     {
         if (gameObject.getComponent(SpriteRenderer.class) != null)
-            System.out.println("Found font renderer");
+            System.out.println("Found font marble.renderer");
     }
 
     @Override

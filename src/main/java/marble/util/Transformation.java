@@ -1,13 +1,14 @@
-package marble;
+package marble.util;
 
 import marble.Camera.Camera;
 
+import marble.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Transformation {
 
-    private static final Matrix4f viewMatrix = new Matrix4f();;
+    private static final Matrix4f viewMatrix = new Matrix4f();
     private static final Matrix4f worldMatrix = new Matrix4f();
     private static final Matrix4f projectionMatrix = new Matrix4f();
 
@@ -22,7 +23,7 @@ public class Transformation {
 
     public static void adjustProjectionMatrix(Camera camera)
     {
-        float aspectRatio = (float) Window.get().getWidth() / Window.get().getHeight();
+        float aspectRatio = (float) Window.getWidth() / Window.getHeight();
         projectionMatrix.setPerspective(camera.FOV, aspectRatio, camera.Z_NEAR, camera.Z_FAR);
     }
 
@@ -39,6 +40,6 @@ public class Transformation {
 
     public static Matrix4f getProjectionMatrix(Camera camera)
     {
-        return projectionMatrix.setPerspective(camera.FOV, (float) Window.get().getWidth() / Window.get().getHeight(), camera.Z_NEAR, camera.Z_FAR);
+        return projectionMatrix.setPerspective(camera.FOV, (float) Window.getWidth() / Window.getHeight(), camera.Z_NEAR, camera.Z_FAR);
     }
 }

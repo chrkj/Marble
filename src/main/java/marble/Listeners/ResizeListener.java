@@ -9,8 +9,8 @@ public class ResizeListener {
 
     public static void windowResizeCallback(final long window, final int width, final int height)
     {
-        Window.get().setWidth(width);
-        Window.get().setHeight(height);
-        Window.get().setResized(true);
+        Window.setWidth(width);
+        Window.setHeight(height);
+        Window.setResized(true);
     }
 }
