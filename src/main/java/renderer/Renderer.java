@@ -1,5 +1,6 @@
 package renderer;
 
+import marble.Components.Mesh;
 import marble.Components.SpriteRenderer;
 import marble.GameObject;
 
@@ -45,6 +46,32 @@ public class Renderer {
     {
         for (RenderBatch batch : batches) {
             batch.render();
+        }
+    }
+
+    public void renderMesh(Mesh mesh) {
+        //clear();
+
+        //if (window.isResized()) {
+        //    glViewport(0, 0, window.getWidth(), window.getHeight());
+        //    window.setResized(false);
+        //}
+
+        shaderProgram.bind();
+
+        // Draw the mesh
+        glBindVertexArray(mesh.getVaoId());
+        glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
+
+        // Restore state
+        glBindVertexArray(0);
+
+        shaderProgram.unbind();
+    }
+
+    public void cleanup() {
+        if (shaderProgram != null) {
+            shaderProgram.cleanup();
         }
     }
 

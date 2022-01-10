@@ -1,15 +1,20 @@
 package marble;
 
+import marble.Camera.Camera;
 import marble.Listeners.KeyListener;
 import marble.Listeners.MouseListener;
+import marble.Listeners.ResizeListener;
 import marble.Scene.Scene;
 import marble.Scene.LevelEditorScene;
 
 import org.lwjgl.Version;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import util.Time;
+
+import java.nio.ByteBuffer;
 
 import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -18,8 +23,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class Window {
     private long glfwWindow;
 
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private final String title;
 
     private static Window window;
@@ -89,22 +94,17 @@ public class Window {
         glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
         glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
         glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+        glfwSetWindowSizeCallback(glfwWindow, ResizeListener::windowResizeCallback);
 
         // Make the OpenGl context current
         glfwMakeContextCurrent(glfwWindow);
+        GL.createCapabilities();
 
         // Enable v-sync
         glfwSwapInterval(1);
 
         // Make the window visible
         glfwShowWindow(glfwWindow);
-
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
-        GL.createCapabilities();
 
         // Set initial scene
         Window.changeScene(0);
@@ -121,18 +121,38 @@ public class Window {
             // Poll events
             glfwPollEvents();
 
-            //glClearColor(1, 1, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
             if (dt >= 0)
                 currentScene.update(dt);
 
             glfwSwapBuffers(glfwWindow);
+            glfwSetWindowTitle(glfwWindow, title + " - " + (int)(1/dt) + " fps");
 
             endTime = Time.getTime();
             dt = endTime - beginTime;
             beginTime = endTime;
         }
 
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
     }
 }

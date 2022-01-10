@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class GameObject {
 
-    public Transform transform;
+    private Transform transform;
 
     private String name;
     private List<Component> components;
@@ -31,17 +31,15 @@ public class GameObject {
 
     public void start()
     {
-        for (Component component : components) {
+        for (Component component : components)
             component.start();
-        }
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass)
     {
         for (Component component : components) {
-            if (componentClass.isAssignableFrom(component.getClass())) {
+            if (componentClass.isAssignableFrom(component.getClass()))
                 return componentClass.cast(component);
-            }
         }
         return null;
     }
@@ -66,9 +64,8 @@ public class GameObject {
 
     public void update(float dt)
     {
-        for (Component component : components) {
+        for (Component component : components)
             component.update(dt);
-        }
     }
 
     public String getName()

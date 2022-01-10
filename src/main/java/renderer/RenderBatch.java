@@ -3,7 +3,6 @@ package renderer;
 import marble.Components.SpriteRenderer;
 import marble.Window;
 import org.joml.Vector4f;
-import util.Time;
 
 import static org.lwjgl.opengl.GL30.*;
 
@@ -74,10 +73,10 @@ public class RenderBatch {
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
 
-        shader.use();
+        shader.bind();
         // shader.uploadFloat("uTime", Time.getTime());
-        shader.uploadMat4f("uProjection", Window.getScene().getCamera().getProjectionMatrix());
-        shader.uploadMat4f("uView", Window.getScene().getCamera().getViewMatrix());
+        shader.setUniformMat4("uProjection", Window.getScene().getCamera().getProjectionMatrix());
+        shader.setUniformMat4("uView", Window.getScene().getCamera().getViewMatrix());
 
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
@@ -89,7 +88,7 @@ public class RenderBatch {
         glDisableVertexAttribArray(1);
         glBindVertexArray(0);
 
-        shader.detach();
+        shader.unbind();
     }
 
     public void addSprite(SpriteRenderer spriteRenderer)
@@ -120,7 +119,7 @@ public class RenderBatch {
             } else if (i == 3) {
                 yAdd = 1.0f;
             }
-        }
+
 
         // Load position
         vertices[offset] = sprite.getGameObject().transform.position.x + (xAdd * sprite.getGameObject().transform.scale.x);
@@ -133,6 +132,7 @@ public class RenderBatch {
         vertices[offset + 5] = color.w;
 
         offset += VERTEX_SIZE;
+        }
     }
 
     private int[] generateIndices()
