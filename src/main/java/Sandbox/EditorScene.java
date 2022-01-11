@@ -152,7 +152,7 @@ public class EditorScene extends Scene {
         if(KeyListener.isKeyPressed(KeyEvent.VK_2))
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
-            camera.rotate(MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0, dt);
+            camera.rotate(-MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0, dt);
 
         // Updating
         for (int i = 0; i < gameObjects.size(); i++) {
