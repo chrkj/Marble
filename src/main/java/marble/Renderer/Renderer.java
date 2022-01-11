@@ -1,10 +1,11 @@
 package marble.Renderer;
 
-import marble.Camera.Camera;
-import marble.GameObject.Components.Mesh;
-import marble.GameObject.GameObject;
-import marble.util.Transformation;
 import marble.Window;
+import marble.Camera.Camera;
+import marble.util.Transformation;
+import marble.GameObject.GameObject;
+import marble.GameObject.Components.Mesh;
+
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -48,10 +49,10 @@ public class Renderer {
         shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
         shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
 
-        // Render each game object
+        // Render game objects
         for (GameObject gameObject : gameObjects) {
             Matrix4f worldMatrix = Transformation.getWorldMatrix(
-                    gameObject.getTransform().position,
+                    gameObject.getPosition(),
                     gameObject.getTransform().rotation,
                     gameObject.getTransform().scale);
             shader.setUniformMat4("uWorld", worldMatrix);

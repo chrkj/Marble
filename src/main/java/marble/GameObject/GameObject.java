@@ -1,6 +1,7 @@
 package marble.GameObject;
 
 import marble.GameObject.Components.Component;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ public class GameObject {
 
     private String name;
     private List<Component> components;
+    public float[] translationX = new float[]{0};
+    public float[] translationY = new float[]{0};
+    public float[] translationZ = new float[]{0};
 
     public GameObject(String name)
     {
@@ -76,5 +80,17 @@ public class GameObject {
     public Transform getTransform()
     {
         return transform;
+    }
+
+    public void translate(float[] x, float[] y, float[] z)
+    {
+        translationX = x;
+        translationY = y;
+        translationZ = z;
+    }
+
+    public Vector3f getPosition()
+    {
+        return new Vector3f(transform.position.x + translationX[0], transform.position.y + translationY[0], transform.position.z + translationZ[0]);
     }
 }

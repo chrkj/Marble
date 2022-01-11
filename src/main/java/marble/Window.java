@@ -176,10 +176,9 @@ public class Window {
 
     private void update(float dt)
     {
-        if (dt >= 0) {
+        if (dt >= 0)
             currentScene.update(dt);
             glfwSetWindowTitle(windowPtr, title + " - " + (int)(1/ dt) + " fps");
-        }
     }
 
     public void destroy()

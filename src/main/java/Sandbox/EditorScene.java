@@ -1,6 +1,5 @@
 package Sandbox;
 
-import imgui.ImGui;
 import marble.Camera.Camera;
 import marble.GameObject.Components.Mesh;
 import marble.GameObject.GameObject;
@@ -8,14 +7,17 @@ import marble.Listeners.KeyListener;
 import marble.GameObject.Transform;
 import marble.Scene.Scene;
 import marble.Window;
-import marble.util.Time;
 import org.joml.Vector3f;
 
 import java.awt.event.KeyEvent;
 
 public class EditorScene extends Scene {
 
-    public static float[] angelAmount = {0.5f};
+    public static float[] x = {0};
+    public static float[] y = {0};
+    public static float[] z = {0};
+    public static float[] rotationSpeed = {0.5f};
+    public static GameObject gameObject;
 
     public EditorScene()
     {
@@ -59,6 +61,7 @@ public class EditorScene extends Scene {
             GameObject go = new GameObject("Cube1", new Transform(new Vector3f(), new Vector3f(30, 78, 10), 1));
             go.addComponent(new Mesh(positions, colors, indices));
             addGameObjectToScene(go);
+            gameObject = go;
         }
         {
             GameObject go = new GameObject("Cube2", new Transform(new Vector3f(2,2,2), new Vector3f(66, 5, 17), 1));
@@ -66,7 +69,7 @@ public class EditorScene extends Scene {
             addGameObjectToScene(go);
         }
         {
-            GameObject go = new GameObject("Cube2", new Transform(new Vector3f(-2,-2,-2), new Vector3f(66, 5, 17), 1));
+            GameObject go = new GameObject("Cube3", new Transform(new Vector3f(-2,-2,-2), new Vector3f(66, 5, 17), 1));
             go.addComponent(new Mesh(positions, colors, indices));
             addGameObjectToScene(go);
         }
@@ -94,13 +97,14 @@ public class EditorScene extends Scene {
         for (GameObject gameObject : gameObjects)
             gameObject.update(dt);
 
-
         for (GameObject gameObject : gameObjects) {
-            float rotation = gameObject.getTransform().rotation.z + angelAmount[0];
+            float rotation = gameObject.getTransform().rotation.z + rotationSpeed[0];
             if (rotation > 360)
                 rotation = 0;
             gameObject.getTransform().setRotation(rotation, rotation, rotation);
         }
+
+        gameObject.translate(x, y, z);
 
         renderer.render(camera);
     }
