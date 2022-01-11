@@ -1,5 +1,6 @@
 package Sandbox;
 
+import imgui.ImGui;
 import marble.Camera.Camera;
 import marble.GameObject.Components.Mesh;
 import marble.GameObject.GameObject;
@@ -13,6 +14,8 @@ import org.joml.Vector3f;
 import java.awt.event.KeyEvent;
 
 public class EditorScene extends Scene {
+
+    public static float[] angelAmount = {0.5f};
 
     public EditorScene()
     {
@@ -91,11 +94,11 @@ public class EditorScene extends Scene {
         for (GameObject gameObject : gameObjects)
             gameObject.update(dt);
 
+
         for (GameObject gameObject : gameObjects) {
-            float rotation = gameObject.getTransform().rotation.z + 0.5f;
-            if (rotation > 360) {
+            float rotation = gameObject.getTransform().rotation.z + angelAmount[0];
+            if (rotation > 360)
                 rotation = 0;
-            }
             gameObject.getTransform().setRotation(rotation, rotation, rotation);
         }
 
