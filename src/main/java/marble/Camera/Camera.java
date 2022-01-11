@@ -1,4 +1,4 @@
-package Marble.Camera;
+package marble.camera;
 
 import org.joml.Vector3f;
 

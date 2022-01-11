@@ -1,6 +1,7 @@
-package Marble.ImGui;
+package marble.imgui;
 
 import imgui.ImGui;
+
 
 public class ImGuiLayer {
     public void createLayer(float dt)

@@ -1,14 +1,14 @@
-package Sandbox;
+package sandbox;
 
-import Marble.Camera.Camera;
-import Marble.GameObject.Components.Mesh;
-import Marble.GameObject.Components.Texture;
-import Marble.GameObject.GameObject;
-import Marble.Listeners.KeyListener;
-import Marble.GameObject.Transform;
-import Marble.Listeners.MouseListener;
-import Marble.Scene.Scene;
-import Marble.Window;
+import marble.camera.Camera;
+import marble.gameobject.components.Mesh;
+import marble.gameobject.components.Texture;
+import marble.gameobject.GameObject;
+import marble.listeners.KeyListener;
+import marble.gameobject.Transform;
+import marble.listeners.MouseListener;
+import marble.scene.Scene;
+import marble.Window;
 import imgui.ImGui;
 import org.joml.Vector3f;
 

@@ -1,4 +1,4 @@
-package Marble.GameObject;
+package marble.gameobject;
 
 import org.joml.Vector3f;
 

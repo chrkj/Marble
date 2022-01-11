@@ -1,6 +1,6 @@
-package Marble.Listeners;
+package marble.listeners;
 
-import Marble.Window;
+import marble.Window;
 
 public class ResizeListener {
 

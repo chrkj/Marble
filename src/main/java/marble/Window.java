@@ -1,24 +1,24 @@
-package Marble;
+package marble;
 
-import Sandbox.GameScene;
+import sandbox.GameScene;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import Marble.ImGui.ImGuiLayer;
-import Marble.Listeners.KeyListener;
-import Marble.Listeners.MouseListener;
-import Marble.Listeners.ResizeListener;
-import Marble.Scene.Scene;
-import Sandbox.EditorScene;
+import marble.imgui.ImGuiLayer;
+import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
+import marble.listeners.ResizeListener;
+import marble.scene.Scene;
+import sandbox.EditorScene;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import Marble.util.Time;
+import marble.util.Time;
 
 import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -120,7 +120,7 @@ public class Window {
         GL.createCapabilities();
 
         // Enable v-sync
-        glfwSwapInterval(1);
+        glfwSwapInterval(GLFW_TRUE);
 
         // Make the window visible
         glfwShowWindow(windowPtr);

@@ -1,4 +1,4 @@
-package Marble.GameObject.Components;
+package marble.gameobject.components;
 
 import org.lwjgl.system.MemoryUtil;
 
