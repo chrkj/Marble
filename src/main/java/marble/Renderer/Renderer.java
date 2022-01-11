@@ -6,6 +6,7 @@ import Marble.util.Transformation;
 import Marble.GameObject.GameObject;
 import Marble.GameObject.Components.Mesh;
 
+import imgui.ImGui;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class Renderer {
         // Update projection Matrix
         shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
         shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
+        shader.setUniform1i("texture_sampler", 0);
 
         // Render game objects
         for (GameObject gameObject : gameObjects) {

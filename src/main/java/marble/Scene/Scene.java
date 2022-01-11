@@ -18,7 +18,7 @@ public abstract class Scene {
     private float sceneStartedTime;
     private boolean isRunning = false;
 
-    public abstract void init();
+    public abstract void init() throws Exception;
 
     public void start()
     {
@@ -51,7 +51,7 @@ public abstract class Scene {
         return camera;
     }
 
-    public abstract void update(float dt);
+    public abstract void update(float dt) throws Exception;
 
     public float timeSinceSceneStarted()
     {
