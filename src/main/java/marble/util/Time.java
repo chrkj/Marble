@@ -1,4 +1,4 @@
-package marble.util;
+package Marble.util;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 

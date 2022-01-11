@@ -1,9 +1,6 @@
-package marble.Listeners;
+package Marble.Listeners;
 
-import marble.Window;
-import marble.Camera.Camera;
-
-import static org.lwjgl.opengl.GL11.glViewport;
+import Marble.Window;
 
 public class ResizeListener {
 

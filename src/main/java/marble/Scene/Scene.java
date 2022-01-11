@@ -1,9 +1,9 @@
-package marble.Scene;
+package Marble.Scene;
 
-import marble.Camera.Camera;
-import marble.GameObject.GameObject;
-import marble.Renderer.Renderer;
-import marble.util.Time;
+import Marble.Camera.Camera;
+import Marble.GameObject.GameObject;
+import Marble.Renderer.Renderer;
+import Marble.util.Time;
 
 import java.util.List;
 import java.util.ArrayList;

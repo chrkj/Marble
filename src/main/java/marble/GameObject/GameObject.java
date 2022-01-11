@@ -1,6 +1,6 @@
-package marble.GameObject;
+package Marble.GameObject;
 
-import marble.GameObject.Components.Component;
+import Marble.GameObject.Components.Component;
 import org.joml.Vector3f;
 
 import java.util.List;

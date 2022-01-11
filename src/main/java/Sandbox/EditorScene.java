@@ -1,12 +1,12 @@
 package Sandbox;
 
-import marble.Camera.Camera;
-import marble.GameObject.Components.Mesh;
-import marble.GameObject.GameObject;
-import marble.Listeners.KeyListener;
-import marble.GameObject.Transform;
-import marble.Scene.Scene;
-import marble.Window;
+import Marble.Camera.Camera;
+import Marble.GameObject.Components.Mesh;
+import Marble.GameObject.GameObject;
+import Marble.Listeners.KeyListener;
+import Marble.GameObject.Transform;
+import Marble.Scene.Scene;
+import Marble.Window;
 import org.joml.Vector3f;
 
 import java.awt.event.KeyEvent;

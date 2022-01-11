@@ -1,4 +1,4 @@
-package marble.ImGui;
+package Marble.ImGui;
 
 import imgui.ImGui;
 import Sandbox.EditorScene;

@@ -1,10 +1,10 @@
-package marble.Renderer;
+package Marble.Renderer;
 
-import marble.Window;
-import marble.Camera.Camera;
-import marble.util.Transformation;
-import marble.GameObject.GameObject;
-import marble.GameObject.Components.Mesh;
+import Marble.Window;
+import Marble.Camera.Camera;
+import Marble.util.Transformation;
+import Marble.GameObject.GameObject;
+import Marble.GameObject.Components.Mesh;
 
 import org.joml.Matrix4f;
 

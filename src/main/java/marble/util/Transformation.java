@@ -1,8 +1,8 @@
-package marble.util;
+package Marble.util;
 
-import marble.Camera.Camera;
+import Marble.Camera.Camera;
 
-import marble.Window;
+import Marble.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

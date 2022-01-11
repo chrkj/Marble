@@ -1,4 +1,4 @@
-package marble;
+package Marble;
 
 import Sandbox.GameScene;
 import imgui.ImGui;
@@ -6,11 +6,11 @@ import imgui.ImGuiIO;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import marble.ImGui.ImGuiLayer;
-import marble.Listeners.KeyListener;
-import marble.Listeners.MouseListener;
-import marble.Listeners.ResizeListener;
-import marble.Scene.Scene;
+import Marble.ImGui.ImGuiLayer;
+import Marble.Listeners.KeyListener;
+import Marble.Listeners.MouseListener;
+import Marble.Listeners.ResizeListener;
+import Marble.Scene.Scene;
 import Sandbox.EditorScene;
 
 import org.lwjgl.Version;
@@ -18,7 +18,7 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import marble.util.Time;
+import Marble.util.Time;
 
 import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
