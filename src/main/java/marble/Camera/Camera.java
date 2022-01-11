@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 
 public class Camera {
 
-    public Vector3f position;
-    public Vector3f rotation;
+    private Vector3f position;
+    private Vector3f rotation;
 
     public final float Z_NEAR = 0.01f;
     public final float Z_FAR = 1000.f;

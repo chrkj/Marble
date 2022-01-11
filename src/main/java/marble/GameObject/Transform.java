@@ -13,6 +13,11 @@ public class Transform {
         init(new Vector3f(), new Vector3f(), 1);
     }
 
+    public Transform(Vector3f position, Vector3f rotation)
+    {
+        init(position, rotation, 1);
+    }
+
     public Transform(Vector3f position)
     {
         init(position, new Vector3f(), 1);

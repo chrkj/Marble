@@ -1,114 +1,140 @@
 package Marble.Listeners;
 
+import org.joml.Vector2f;
+
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class MouseListener {
-    private static MouseListener instance;
+    private static double scrollX, scrollY;
+    private static double xPos, yPos, lastY, lastX;
 
-    private double scrollX, scrollY;
-    private double xPos, yPos, lastY, lastX;
+    private static final Vector2f rotationVec = new Vector2f();
+    private static final boolean[] mouseButtonPressed = new boolean[3];
 
-    private final boolean[] mouseButtonPressed = new boolean[3];
-    private boolean isDragging;
+    private static int timesRun = 0;
+    private static boolean inWindow = false;
+    private static boolean isDragging = false;
+    private static boolean allowInput = false;
 
     private MouseListener()
     {
-        this.scrollX = 0.0;
-        this.scrollY = 0.0;
-        this.xPos = 0.0;
-        this.yPos = 0.0;
-        this.lastX = 0.0;
-        this.lastY = 0.0;
+        scrollX = 0.0;
+        scrollY = 0.0;
+        xPos = 0.0;
+        yPos = 0.0;
+        lastX = 0.0;
+        lastY = 0.0;
     }
 
-    public static MouseListener get()
+    public static void mousePosCallback(long window, double xPosition, double yPosition)
     {
-        if (instance == null) {
-            instance = new MouseListener();
-        }
-        return instance;
-    }
+        lastX = xPos;
+        lastY = yPos;
+        xPos = xPosition;
+        yPos = yPosition;
+        isDragging = mouseButtonPressed[0] || mouseButtonPressed[1] || mouseButtonPressed[2];
 
-    public static void mousePosCallback(long window, double xPos, double yPos)
-    {
-        get().lastX = get().xPos;
-        get().lastY = get().yPos;
-        get().xPos = xPos;
-        get().yPos = yPos;
-        get().isDragging = get().mouseButtonPressed[0] || get().mouseButtonPressed[1] || get().mouseButtonPressed[2];
+        // Making sure current and last pos is set before allowing input calculations
+        if (timesRun < 2)
+            timesRun++;
+        else
+            allowInput = true;
     }
 
     public static void mouseButtonCallback(long window, int button, int action, int mods)
     {
         if (action == GLFW_PRESS) {
-            if (button < get().mouseButtonPressed.length) {
-                get().mouseButtonPressed[button] = true;
-            }
+            if (button < mouseButtonPressed.length)
+                mouseButtonPressed[button] = true;
         } else if (action == GLFW_RELEASE) {
-            if (button < get().mouseButtonPressed.length) {
-                get().mouseButtonPressed[button] = false;
-                get().isDragging = false;
+            if (button < mouseButtonPressed.length) {
+                mouseButtonPressed[button] = false;
+                isDragging = false;
             }
         }
+    }
+
+    public static void mouseEnterCallback(long window, boolean entered)
+    {
+        inWindow = entered;
     }
 
     public static void mouseScrollCallback(long window, double xOffset, double yOffset)
     {
-        get().scrollX = xOffset;
-        get().scrollY = yOffset;
+        scrollX = xOffset;
+        scrollY = yOffset;
     }
 
     public static void endFrame()
     {
-        get().scrollX = 0;
-        get().scrollY = 0;
-        get().lastX = get().xPos;
-        get().lastY = get().yPos;
+        scrollX = 0;
+        scrollY = 0;
+        lastX = xPos;
+        lastY = yPos;
     }
 
     public static boolean mouseButtonDown(long window, int button, int action, int mods)
     {
-        if (button < get().mouseButtonPressed.length) {
-            return get().mouseButtonPressed[button];
-        } else {
+        if (button < mouseButtonPressed.length)
+            return mouseButtonPressed[button];
+        else
             return false;
-        }
     }
 
     public static float getX()
     {
-        return (float) get().xPos;
+        return (float) xPos;
     }
 
     public static float getY()
     {
-        return (float) get().yPos;
+        return (float) yPos;
     }
 
     public static float getDx()
     {
-        return (float) (get().lastX - get().xPos);
+        return (float) (lastX - xPos);
     }
 
     public static float getDy()
     {
-        return (float) (get().lastY - get().yPos);
+        return (float) (lastY - yPos);
     }
 
     public static float getScrollX()
     {
-        return (float) get().scrollX;
+        return (float) scrollX;
     }
 
     public static float getScrollY()
     {
-        return (float) get().scrollY;
+        return (float) scrollY;
     }
 
     public static boolean getIsDragging()
     {
-        return get().isDragging;
+        return isDragging;
     }
 
+    public static void input()
+    {
+        if (allowInput) {
+            rotationVec.x = 0;
+            rotationVec.y = 0;
+            boolean rotateX = getDx() != 0;
+            boolean rotateY = getDy() != 0;
+            if (rotateX)
+                rotationVec.y = getDx();
+            if (rotateY)
+                rotationVec.x = getDy();
+            lastX = xPos;
+            lastY = yPos;
+        }
+    }
+
+    public static Vector2f getRotationVec()
+    {
+        return rotationVec;
+    }
 }

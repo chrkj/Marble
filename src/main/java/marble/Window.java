@@ -39,7 +39,7 @@ public class Window {
     private static boolean resized;
     private static Scene currentScene;
 
-    public static void changeScene(int newScene)
+    public static void changeScene(int newScene) throws Exception
     {
         switch (newScene) {
             case 0:
@@ -70,13 +70,12 @@ public class Window {
        this.title = title;
     }
 
-    public void run()
+    public void run() throws Exception
     {
-        System.out.println("LWJGL Version: " + Version.getVersion() + "!");
         loop();
     }
 
-    public void init()
+    public void init() throws Exception
     {
         System.out.println("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
@@ -85,7 +84,7 @@ public class Window {
         imGuiGl3.init(glslVersion);
     }
 
-    private void initWindow()
+    private void initWindow() throws Exception
     {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
@@ -109,9 +108,10 @@ public class Window {
             throw new IllegalStateException("Failed to create the GLFW window.");
 
         // Set callback
+        glfwSetScrollCallback(windowPtr, MouseListener::mouseScrollCallback);
         glfwSetCursorPosCallback(windowPtr, MouseListener::mousePosCallback);
         glfwSetMouseButtonCallback(windowPtr, MouseListener::mouseButtonCallback);
-        glfwSetScrollCallback(windowPtr, MouseListener::mouseScrollCallback);
+        glfwSetCursorEnterCallback(windowPtr, MouseListener::mouseEnterCallback);
         glfwSetKeyCallback(windowPtr, KeyListener::keyCallback);
         glfwSetWindowSizeCallback(windowPtr, ResizeListener::windowResizeCallback);
 
@@ -132,7 +132,7 @@ public class Window {
         initScene(new EditorScene());
     }
 
-    private void initScene(Scene scene)
+    private void initScene(Scene scene) throws Exception
     {
         currentScene = scene;
         currentScene.init();
@@ -146,7 +146,7 @@ public class Window {
         io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
     }
 
-    public void loop()
+    public void loop() throws Exception
     {
         float beginTime = Time.getTime();
         float endTime;
@@ -159,7 +159,7 @@ public class Window {
             imGuiGlfw.newFrame();
             ImGui.newFrame();
             update(dt);
-            imguiLayer.createLayer();
+            imguiLayer.createLayer(dt);
             ImGui.render();
             imGuiGl3.renderDrawData(ImGui.getDrawData());
 
@@ -179,9 +179,10 @@ public class Window {
         }
     }
 
-    private void update(float dt)
+    private void update(float dt) throws Exception
     {
         if (dt >= 0)
+            MouseListener.input();
             currentScene.update(dt);
     }
 

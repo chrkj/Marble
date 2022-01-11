@@ -27,7 +27,8 @@ public class Transformation {
         projectionMatrix.setPerspective(camera.FOV, aspectRatio, camera.Z_NEAR, camera.Z_FAR);
     }
 
-    public static Matrix4f getViewMatrix(Camera camera) {
+    public static Matrix4f getViewMatrix(Camera camera)
+    {
         Vector3f cameraPos = camera.getPosition();
         Vector3f rotation = camera.getRotation();
 
