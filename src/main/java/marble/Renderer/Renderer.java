@@ -36,7 +36,6 @@ public class Renderer {
     public void render(Camera camera)
     {
         clear();
-
         if (Window.isResized()) {
             glViewport(0, 0, Window.getWidth(), Window.getHeight());
             Transformation.adjustProjectionMatrix(camera);
@@ -52,13 +51,19 @@ public class Renderer {
         // Render game objects
         for (GameObject gameObject : gameObjects) {
             Matrix4f worldMatrix = Transformation.getWorldMatrix(
-                    gameObject.getPosition(),
-                    gameObject.getTransform().rotation,
-                    gameObject.getTransform().scale);
+                    gameObject.transform.position,
+                    gameObject.transform.rotation,
+                    gameObject.transform.scale);
             shader.setUniformMat4("uWorld", worldMatrix);
-            gameObject.getComponent(Mesh.class).render();
+            if (gameObject.getComponent(Mesh.class) != null)
+                gameObject.getComponent(Mesh.class).render();
         }
         shader.unbind();
+    }
+
+    public void cleanUp()
+    {
+        shader.cleanUp();
     }
 
 }

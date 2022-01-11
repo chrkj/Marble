@@ -49,4 +49,9 @@ public class Transform {
         position.z = z;
     }
 
+    public void setScale(float scale)
+    {
+        this.scale = scale;
+    }
+
 }

@@ -9,19 +9,16 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh extends Component {
 
+    private final int posVboId;
+    private final int idxVboId;
+    private final int colourVboId;
     private final int vaoId;
     private final int vertexCount;
 
@@ -38,7 +35,7 @@ public class Mesh extends Component {
             glBindVertexArray(vaoId);
 
             // Position VBO
-            int posVboId = glGenBuffers();
+            posVboId = glGenBuffers();
             positionBuffer = MemoryUtil.memAllocFloat(positions.length);
             positionBuffer.put(positions).flip();
             glBindBuffer(GL_ARRAY_BUFFER, posVboId);
@@ -47,7 +44,7 @@ public class Mesh extends Component {
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
             // Colour VBO
-            int colourVboId = glGenBuffers();
+            colourVboId = glGenBuffers();
             colorBuffer = MemoryUtil.memAllocFloat(colours.length);
             colorBuffer.put(colours).flip();
             glBindBuffer(GL_ARRAY_BUFFER, colourVboId);
@@ -56,7 +53,7 @@ public class Mesh extends Component {
             glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
             // Index VBO
-            int idxVboId = glGenBuffers();
+            idxVboId = glGenBuffers();
             indiceBuffer = MemoryUtil.memAllocInt(indices.length);
             indiceBuffer.put(indices).flip();
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxVboId);
@@ -87,6 +84,21 @@ public class Mesh extends Component {
         glBindVertexArray(getVaoId());
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+    }
+
+    public void cleanUp()
+    {
+        glDisableVertexAttribArray(0);
+
+        // Delete VBOs
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDeleteBuffers(posVboId);
+        glDeleteBuffers(colourVboId);
+        glDeleteBuffers(idxVboId);
+
+        // Delete VAO
+        glBindVertexArray(0);
+        glDeleteVertexArrays(vaoId);
     }
 
     @Override

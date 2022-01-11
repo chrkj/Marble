@@ -190,7 +190,8 @@ public class Shader {
         return location;
     }
 
-    public void cleanup() {
+    public void cleanUp()
+    {
         unbind();
         if (shaderProgramID != 0) {
             glDeleteProgram(shaderProgramID);

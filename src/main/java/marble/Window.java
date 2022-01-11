@@ -27,13 +27,14 @@ import static org.lwjgl.opengl.GL11.*;
 public class Window {
     public static long windowPtr;
 
-    private String glslVersion = null;
     private static int width;
     private static int height;
+
     private final String title;
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private final String glslVersion = "#version 460";
+    private final ImGuiLayer imguiLayer = new ImGuiLayer();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-    private ImGuiLayer imguiLayer;
+    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
     private static boolean resized;
     private static Scene currentScene;
@@ -61,24 +62,23 @@ public class Window {
         return Window.currentScene;
     }
 
-    public Window(String title, ImGuiLayer imGuiLayer)
+    public Window(String title)
     {
        width = 1280;
        height = 720;
        resized = false;
        this.title = title;
-       this.imguiLayer = imGuiLayer;
     }
 
     public void run()
     {
         System.out.println("LWJGL Version: " + Version.getVersion() + "!");
-        init();
         loop();
     }
 
     public void init()
     {
+        System.out.println("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
         initImGui();
         imGuiGlfw.init(windowPtr, true);
@@ -94,10 +94,9 @@ public class Window {
         if (!glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW.");
 
-        //
-        glslVersion = "#version 130";
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        // OpenGL version
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
         // Configure GLFW
         glfwDefaultWindowHints();
@@ -130,7 +129,14 @@ public class Window {
         glEnable(GL_DEPTH_TEST);
 
         // Set initial scene
-        Window.changeScene(0);
+        initScene(new EditorScene());
+    }
+
+    private void initScene(Scene scene)
+    {
+        currentScene = scene;
+        currentScene.init();
+        currentScene.start();
     }
 
     private void initImGui()
@@ -150,10 +156,9 @@ public class Window {
         while (!glfwWindowShouldClose(windowPtr)) {
             glClearColor(0.1f, 0.09f, 0.1f, 1.0f);
 
-            update(dt);
-
             imGuiGlfw.newFrame();
             ImGui.newFrame();
+            update(dt);
             imguiLayer.createLayer();
             ImGui.render();
             imGuiGl3.renderDrawData(ImGui.getDrawData());
@@ -178,7 +183,6 @@ public class Window {
     {
         if (dt >= 0)
             currentScene.update(dt);
-            glfwSetWindowTitle(windowPtr, title + " - " + (int)(1/ dt) + " fps");
     }
 
     public void destroy()
@@ -186,6 +190,7 @@ public class Window {
         imGuiGl3.dispose();
         imGuiGlfw.dispose();
         ImGui.destroyContext();
+        currentScene.cleanUp();
         Callbacks.glfwFreeCallbacks(windowPtr);
         glfwDestroyWindow(windowPtr);
         glfwTerminate();

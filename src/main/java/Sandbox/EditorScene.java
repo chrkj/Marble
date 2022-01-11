@@ -13,12 +13,6 @@ import java.awt.event.KeyEvent;
 
 public class EditorScene extends Scene {
 
-    public static float[] x = {0};
-    public static float[] y = {0};
-    public static float[] z = {0};
-    public static float[] rotationSpeed = {0.5f};
-    public static GameObject gameObject;
-
     public EditorScene()
     {
         System.out.println("Inside editor scene.");
@@ -61,7 +55,6 @@ public class EditorScene extends Scene {
             GameObject go = new GameObject("Cube1", new Transform(new Vector3f(), new Vector3f(30, 78, 10), 1));
             go.addComponent(new Mesh(positions, colors, indices));
             addGameObjectToScene(go);
-            gameObject = go;
         }
         {
             GameObject go = new GameObject("Cube2", new Transform(new Vector3f(2,2,2), new Vector3f(66, 5, 17), 1));
@@ -98,13 +91,11 @@ public class EditorScene extends Scene {
             gameObject.update(dt);
 
         for (GameObject gameObject : gameObjects) {
-            float rotation = gameObject.getTransform().rotation.z + rotationSpeed[0];
+            float rotation = gameObject.transform.rotation.z + 0.5f;
             if (rotation > 360)
                 rotation = 0;
-            gameObject.getTransform().setRotation(rotation, rotation, rotation);
+            gameObject.transform.setRotation(rotation, rotation, rotation);
         }
-
-        gameObject.translate(x, y, z);
 
         renderer.render(camera);
     }

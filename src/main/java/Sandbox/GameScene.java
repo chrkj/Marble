@@ -86,11 +86,11 @@ public class GameScene extends Scene {
             gameObject.update(dt);
 
         for (GameObject gameObject : gameObjects) {
-            float rotation = gameObject.getTransform().rotation.z + 0.5f;
+            float rotation = gameObject.transform.rotation.z + 0.5f;
             if (rotation > 360) {
                 rotation = 0;
             }
-            gameObject.getTransform().setRotation(rotation, rotation, rotation);
+            gameObject.transform.setRotation(rotation, rotation, rotation);
         }
 
         renderer.render(camera);

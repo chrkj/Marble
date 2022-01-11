@@ -1,6 +1,7 @@
 package Marble.Scene;
 
 import Marble.Camera.Camera;
+import Marble.GameObject.Components.Mesh;
 import Marble.GameObject.GameObject;
 import Marble.Renderer.Renderer;
 import Marble.util.Time;
@@ -57,4 +58,12 @@ public abstract class Scene {
         return Time.getTime() - sceneStartedTime;
     }
 
+    public void cleanUp()
+    {
+        renderer.cleanUp();
+        for (GameObject gameObject : gameObjects)
+            if (gameObject.getComponent(Mesh.class) != null) {
+                gameObject.getComponent(Mesh.class).cleanUp();
+            }
+    }
 }

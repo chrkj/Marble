@@ -13,9 +13,8 @@ public class KeyListener {
 
     public static KeyListener get()
     {
-        if (instance == null) {
+        if (instance == null)
             instance = new KeyListener();
-        }
         return instance;
     }
 
