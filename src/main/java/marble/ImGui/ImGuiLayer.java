@@ -9,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class ImGuiLayer {
 
     private final ImBoolean vsync = new ImBoolean(true);
+    private final ImBoolean demoWindow = new ImBoolean(false);
 
     public void createLayer(float dt)
     {
@@ -21,6 +22,10 @@ public class ImGuiLayer {
             else
                 glfwSwapInterval(GLFW_FALSE);
         }
+        ImGui.sameLine();
+        ImGui.checkbox("Demo Window", demoWindow);
+        if (demoWindow.get())
+            ImGui.showDemoWindow();
         ImGui.end();
     }
 }
