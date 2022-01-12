@@ -1,5 +1,9 @@
 package sandbox;
 
+import imgui.ImGui;
+import imgui.type.ImFloat;
+import imgui.flag.ImGuiDataType;
+
 import marble.camera.Camera;
 import marble.gameobject.components.Mesh;
 import marble.gameobject.components.Texture;
@@ -9,23 +13,22 @@ import marble.gameobject.Transform;
 import marble.listeners.MouseListener;
 import marble.scene.Scene;
 import marble.Window;
-import imgui.ImGui;
 import org.joml.Vector3f;
 
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class EditorScene extends Scene {
 
-    float[][] xTrans;
-    float[][] yTrans;
-    float[][] zTrans;
-    float[][] xRot;
-    float[][] yRot;
-    float[][] zRot;
-    float[][] scale;
+    private ImFloat[] xTrans;
+    private ImFloat[] yTrans;
+    private ImFloat[] zTrans;
+    private ImFloat[] xRot;
+    private ImFloat[] yRot;
+    private ImFloat[] zRot;
+    private ImFloat[] rotSpeed;
+    private ImFloat[] scale;
 
     public EditorScene()
     {
@@ -35,7 +38,7 @@ public class EditorScene extends Scene {
     @Override
     public void init() throws Exception
     {
-        camera = new Camera(new Vector3f(0,1,5));
+        camera = new Camera(new Vector3f(0,0,10));
 
         float[] positions = new float[] {
                 -0.5f, 0.5f, 0.5f,
@@ -109,22 +112,25 @@ public class EditorScene extends Scene {
             addGameObjectToScene(go);
         }
 
-        xTrans = new float[gameObjects.size()][1];
-        yTrans = new float[gameObjects.size()][1];
-        zTrans = new float[gameObjects.size()][1];
-        xRot   = new float[gameObjects.size()][1];
-        yRot   = new float[gameObjects.size()][1];
-        zRot   = new float[gameObjects.size()][1];
-        scale  = new float[gameObjects.size()][1];
+        xTrans = new ImFloat[gameObjects.size()];
+        yTrans = new ImFloat[gameObjects.size()];
+        zTrans = new ImFloat[gameObjects.size()];
+        xRot = new ImFloat[gameObjects.size()];
+        yRot = new ImFloat[gameObjects.size()];
+        zRot = new ImFloat[gameObjects.size()];
+        rotSpeed = new ImFloat[gameObjects.size()];
+        scale = new ImFloat[gameObjects.size()];
 
-        Arrays.fill(xTrans[0], 1f);
-        Arrays.fill(yTrans[0], 1f);
-        Arrays.fill(zTrans[0], 1f);
-        Arrays.fill(xRot[0]  , 1f);
-        Arrays.fill(yRot[0]  , 1f);
-        Arrays.fill(zRot[0]  , 1f);
-        Arrays.fill(scale[0] , 1f);
-        glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        for (int i = 0; i < gameObjects.size(); i++) {
+            xTrans[i] = new ImFloat(0);
+            yTrans[i] = new ImFloat(0);
+            zTrans[i] = new ImFloat(0);
+            xRot[i] = new ImFloat(0);
+            yRot[i] = new ImFloat(0);
+            zRot[i] = new ImFloat(0);
+            rotSpeed[i] = new ImFloat(0);
+            scale[i] = new ImFloat(0);
+        }
     }
 
     @Override
@@ -169,17 +175,25 @@ public class EditorScene extends Scene {
         ImGui.begin("Cubes");
         ImGui.text(gameObjects.get(i).name);
         ImGui.text("Translation");
-        ImGui.sliderFloat("xT" + gameObjects.get(i).name, xTrans[i], -30, 30);
-        ImGui.sliderFloat("yT" + gameObjects.get(i).name, yTrans[i], -30, 30);
-        ImGui.sliderFloat("zT" + gameObjects.get(i).name, zTrans[i], -30, 30);
+        ImGui.sliderScalar("Tx" + i, ImGuiDataType.Float, xTrans[i], -30, 30);
+        ImGui.sliderScalar("Ty" + i, ImGuiDataType.Float, yTrans[i], -30, 30);
+        ImGui.sliderScalar("Tz" + i, ImGuiDataType.Float, zTrans[i], -30, 30);
         ImGui.text("Rotation");
-        ImGui.sliderFloat("xR" + gameObjects.get(i).name, xRot[i], 0, 360);
-        ImGui.sliderFloat("yR" + gameObjects.get(i).name, yRot[i], 0, 360);
-        ImGui.sliderFloat("zR" + gameObjects.get(i).name, zRot[i], 0, 360);
+        ImGui.sliderScalar("Rx" + i, ImGuiDataType.Float, xRot[i], 0, 360);
+        ImGui.sliderScalar("Ry" + i, ImGuiDataType.Float, yRot[i], 0, 360);
+        ImGui.sliderScalar("Rz" + i, ImGuiDataType.Float, zRot[i], 0, 360);
+        ImGui.sliderScalar("Speed" + i, ImGuiDataType.Float, rotSpeed[i], 0, 10);
         ImGui.text("Scale");
-        ImGui.sliderFloat("Scale" + gameObjects.get(i).name, scale[i], 1, 10);
+        ImGui.sliderScalar("Scale" + i, ImGuiDataType.Float, scale[i], 0.1f, 10);
+        ImGui.spacing();
+        ImGui.spacing();
         ImGui.end();
-
-        gameObjects.get(i).transform = new Transform(new Vector3f(xTrans[i][0], yTrans[i][0], zTrans[i][0]), new Vector3f(xRot[i][0], yRot[i][0], zRot[i][0]), scale[i][0]);
+        float rotation = gameObjects.get(i).transform.rotation.z + rotSpeed[i].get();
+        if (rotation > 360)
+            rotation = 0;
+        gameObjects.get(i).transform.setRotation(rotation, rotation, rotation);
+        gameObjects.get(i).imGuiOffsetPos = new Vector3f(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
+        gameObjects.get(i).imGuiOffsetRot = new Vector3f(xRot[i].get(), yRot[i].get(), zRot[i].get());
+        gameObjects.get(i).imGuiOffsetScale = scale[i].get();
     }
 }

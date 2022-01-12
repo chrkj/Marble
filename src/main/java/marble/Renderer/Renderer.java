@@ -7,6 +7,7 @@ import marble.gameobject.GameObject;
 import marble.gameobject.components.Mesh;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,10 @@ public class Renderer {
 
     private final Shader shader;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+
+    float scale;
+    Vector3f rot = new Vector3f();
+    Vector3f pos = new Vector3f();
 
     public Renderer()
     {
@@ -53,10 +58,10 @@ public class Renderer {
 
         // Render game objects
         for (GameObject gameObject : gameObjects) {
-            Matrix4f worldMatrix = Transformation.getWorldMatrix(
-                    gameObject.transform.position,
-                    gameObject.transform.rotation,
-                    gameObject.transform.scale);
+            gameObject.transform.position.add(gameObject.imGuiOffsetPos, pos);
+            gameObject.transform.rotation.add(gameObject.imGuiOffsetRot, rot);
+            scale = gameObject.transform.scale + gameObject.imGuiOffsetScale;
+            Matrix4f worldMatrix = Transformation.getWorldMatrix(pos, rot, scale);
             shader.setUniformMat4("uWorld", worldMatrix);
             if (gameObject.getComponent(Mesh.class) != null)
                 gameObject.getComponent(Mesh.class).render();
