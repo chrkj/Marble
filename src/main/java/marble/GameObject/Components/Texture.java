@@ -77,4 +77,9 @@ public class Texture extends Component {
     public void update(float dt)
     {
     }
+
+    @Override
+    public void render()
+    {
+    }
 }

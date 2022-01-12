@@ -74,4 +74,10 @@ public class GameObject {
             component.update(dt);
     }
 
+    public void render()
+    {
+        for (Component component : components)
+            component.render();
+    }
+
 }

@@ -14,6 +14,8 @@ public abstract class Component {
 
     public abstract void update(float dt);
 
+    public abstract  void render();
+
     public void setGameObject(GameObject gameObject)
     {
         this.gameObject = gameObject;

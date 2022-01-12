@@ -61,10 +61,11 @@ public class Renderer {
             gameObject.transform.position.add(gameObject.imGuiOffsetPos, pos);
             gameObject.transform.rotation.add(gameObject.imGuiOffsetRot, rot);
             scale = gameObject.transform.scale + gameObject.imGuiOffsetScale;
+
             Matrix4f worldMatrix = Transformation.getWorldMatrix(pos, rot, scale);
             shader.setUniformMat4("uWorld", worldMatrix);
-            if (gameObject.getComponent(Mesh.class) != null)
-                gameObject.getComponent(Mesh.class).render();
+
+            gameObject.render();
         }
         shader.unbind();
     }
