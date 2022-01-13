@@ -128,6 +128,10 @@ public class Window {
         // Enable depth-buffer
         glEnable(GL_DEPTH_TEST);
 
+        // Enable culling
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
         // Set initial scene
         initScene(new EditorScene());
     }
