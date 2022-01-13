@@ -11,6 +11,11 @@ public class Camera {
     public final float Z_FAR = 1000.f;
     public final float FOV = (float) Math.toRadians(60.0f);
 
+    public Camera()
+    {
+        init(new Vector3f(), new Vector3f());
+    }
+
     public Camera(Vector3f position)
     {
         init(position, new Vector3f());
