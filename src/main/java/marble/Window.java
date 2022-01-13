@@ -163,7 +163,7 @@ public class Window {
             imGuiGlfw.newFrame();
             ImGui.newFrame();
             update(dt);
-            imguiLayer.createLayer(dt);
+            imguiLayer.createDiagnosticLayer(dt);
             ImGui.render();
             imGuiGl3.renderDrawData(ImGui.getDrawData());
 

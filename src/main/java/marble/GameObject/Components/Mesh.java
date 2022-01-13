@@ -109,6 +109,7 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
+        ImGuiLayer.drawCalls++;
 
         // Restore state
         glBindVertexArray(0);
