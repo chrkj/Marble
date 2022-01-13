@@ -7,9 +7,9 @@ import org.joml.Vector3f;
 
 import marble.Window;
 import marble.camera.Camera;
-import marble.gameobject.components.Texture;
 import marble.util.Transformation;
 import marble.gameobject.GameObject;
+import marble.gameobject.components.Texture;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -18,8 +18,6 @@ public class Renderer {
     private final Shader shader;
     private final Vector3f defaultColor = new Vector3f(0.85f, 0.1f, 0.74f);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
-
-    Vector3f rot = new Vector3f();
 
     public Renderer()
     {
