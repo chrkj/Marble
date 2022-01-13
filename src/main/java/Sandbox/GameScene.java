@@ -24,7 +24,7 @@ public class GameScene extends Scene {
     }
 
     @Override
-    public void update(float dt) throws Exception
+    public void update(float dt)
     {
         float camSpeed = 10;
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))

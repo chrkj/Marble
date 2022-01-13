@@ -39,7 +39,7 @@ public class Window {
     private static boolean resized;
     private static Scene currentScene;
 
-    public static void changeScene(int newScene) throws Exception
+    public static void changeScene(int newScene)
     {
         switch (newScene) {
             case 0:
@@ -84,7 +84,7 @@ public class Window {
         imGuiGl3.init(glslVersion);
     }
 
-    private void initWindow() throws Exception
+    private void initWindow()
     {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
@@ -136,7 +136,7 @@ public class Window {
         initScene(new EditorScene());
     }
 
-    private void initScene(Scene scene) throws Exception
+    private void initScene(Scene scene)
     {
         currentScene = scene;
         currentScene.init();
@@ -183,7 +183,7 @@ public class Window {
         }
     }
 
-    private void update(float dt) throws Exception
+    private void update(float dt)
     {
         if (dt >= 0)
             MouseListener.input();

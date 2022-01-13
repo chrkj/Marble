@@ -10,14 +10,14 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import marble.camera.Camera;
-import marble.gameobject.GameObject;
-import marble.listeners.KeyListener;
-import marble.gameobject.Transform;
-import marble.listeners.MouseListener;
-import marble.scene.Scene;
 import marble.Window;
+import marble.scene.Scene;
 import marble.util.Loader;
+import marble.camera.Camera;
+import marble.gameobject.Transform;
+import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
+import marble.gameobject.GameObject;
 
 public class EditorScene extends Scene {
 
@@ -61,20 +61,21 @@ public class EditorScene extends Scene {
         scale = new ImFloat[gameObjects.size()];
 
         for (int i = 0; i < gameObjects.size(); i++) {
-            xTrans[i] = new ImFloat(0);
-            yTrans[i] = new ImFloat(0);
-            zTrans[i] = new ImFloat(0);
-            xRot[i] = new ImFloat(0);
-            yRot[i] = new ImFloat(0);
-            zRot[i] = new ImFloat(0);
+            xTrans[i] = new ImFloat(gameObjects.get(i).transform.position.x);
+            yTrans[i] = new ImFloat(gameObjects.get(i).transform.position.y);
+            zTrans[i] = new ImFloat(gameObjects.get(i).transform.position.z);
+            xRot[i] = new ImFloat(gameObjects.get(i).transform.rotation.x);
+            yRot[i] = new ImFloat(gameObjects.get(i).transform.rotation.y);
+            zRot[i] = new ImFloat(gameObjects.get(i).transform.rotation.z);
             rotSpeed[i] = new ImFloat(0);
-            scale[i] = new ImFloat(0);
+            scale[i] = new ImFloat(gameObjects.get(i).transform.scale);
         }
     }
 
     @Override
-    public void update(float dt) throws Exception
+    public void update(float dt)
     {
+        // Input
         handleInput(dt);
 
         // Update
@@ -87,7 +88,7 @@ public class EditorScene extends Scene {
         renderer.render(camera);
     }
 
-    private void handleInput(float dt) throws Exception
+    private void handleInput(float dt)
     {
         float camSpeed = 10;
         float camRotSpeed = 15;
@@ -132,12 +133,25 @@ public class EditorScene extends Scene {
         ImGui.spacing();
         ImGui.spacing();
         ImGui.end();
-        float rotation = gameObjects.get(i).transform.rotation.z + rotSpeed[i].get();
-        if (rotation > 360)
-            rotation = 0;
-        gameObjects.get(i).transform.setRotation(rotation, rotation, rotation);
-        gameObjects.get(i).imGuiOffsetPos = new Vector3f(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
-        gameObjects.get(i).imGuiOffsetRot = new Vector3f(xRot[i].get(), yRot[i].get(), zRot[i].get());
-        gameObjects.get(i).imGuiOffsetScale = scale[i].get();
+        if (rotSpeed[i].get() == 0) {
+            gameObjects.get(i).transform.setRotation(xRot[i].get(), yRot[i].get(), zRot[i].get());
+        } else {
+            float rotationX = gameObjects.get(i).transform.rotation.x + rotSpeed[i].get();
+            float rotationY = gameObjects.get(i).transform.rotation.y + rotSpeed[i].get();
+            float rotationZ = gameObjects.get(i).transform.rotation.z + rotSpeed[i].get();
+            if (rotationX > 360)
+                rotationX = 0;
+            if (rotationY > 360)
+                rotationY = 0;
+            if (rotationZ > 360)
+                rotationZ = 0;
+            gameObjects.get(i).transform.setRotation(rotationX, rotationY, rotationZ);
+            xRot[i].set(rotationX);
+            yRot[i].set(rotationY);
+            zRot[i].set(rotationZ);
+        }
+
+        gameObjects.get(i).transform.setScale(scale[i].get());
+        gameObjects.get(i).transform.setPosition(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
     }
 }

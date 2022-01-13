@@ -16,11 +16,10 @@ import static org.lwjgl.opengl.GL11.*;
 public class Renderer {
 
     private final Shader shader;
+    private final Vector3f defaultColor = new Vector3f(0.85f, 0.1f, 0.74f);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
-    float scale;
     Vector3f rot = new Vector3f();
-    Vector3f pos = new Vector3f();
 
     public Renderer()
     {
@@ -49,28 +48,24 @@ public class Renderer {
 
         shader.bind();
 
-        // Update projection / view Matrix
-        shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
-        shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
-
-        // Upload texture sampler
+        // Upload uniforms
         shader.setUniform1i("uTextureSampler", 0);
+        shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
+        shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
 
         // Render game objects
         for (GameObject gameObject : gameObjects) {
-            gameObject.transform.position.add(gameObject.imGuiOffsetPos, pos);
-            gameObject.transform.rotation.add(gameObject.imGuiOffsetRot, rot);
-            scale = gameObject.transform.scale + gameObject.imGuiOffsetScale;
-
-            Matrix4f worldMatrix = Transformation.getWorldMatrix(pos, rot, scale);
+            Matrix4f worldMatrix = Transformation.getWorldMatrix(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.scale);
             shader.setUniformMat4("uWorld", worldMatrix);
 
+            // TODO: Fix (slow)
             if (gameObject.hasComponent(Texture.class)) {
                 shader.setUniform1i("useColor", 0);
             } else {
                 shader.setUniform1i("useColor", 1);
-                shader.setUniform3f("uColor", new Vector3f(0.85f, 0.1f, 0.74f));
+                shader.setUniform3f("uColor", defaultColor);
             }
+
             gameObject.render();
         }
         shader.unbind();

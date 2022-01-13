@@ -3,18 +3,12 @@ package marble.gameobject;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.joml.Vector3f;
-
 import marble.gameobject.components.Component;
 
 public class GameObject {
 
     public String name;
     public Transform transform;
-
-    public float imGuiOffsetScale = 0;
-    public Vector3f imGuiOffsetPos = new Vector3f();
-    public Vector3f imGuiOffsetRot = new Vector3f();
 
     private List<Component> components;
 

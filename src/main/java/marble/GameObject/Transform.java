@@ -35,9 +35,9 @@ public class Transform {
 
     private void init(Vector3f position, Vector3f rotation, float scale)
     {
+        this.scale = scale;
         this.position = position;
         this.rotation = rotation;
-        this.scale = scale;
     }
 
     public void setRotation(float x, float y, float z)

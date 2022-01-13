@@ -51,7 +51,7 @@ public abstract class Scene {
         return camera;
     }
 
-    public abstract void update(float dt) throws Exception;
+    public abstract void update(float dt);
 
     public float timeSinceSceneStarted()
     {

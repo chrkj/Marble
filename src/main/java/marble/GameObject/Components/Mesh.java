@@ -98,7 +98,7 @@ public class Mesh extends Component {
     public void render()
     {
         if (ImGuiLayer.polygonMode.get())
-            glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // Bind the texture
         // TODO: Fix texture bindings (slow)
