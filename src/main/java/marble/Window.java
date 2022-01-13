@@ -70,7 +70,7 @@ public class Window {
        this.title = title;
     }
 
-    public void run() throws Exception
+    public void run()
     {
         loop();
     }
@@ -150,7 +150,7 @@ public class Window {
         io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
     }
 
-    public void loop() throws Exception
+    public void loop()
     {
         float beginTime = Time.getTime();
         float endTime;
