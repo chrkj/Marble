@@ -4,29 +4,43 @@ import java.util.List;
 import java.util.ArrayList;
 
 import marble.gameobject.components.Component;
+import marble.renderer.Shader;
 
 public class GameObject {
 
     public String name;
+    private Shader shader;
     public Transform transform;
 
     private List<Component> components;
 
     public GameObject(String name)
     {
-        init(name, new Transform());
+        init(name, new Transform(), new Shader("assets/shaders/default.glsl"));
     }
 
     public GameObject(String name, Transform transform)
     {
-        init(name, transform);
+        init(name, transform, new Shader("assets/shaders/default.glsl"));
     }
 
-    public void init(String name, Transform transform)
+    public GameObject(String name, Transform transform, Shader shader)
+    {
+        init(name, transform, shader);
+    }
+
+    public GameObject(String name, Shader shader)
+    {
+        init(name, new Transform(), shader);
+    }
+
+    public void init(String name, Transform transform, Shader shader)
     {
         this.name = name;
+        this.shader = shader;
         this.transform = transform;
         this.components = new ArrayList<>();
+        shader.compile();
     }
 
     public void start()
@@ -86,5 +100,10 @@ public class GameObject {
     public List<Component> getAllComponents()
     {
         return components;
+    }
+
+    public Shader getShader()
+    {
+        return shader;
     }
 }

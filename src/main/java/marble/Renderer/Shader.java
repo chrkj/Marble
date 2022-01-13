@@ -9,16 +9,16 @@ import java.util.HashMap;
 import org.joml.*;
 import org.lwjgl.BufferUtils;
 
-import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 public class Shader {
 
     private int shaderProgramID;
-    private String filepath;
     private String vertexSource;
     private String fragmentSource;
+    private final String filepath;
     private boolean inUse = false;
 
     private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();

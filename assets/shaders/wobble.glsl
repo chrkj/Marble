@@ -13,8 +13,14 @@ out vec2 fTexCoord;
 
 void main()
 {
+    vec3 transformed;
+    transformed.x = aPos.x + sin(aPos.y * 10.0 + uTime * 10.0) * 0.1;
+    transformed.y = aPos.y + sin(aPos.z * 10.0 + uTime * 10.0) * 0.1;
+    transformed.z = aPos.z + sin(aPos.x * 10.0 + uTime * 10.0) * 0.1;
+
+
     fTexCoord = aTexCoord;
-    gl_Position = uProjection * uView * uWorld * vec4(aPos, 1.0);
+    gl_Position = uProjection * uView * uWorld * vec4(transformed, 1.0);
 }
 
 #type fragment

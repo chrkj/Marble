@@ -2,6 +2,7 @@ package marble.renderer;
 
 import java.util.ArrayList;
 
+import marble.util.Time;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -15,14 +16,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Renderer {
 
-    private final Shader shader;
+    private Shader shader;
     private final Vector3f defaultColor = new Vector3f(0.85f, 0.1f, 0.74f);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     public Renderer()
     {
-        shader = new Shader("assets/shaders/default.glsl");
-        shader.compile();
     }
 
     public void add(GameObject gameObject)
@@ -44,15 +43,16 @@ public class Renderer {
             Window.setResized(false);
         }
 
-        shader.bind();
-
-        // Upload uniforms
-        shader.setUniform1i("uTextureSampler", 0);
-        shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
-        shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
-
         // Render game objects
         for (GameObject gameObject : gameObjects) {
+            shader = gameObject.getShader();
+            shader.bind();
+
+            // Upload uniforms
+            shader.setUniform1f("uTime", Time.getTime());
+            shader.setUniform1i("uTextureSampler", 0);
+            shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
+            shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
             Matrix4f worldMatrix = Transformation.getWorldMatrix(gameObject.transform.position, gameObject.transform.rotation, gameObject.transform.scale);
             shader.setUniformMat4("uWorld", worldMatrix);
 
@@ -65,8 +65,8 @@ public class Renderer {
             }
 
             gameObject.render();
+            shader.unbind();
         }
-        shader.unbind();
     }
 
     public void cleanUp()

@@ -6,6 +6,7 @@ import imgui.ImGui;
 import imgui.type.ImFloat;
 import imgui.flag.ImGuiDataType;
 
+import marble.renderer.Shader;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -40,13 +41,13 @@ public class EditorScene extends Scene {
     {
         camera = new Camera(new Vector3f(0,0,10));
         {
-            GameObject go = new GameObject("Cube1", new Transform(new Vector3f(3,0,0), new Vector3f(30, 78, 10), 1));
+            GameObject go = new GameObject("Cube", new Transform(new Vector3f(3,0,0), new Vector3f(30, 78, 10), 1));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
             go.addComponent(Loader.loadTexture("assets/textures/grassblock.png"));
             addGameObjectToScene(go);
         }
         {
-            GameObject go = new GameObject("Bunny", new Transform(new Vector3f(), new Vector3f(30, 78, 10), 1));
+            GameObject go = new GameObject("Bunny", new Shader("assets/shaders/wobble.glsl"));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
             addGameObjectToScene(go);
         }
