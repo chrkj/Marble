@@ -28,17 +28,17 @@ public class GameScene extends Scene {
     {
         float camSpeed = 10;
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-            camera.move(0, camSpeed,0, dt);
+            camera.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-            camera.move(0, -camSpeed,0, dt);
+            camera.move(0, -camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-            camera.move(-camSpeed,0,0, dt);
+            camera.move(-camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-            camera.move(camSpeed,0,0, dt);
+            camera.move(camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_E))
-            camera.move(0,0, -camSpeed, dt);
+            camera.move(0,0, -camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
-            camera.move(0,0, camSpeed, dt);
+            camera.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
             Window.changeScene(0);
 

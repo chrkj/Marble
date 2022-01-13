@@ -90,21 +90,21 @@ public class EditorScene extends Scene {
 
     private void handleInput(float dt)
     {
-        float camSpeed = 10;
-        float camRotSpeed = 15;
+        float camSpeed = 10 * dt;
+        float camRotSpeed = 15 * dt;
         // Movement
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-            camera.move(0,0, -camSpeed, dt);
+            camera.move(0,0, -camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-            camera.move(0,0, camSpeed, dt);
+            camera.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-            camera.move(-camSpeed,0,0, dt);
+            camera.move(-camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-            camera.move(camSpeed,0,0, dt);
+            camera.move(camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_E))
-            camera.move(0, -camSpeed,0, dt);
+            camera.move(0, -camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
-            camera.move(0, camSpeed,0, dt);
+            camera.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
             Window.changeScene(1);
         if(KeyListener.isKeyPressed(KeyEvent.VK_1))
@@ -112,12 +112,19 @@ public class EditorScene extends Scene {
         if(KeyListener.isKeyPressed(KeyEvent.VK_2))
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
-            camera.rotate(-MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0, dt);
+            camera.rotate(-MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0);
+        ImGui.begin("Game Objects");
+        ImGui.text("Camera");
+        ImGui.text(String.format("Position: %f %f %f", camera.getPosition().x, camera.getPosition().y, camera.getPosition().z));
+        ImGui.text(String.format("Rotation: %f %f %f", camera.getRotation().x, camera.getRotation().y, camera.getRotation().z));
+        ImGui.spacing();
+        ImGui.spacing();
+        ImGui.end();
     }
 
     private void createImguiLayer(int i)
     {
-        ImGui.begin("Cubes");
+        ImGui.begin("Game Objects");
         ImGui.text(gameObjects.get(i).name);
         ImGui.text("Translation");
         ImGui.sliderScalar("Tx" + i, ImGuiDataType.Float, xTrans[i], -30, 30);
@@ -150,7 +157,6 @@ public class EditorScene extends Scene {
             yRot[i].set(rotationY);
             zRot[i].set(rotationZ);
         }
-
         gameObjects.get(i).transform.setScale(scale[i].get());
         gameObjects.get(i).transform.setPosition(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
     }

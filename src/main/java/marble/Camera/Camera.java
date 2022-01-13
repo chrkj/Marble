@@ -27,24 +27,25 @@ public class Camera {
         this.rotation = rotation;
     }
 
-    public void move(float x, float y, float z, float dt)
+    public void move(float x, float y, float z)
     {
         if (z != 0) {
-            position.x += ((float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * z) * dt;
-            position.z += ((float) Math.cos(Math.toRadians(rotation.y)) * z) * dt;
+            position.x += Math.sin(Math.toRadians(rotation.y)) * -z * Math.cos(Math.toRadians(rotation.x));
+            position.z += Math.cos(Math.toRadians(rotation.y)) *  z * Math.cos(Math.toRadians(rotation.x));
+            position.y += Math.sin(Math.toRadians(rotation.x)) * z;
         }
         if (x != 0) {
-            position.x += ((float) Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * x) * dt;
-            position.z += ((float) Math.cos(Math.toRadians(rotation.y - 90)) * x) * dt;
+            position.x += Math.sin(Math.toRadians(rotation.y - 90)) * -x;
+            position.z += Math.cos(Math.toRadians(rotation.y - 90)) *  x;
         }
-        position.y += y * dt;
+        position.y += y;
     }
 
-    public void rotate(float x, float y, float z, float dt)
+    public void rotate(float x, float y, float z)
     {
-        rotation.x += x * dt;
-        rotation.y += y * dt;
-        rotation.z += z * dt;
+        rotation.x += x;
+        rotation.y += y;
+        rotation.z += z;
 
         if (rotation.x > 90)
             rotation.x = 90;
