@@ -1,11 +1,11 @@
 package marble.gameobject;
 
-import marble.gameobject.components.Component;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
-
 import java.util.List;
 import java.util.ArrayList;
+
+import org.joml.Vector3f;
+
+import marble.gameobject.components.Component;
 
 public class GameObject {
 
@@ -13,8 +13,8 @@ public class GameObject {
     public Transform transform;
 
     public float imGuiOffsetScale = 0;
-    public Vector3fc imGuiOffsetPos = new Vector3f();
-    public Vector3fc imGuiOffsetRot = new Vector3f();
+    public Vector3f imGuiOffsetPos = new Vector3f();
+    public Vector3f imGuiOffsetRot = new Vector3f();
 
     private List<Component> components;
 
@@ -80,4 +80,17 @@ public class GameObject {
             component.render();
     }
 
+    public boolean hasComponent(Class<? extends Component> componentClass)
+    {
+        for (Component component : components) {
+            if (componentClass.isAssignableFrom(component.getClass()))
+                return true;
+        }
+        return false;
+    }
+
+    public List<Component> getAllComponents()
+    {
+        return components;
+    }
 }

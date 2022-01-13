@@ -1,10 +1,10 @@
 package marble.util;
 
-import marble.camera.Camera;
-
-import marble.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import marble.Window;
+import marble.camera.Camera;
 
 public class Transformation {
 

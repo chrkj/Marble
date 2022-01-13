@@ -1,15 +1,15 @@
 package marble.renderer;
 
-import marble.Window;
-import marble.camera.Camera;
-import marble.util.Transformation;
-import marble.gameobject.GameObject;
-import marble.gameobject.components.Mesh;
+import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
+import marble.Window;
+import marble.camera.Camera;
+import marble.gameobject.components.Texture;
+import marble.util.Transformation;
+import marble.gameobject.GameObject;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -54,7 +54,7 @@ public class Renderer {
         shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
 
         // Upload texture sampler
-        shader.setUniform1i("texture_sampler", 0);
+        shader.setUniform1i("uTextureSampler", 0);
 
         // Render game objects
         for (GameObject gameObject : gameObjects) {
@@ -65,6 +65,12 @@ public class Renderer {
             Matrix4f worldMatrix = Transformation.getWorldMatrix(pos, rot, scale);
             shader.setUniformMat4("uWorld", worldMatrix);
 
+            if (gameObject.hasComponent(Texture.class)) {
+                shader.setUniform1i("useColor", 0);
+            } else {
+                shader.setUniform1i("useColor", 1);
+                shader.setUniform3f("uColor", new Vector3f(0.85f, 0.1f, 0.74f));
+            }
             gameObject.render();
         }
         shader.unbind();

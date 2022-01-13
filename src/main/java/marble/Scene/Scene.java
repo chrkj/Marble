@@ -1,13 +1,13 @@
 package marble.scene;
 
-import marble.camera.Camera;
-import marble.gameobject.components.Mesh;
-import marble.gameobject.GameObject;
-import marble.renderer.Renderer;
-import marble.util.Time;
-
 import java.util.List;
 import java.util.ArrayList;
+
+import marble.util.Time;
+import marble.camera.Camera;
+import marble.renderer.Renderer;
+import marble.gameobject.GameObject;
+import marble.gameobject.components.Component;
 
 public abstract class Scene {
 
@@ -18,7 +18,7 @@ public abstract class Scene {
     private float sceneStartedTime;
     private boolean isRunning = false;
 
-    public abstract void init() throws Exception;
+    public abstract void init();
 
     public void start()
     {
@@ -62,8 +62,7 @@ public abstract class Scene {
     {
         renderer.cleanUp();
         for (GameObject gameObject : gameObjects)
-            if (gameObject.getComponent(Mesh.class) != null) {
-                gameObject.getComponent(Mesh.class).cleanUp();
-            }
+            for (Component component : gameObject.getAllComponents())
+                component.cleanUp();
     }
 }

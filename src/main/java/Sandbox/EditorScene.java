@@ -1,23 +1,23 @@
 package sandbox;
 
+import java.awt.event.KeyEvent;
+
 import imgui.ImGui;
 import imgui.type.ImFloat;
 import imgui.flag.ImGuiDataType;
 
+import org.joml.Vector3f;
+
+import static org.lwjgl.glfw.GLFW.*;
+
 import marble.camera.Camera;
-import marble.gameobject.components.Mesh;
-import marble.gameobject.components.Texture;
 import marble.gameobject.GameObject;
 import marble.listeners.KeyListener;
 import marble.gameobject.Transform;
 import marble.listeners.MouseListener;
 import marble.scene.Scene;
 import marble.Window;
-import org.joml.Vector3f;
-
-import java.awt.event.KeyEvent;
-
-import static org.lwjgl.glfw.GLFW.*;
+import marble.util.Loader;
 
 public class EditorScene extends Scene {
 
@@ -32,83 +32,22 @@ public class EditorScene extends Scene {
 
     public EditorScene()
     {
-        System.out.println("Inside editor scene.");
+        System.out.println("Loading Editor scene...");
     }
 
     @Override
-    public void init() throws Exception
+    public void init()
     {
         camera = new Camera(new Vector3f(0,0,10));
-
-        float[] positions = new float[] {
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, 0.5f, -0.5f,
-                0.5f, 0.5f, -0.5f,
-                -0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, 0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-                -0.5f, 0.5f, 0.5f,
-                -0.5f, -0.5f, 0.5f,
-                -0.5f, -0.5f, -0.5f,
-                0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, 0.5f,
-                0.5f, -0.5f, 0.5f,
-        };
-
-        float[] textCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-
-        int[] indices = new int[]{
-                0, 1, 3, 3, 1, 2,
-                8, 10, 11, 9, 8, 11,
-                12, 13, 7, 5, 12, 7,
-                14, 15, 6, 4, 14, 6,
-                16, 18, 19, 17, 16, 19,
-                4, 6, 7, 5, 4, 7,
-        };
-
-        Texture texture = new Texture("assets/textures/grassblock.png");
         {
-            GameObject go = new GameObject("Cube1", new Transform(new Vector3f(), new Vector3f(30, 78, 10), 1));
-            go.addComponent(new Mesh(positions, textCoords, indices, texture));
+            GameObject go = new GameObject("Cube1", new Transform(new Vector3f(3,0,0), new Vector3f(30, 78, 10), 1));
+            go.addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
+            go.addComponent(Loader.loadTexture("assets/textures/grassblock.png"));
             addGameObjectToScene(go);
         }
         {
-            GameObject go = new GameObject("Cube2", new Transform(new Vector3f(2,2,2), new Vector3f(66, 5, 17), 1));
-            go.addComponent(new Mesh(positions, textCoords, indices, texture));
-            addGameObjectToScene(go);
-        }
-        {
-            GameObject go = new GameObject("Cube3", new Transform(new Vector3f(-2,-2,-2), new Vector3f(66, 5, 17), 1));
-            go.addComponent(new Mesh(positions, textCoords, indices, texture));
+            GameObject go = new GameObject("Bunny", new Transform(new Vector3f(), new Vector3f(30, 78, 10), 1));
+            go.addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
             addGameObjectToScene(go);
         }
 
@@ -136,6 +75,20 @@ public class EditorScene extends Scene {
     @Override
     public void update(float dt) throws Exception
     {
+        handleInput(dt);
+
+        // Update
+        for (int i = 0; i < gameObjects.size(); i++) {
+            createImguiLayer(i);
+            gameObjects.get(i).update(dt);
+        }
+
+        // Render
+        renderer.render(camera);
+    }
+
+    private void handleInput(float dt) throws Exception
+    {
         float camSpeed = 10;
         float camRotSpeed = 15;
         // Movement
@@ -159,15 +112,6 @@ public class EditorScene extends Scene {
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
             camera.rotate(-MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0, dt);
-
-        // Updating
-        for (int i = 0; i < gameObjects.size(); i++) {
-            createImguiLayer(i);
-            gameObjects.get(i).update(dt);
-        }
-
-        // Rendering
-        renderer.render(camera);
     }
 
     private void createImguiLayer(int i)
