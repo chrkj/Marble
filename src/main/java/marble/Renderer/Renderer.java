@@ -21,7 +21,7 @@ public class Renderer {
 
     public Renderer()
     {
-        shader = new Shader("assets/shaders/default.shader");
+        shader = new Shader("assets/shaders/default.glsl");
         shader.compile();
     }
 
