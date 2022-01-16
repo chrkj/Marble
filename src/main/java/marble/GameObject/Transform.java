@@ -4,36 +4,31 @@ import org.joml.Vector3f;
 
 public class Transform {
 
-    public float scale;
+    public Vector3f scale;
     public Vector3f position;
     public Vector3f rotation;
 
     public Transform()
     {
-        init(new Vector3f(), new Vector3f(), 1);
+        init(new Vector3f(), new Vector3f(), new Vector3f(1,1,1));
     }
 
     public Transform(Vector3f position, Vector3f rotation)
     {
-        init(position, rotation, 1);
+        init(position, rotation, new Vector3f(1,1,1));
     }
 
     public Transform(Vector3f position)
     {
-        init(position, new Vector3f(), 1);
+        init(position, new Vector3f(), new Vector3f(1,1,1));
     }
 
-    public Transform(Vector3f position, float scale)
-    {
-        init(position, new Vector3f(), scale);
-    }
-
-    public Transform(Vector3f position, Vector3f rotation, float scale)
+    public Transform(Vector3f position, Vector3f rotation, Vector3f scale)
     {
         init(position, rotation, scale);
     }
 
-    private void init(Vector3f position, Vector3f rotation, float scale)
+    private void init(Vector3f position, Vector3f rotation, Vector3f scale)
     {
         this.scale = scale;
         this.position = position;
@@ -54,9 +49,11 @@ public class Transform {
         position.z = z;
     }
 
-    public void setScale(float scale)
+    public void setScale(float x, float y, float z)
     {
-        this.scale = scale;
+        this.scale.x = x;
+        this.scale.y = y;
+        this.scale.z = z;
     }
 
 }

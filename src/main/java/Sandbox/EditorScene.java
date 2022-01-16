@@ -29,7 +29,9 @@ public class EditorScene extends Scene {
     private ImFloat[] yRot;
     private ImFloat[] zRot;
     private ImFloat[] rotSpeed;
-    private ImFloat[] scale;
+    private ImFloat[] xScale;
+    private ImFloat[] yScale;
+    private ImFloat[] zScale;
 
     public EditorScene()
     {
@@ -41,7 +43,7 @@ public class EditorScene extends Scene {
     {
         camera = new Camera(new Vector3f(0,0,10));
         {
-            GameObject go = new GameObject("Cube", new Transform(new Vector3f(3,0,0), new Vector3f(30, 78, 10), 1));
+            GameObject go = new GameObject("Cube", new Transform(new Vector3f(3,0,0), new Vector3f(30, 78, 10)));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
             go.addComponent(Loader.loadTexture("assets/textures/grassblock.png"));
             addGameObjectToScene(go);
@@ -59,7 +61,9 @@ public class EditorScene extends Scene {
         yRot = new ImFloat[gameObjects.size()];
         zRot = new ImFloat[gameObjects.size()];
         rotSpeed = new ImFloat[gameObjects.size()];
-        scale = new ImFloat[gameObjects.size()];
+        xScale = new ImFloat[gameObjects.size()];
+        yScale = new ImFloat[gameObjects.size()];
+        zScale = new ImFloat[gameObjects.size()];
 
         for (int i = 0; i < gameObjects.size(); i++) {
             xTrans[i] = new ImFloat(gameObjects.get(i).transform.position.x);
@@ -69,7 +73,9 @@ public class EditorScene extends Scene {
             yRot[i] = new ImFloat(gameObjects.get(i).transform.rotation.y);
             zRot[i] = new ImFloat(gameObjects.get(i).transform.rotation.z);
             rotSpeed[i] = new ImFloat(0);
-            scale[i] = new ImFloat(gameObjects.get(i).transform.scale);
+            xScale[i] = new ImFloat(gameObjects.get(i).transform.scale.x);
+            yScale[i] = new ImFloat(gameObjects.get(i).transform.scale.y);
+            zScale[i] = new ImFloat(gameObjects.get(i).transform.scale.z);
         }
     }
 
@@ -137,7 +143,9 @@ public class EditorScene extends Scene {
         ImGui.sliderScalar("Rz" + i, ImGuiDataType.Float, zRot[i], 0, 360);
         ImGui.sliderScalar("Speed" + i, ImGuiDataType.Float, rotSpeed[i], 0, 10);
         ImGui.text("Scale");
-        ImGui.sliderScalar("Scale" + i, ImGuiDataType.Float, scale[i], 0.1f, 10);
+        ImGui.sliderScalar("xScale" + i, ImGuiDataType.Float, xScale[i], 0.1f, 10);
+        ImGui.sliderScalar("yScale" + i, ImGuiDataType.Float, yScale[i], 0.1f, 10);
+        ImGui.sliderScalar("zScale" + i, ImGuiDataType.Float, zScale[i], 0.1f, 10);
         ImGui.spacing();
         ImGui.spacing();
         ImGui.end();
@@ -158,7 +166,7 @@ public class EditorScene extends Scene {
             yRot[i].set(rotationY);
             zRot[i].set(rotationZ);
         }
-        gameObjects.get(i).transform.setScale(scale[i].get());
+        gameObjects.get(i).transform.setScale(xScale[i].get(), yScale[i].get(), zScale[i].get());
         gameObjects.get(i).transform.setPosition(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
     }
 }

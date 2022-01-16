@@ -75,7 +75,7 @@ public class Window {
         loop();
     }
 
-    public void init() throws Exception
+    public void init()
     {
         System.out.println("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
