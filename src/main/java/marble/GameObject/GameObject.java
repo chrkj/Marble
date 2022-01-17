@@ -106,4 +106,9 @@ public class GameObject {
     {
         return shader;
     }
+
+    public void cleanUp()
+    {
+        shader.cleanUp();
+    }
 }

@@ -6,7 +6,6 @@ import imgui.ImGui;
 import imgui.type.ImFloat;
 import imgui.flag.ImGuiDataType;
 
-import marble.renderer.Shader;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -15,10 +14,11 @@ import marble.Window;
 import marble.scene.Scene;
 import marble.util.Loader;
 import marble.camera.Camera;
+import marble.renderer.Shader;
 import marble.gameobject.Transform;
+import marble.gameobject.GameObject;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
-import marble.gameobject.GameObject;
 
 public class EditorScene extends Scene {
 
@@ -82,9 +82,6 @@ public class EditorScene extends Scene {
     @Override
     public void update(float dt)
     {
-        // Input
-        handleInput(dt);
-
         // Update
         for (int i = 0; i < gameObjects.size(); i++) {
             createImguiLayer(i);
@@ -93,6 +90,9 @@ public class EditorScene extends Scene {
 
         // Render
         renderer.render(camera);
+
+        // Input
+        handleInput(dt);
     }
 
     private void handleInput(float dt)

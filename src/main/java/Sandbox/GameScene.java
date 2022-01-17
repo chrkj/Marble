@@ -26,6 +26,11 @@ public class GameScene extends Scene {
     @Override
     public void update(float dt)
     {
+        for (GameObject gameObject : gameObjects)
+            gameObject.update(dt);
+
+        renderer.render(camera);
+
         float camSpeed = 10;
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))
             camera.move(0, camSpeed,0);
@@ -41,10 +46,5 @@ public class GameScene extends Scene {
             camera.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
             Window.changeScene(0);
-
-        for (GameObject gameObject : gameObjects)
-            gameObject.update(dt);
-
-        renderer.render(camera);
     }
 }

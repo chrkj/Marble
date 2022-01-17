@@ -41,6 +41,7 @@ public class Window {
 
     public static void changeScene(int newScene)
     {
+        currentScene.cleanUp();
         switch (newScene) {
             case 0:
                 currentScene = new EditorScene();

@@ -16,9 +16,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Renderer {
 
-    private Shader shader;
-    private final Vector3f defaultColor = new Vector3f(0.85f, 0.1f, 0.74f);
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private final Vector3f defaultColor = new Vector3f(0.85f, 0.1f, 0.74f);
 
     public Renderer()
     {
@@ -45,7 +44,7 @@ public class Renderer {
 
         // Render game objects
         for (GameObject gameObject : gameObjects) {
-            shader = gameObject.getShader();
+            Shader shader = gameObject.getShader();
             shader.bind();
 
             // Upload uniforms
@@ -67,11 +66,6 @@ public class Renderer {
             gameObject.render();
             shader.unbind();
         }
-    }
-
-    public void cleanUp()
-    {
-        shader.cleanUp();
     }
 
 }

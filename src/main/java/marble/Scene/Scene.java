@@ -60,9 +60,10 @@ public abstract class Scene {
 
     public void cleanUp()
     {
-        renderer.cleanUp();
-        for (GameObject gameObject : gameObjects)
+        for (GameObject gameObject : gameObjects) {
             for (Component component : gameObject.getAllComponents())
                 component.cleanUp();
+            gameObject.cleanUp();
+        }
     }
 }
