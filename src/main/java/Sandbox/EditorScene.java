@@ -77,11 +77,15 @@ public class EditorScene extends Scene {
             yScale[i] = new ImFloat(gameObjects.get(i).transform.scale.y);
             zScale[i] = new ImFloat(gameObjects.get(i).transform.scale.z);
         }
+
     }
 
     @Override
     public void update(float dt)
     {
+        // Input
+        handleInput(dt);
+
         // Update
         for (int i = 0; i < gameObjects.size(); i++) {
             createImguiLayer(i);
@@ -90,9 +94,6 @@ public class EditorScene extends Scene {
 
         // Render
         renderer.render(camera);
-
-        // Input
-        handleInput(dt);
     }
 
     private void handleInput(float dt)
@@ -113,7 +114,7 @@ public class EditorScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
             camera.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
-            Window.changeScene(1);
+            Window.changeScene(new GameScene());
         if(KeyListener.isKeyPressed(KeyEvent.VK_1))
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         if(KeyListener.isKeyPressed(KeyEvent.VK_2))

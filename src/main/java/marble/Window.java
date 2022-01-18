@@ -1,31 +1,33 @@
 package marble;
 
-import sandbox.GameScene;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-import marble.imgui.ImGuiLayer;
-import marble.listeners.KeyListener;
-import marble.listeners.MouseListener;
-import marble.listeners.ResizeListener;
-import marble.scene.Scene;
-import sandbox.EditorScene;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-import marble.util.Time;
-
 import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import sandbox.EditorScene;
+
+import marble.util.Time;
+import marble.scene.Scene;
+import marble.imgui.ImGuiLayer;
+import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
+import marble.listeners.ResizeListener;
+
 public class Window {
     public static long windowPtr;
+    public static Scene nextScene;
+    public static boolean shouldChangeScene;
 
     private static int width;
     private static int height;
@@ -39,23 +41,13 @@ public class Window {
     private static boolean resized;
     private static Scene currentScene;
 
-    public static void changeScene(int newScene)
+    public static void changeScene(Scene newScene)
     {
         currentScene.cleanUp();
-        switch (newScene) {
-            case 0:
-                currentScene = new EditorScene();
-                currentScene.init();
-                currentScene.start();
-                break;
-            case 1:
-                currentScene = new GameScene();
-                currentScene.init();
-                currentScene.start();
-                break;
-            default:
-                assert false : "Unknown scene '" + newScene + "'";
-        }
+        currentScene = newScene;
+        currentScene.init();
+        currentScene.start();
+        shouldChangeScene = false;
     }
 
     public static Scene getCurrentScene()
@@ -159,7 +151,7 @@ public class Window {
 
         // Game loop
         while (!glfwWindowShouldClose(windowPtr)) {
-            glClearColor(0.1f, 0.09f, 0.1f, 1.0f);
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
             imGuiGlfw.newFrame();
             ImGui.newFrame();
@@ -177,6 +169,9 @@ public class Window {
 
             glfwSwapBuffers(windowPtr);
             glfwPollEvents();
+
+            if(shouldChangeScene)
+                changeScene(nextScene);
 
             endTime = Time.getTime();
             dt = endTime - beginTime;

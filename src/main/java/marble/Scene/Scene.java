@@ -3,6 +3,7 @@ package marble.scene;
 import java.util.List;
 import java.util.ArrayList;
 
+import marble.Window;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.renderer.Renderer;
@@ -39,6 +40,12 @@ public abstract class Scene {
             gameObject.start();
             renderer.add(gameObject);
         }
+    }
+
+    public void changeScene(Scene newScene)
+    {
+        Window.nextScene = newScene;
+        Window.shouldChangeScene = true;
     }
 
     public boolean isRunning()
