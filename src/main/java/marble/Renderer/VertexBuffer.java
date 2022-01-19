@@ -12,6 +12,8 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
 public class VertexBuffer {
 
+    private VertexBuffer() {}
+
     public static int createVbo(float[] data, int index, int size)
     {
         int vboID = glGenBuffers();
