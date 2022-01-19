@@ -40,7 +40,7 @@ public class GameScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
             camera.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
-            Window.changeScene(new EditorScene());
+            changeScene(new EditorScene());
 
         for (GameObject gameObject : gameObjects)
             gameObject.update(dt);

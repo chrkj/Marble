@@ -114,7 +114,7 @@ public class EditorScene extends Scene {
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
             camera.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
-            Window.changeScene(new GameScene());
+            changeScene(new GameScene());
         if(KeyListener.isKeyPressed(KeyEvent.VK_1))
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         if(KeyListener.isKeyPressed(KeyEvent.VK_2))
