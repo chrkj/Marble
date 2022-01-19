@@ -60,8 +60,11 @@ public class Mesh extends Component {
 
         // Bind the texture
         // TODO: Fix texture bindings (slow)
-        if (gameObject.hasComponent(Texture.class))
-            gameObject.getComponent(Texture.class).bind();
+        if (gameObject.hasComponent(Material.class)) {
+            if (gameObject.getComponent(Material.class).hasTexture() == 1) {
+                gameObject.getComponent(Material.class).getTexture().bind();
+            }
+        }
 
         // Draw the mesh
         glBindVertexArray(vaoId);
@@ -71,9 +74,11 @@ public class Mesh extends Component {
 
         // Restore state
         glBindVertexArray(0);
-        if (gameObject.hasComponent(Texture.class))
-            gameObject.getComponent(Texture.class).unbind();
-
+        if (gameObject.hasComponent(Material.class)) {
+            if (gameObject.getComponent(Material.class).hasTexture() == 1) {
+                gameObject.getComponent(Material.class).getTexture().unbind();
+            }
+        }
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 

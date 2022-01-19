@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import marble.Window;
+import marble.gameobject.components.light.Light;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.renderer.Renderer;
@@ -14,6 +15,7 @@ public abstract class Scene {
 
     protected Camera camera;
     protected Renderer renderer = new Renderer();
+    protected final List<Light> lights = new ArrayList<>();
     protected final List<GameObject> gameObjects = new ArrayList<>();
 
     private float sceneStartedTime;
@@ -40,6 +42,8 @@ public abstract class Scene {
             gameObject.start();
             renderer.add(gameObject);
         }
+        if (gameObject.hasComponent(Light.class))
+            lights.add(gameObject.getComponent(Light.class));
     }
 
     public void changeScene(Scene newScene)
@@ -70,7 +74,6 @@ public abstract class Scene {
         for (GameObject gameObject : gameObjects) {
             for (Component component : gameObject.getAllComponents())
                 component.cleanUp();
-            gameObject.cleanUp();
         }
     }
 }

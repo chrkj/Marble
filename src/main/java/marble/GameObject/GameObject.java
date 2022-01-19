@@ -9,38 +9,35 @@ import marble.renderer.Shader;
 public class GameObject {
 
     public String name;
-    private Shader shader;
     public Transform transform;
 
     private List<Component> components;
 
     public GameObject(String name)
     {
-        init(name, new Transform(), new Shader("assets/shaders/default.glsl"));
+        init(name, new Transform());
     }
 
     public GameObject(String name, Transform transform)
     {
-        init(name, transform, new Shader("assets/shaders/default.glsl"));
+        init(name, transform);
     }
 
     public GameObject(String name, Transform transform, Shader shader)
     {
-        init(name, transform, shader);
+        init(name, transform);
     }
 
     public GameObject(String name, Shader shader)
     {
-        init(name, new Transform(), shader);
+        init(name, new Transform());
     }
 
-    public void init(String name, Transform transform, Shader shader)
+    public void init(String name, Transform transform)
     {
         this.name = name;
-        this.shader = shader;
         this.transform = transform;
         this.components = new ArrayList<>();
-        shader.compile();
     }
 
     public void start()
@@ -102,13 +99,4 @@ public class GameObject {
         return components;
     }
 
-    public Shader getShader()
-    {
-        return shader;
-    }
-
-    public void cleanUp()
-    {
-        shader.cleanUp();
-    }
 }

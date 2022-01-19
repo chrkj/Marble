@@ -45,7 +45,7 @@ public class GameScene extends Scene {
         for (GameObject gameObject : gameObjects)
             gameObject.update(dt);
 
-        renderer.render(camera);
+        renderer.render(camera, lights);
 
     }
 }

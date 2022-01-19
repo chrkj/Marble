@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import marble.gameobject.components.Material;
+import marble.gameobject.components.light.Light;
 import org.joml.*;
 import org.lwjgl.BufferUtils;
 
@@ -194,5 +196,21 @@ public class Shader {
         if (shaderProgramID != 0) {
             glDeleteProgram(shaderProgramID);
         }
+    }
+
+    public void setUniformDirLight(Light light, int i)
+    {
+        setUniform4f("directionalLight.color", light.getColor());
+        setUniform3f("directionalLight.direction", light.getGameObject().transform.rotation);
+        setUniform1f("directionalLight.intensity", light.getIntensity());
+    }
+
+    public void setUniformMaterial(Material material)
+    {
+        setUniform4f("material.ambient", material.getAmbient());
+        setUniform4f("material.diffuse", material.getDiffuse());
+        setUniform4f("material.specular", material.getSpecular());
+        setUniform1i("material.hasTexture", material.hasTexture());
+        setUniform1f("material.reflectance", material.getReflectance());
     }
 }

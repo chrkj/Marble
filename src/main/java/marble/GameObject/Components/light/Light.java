@@ -6,8 +6,8 @@ import marble.gameobject.components.Component;
 
 public abstract class Light extends Component {
 
-    private Vector4f color;
-    private float intensity;
+    protected Vector4f color;
+    protected float intensity;
 
     public Light()
     {
