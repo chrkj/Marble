@@ -19,6 +19,8 @@ import marble.gameobject.Transform;
 import marble.gameobject.GameObject;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
+import marble.gameobject.components.light.LightType;
+import marble.gameobject.components.light.LightFactory;
 
 public class EditorScene extends Scene {
 
@@ -51,6 +53,11 @@ public class EditorScene extends Scene {
         {
             GameObject go = new GameObject("Bunny", new Shader("assets/shaders/wobble.glsl"));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
+            addGameObjectToScene(go);
+        }
+        {
+            GameObject go = new GameObject("Light");
+            go.addComponent(LightFactory.getLight(LightType.DIRECTIONAL));
             addGameObjectToScene(go);
         }
 
