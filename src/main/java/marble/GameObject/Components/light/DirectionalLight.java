@@ -4,6 +4,5 @@ public class DirectionalLight extends Light {
 
     public DirectionalLight()
     {
-        System.out.println("Dir light created...");
     }
 }
