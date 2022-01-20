@@ -1,102 +1,91 @@
 package marble.gameobject;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import marble.gameobject.components.Component;
-import marble.renderer.Shader;
 
 public class GameObject {
 
     public String name;
+    public Material material;
     public Transform transform;
 
-    private List<Component> components;
+    private final Map<Class<?>, Component> components = new HashMap<>();
 
     public GameObject(String name)
     {
-        init(name, new Transform());
+        init(name, new Transform(), new Material());
     }
 
     public GameObject(String name, Transform transform)
     {
-        init(name, transform);
+        init(name, transform, new Material());
     }
 
-    public GameObject(String name, Transform transform, Shader shader)
+    public GameObject(String name, Transform transform, Material material)
     {
-        init(name, transform);
+        init(name, transform, material);
     }
 
-    public GameObject(String name, Shader shader)
+    public GameObject(String name, Material material)
     {
-        init(name, new Transform());
+        init(name, new Transform(), material);
     }
 
-    public void init(String name, Transform transform)
+    public void init(String name, Transform transform, Material material)
     {
         this.name = name;
+        this.material = material;
         this.transform = transform;
-        this.components = new ArrayList<>();
     }
 
     public void start()
     {
-        for (Component component : components)
-            component.start();
+    }
+
+    public void update(float dt)
+    {
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass)
     {
-        for (Component component : components) {
-            if (componentClass.isAssignableFrom(component.getClass()))
-                return componentClass.cast(component);
-        }
+        Component component = components.get(componentClass);
+        if (component != null)
+            return componentClass.cast(component);
         return null;
     }
 
     public <T extends Component> T removeComponent(Class<T> componentClass)
     {
-        for (int i = 0; i < components.size(); i++) {
-            Component component = components.get(i);
-            if (componentClass.isAssignableFrom(component.getClass())) {
-                components.remove(i);
-                return componentClass.cast(component);
-            }
-        }
-        return null;
+        return componentClass.cast(components.remove(componentClass));
     }
 
     public void addComponent(Component component)
     {
-        components.add(component);
+        components.put(component.getClass(), component);
         component.setGameObject(this);
-    }
-
-    public void update(float dt)
-    {
-        for (Component component : components)
-            component.update(dt);
     }
 
     public void render()
     {
-        for (Component component : components)
+        for (Component component : getAllComponents())
             component.render();
     }
 
     public boolean hasComponent(Class<? extends Component> componentClass)
     {
-        for (Component component : components) {
-            if (componentClass.isAssignableFrom(component.getClass()))
-                return true;
-        }
-        return false;
+        return components.containsKey(componentClass);
     }
 
-    public List<Component> getAllComponents()
+    public Collection<Component> getAllComponents()
     {
-        return components;
+        return components.values();
     }
 
+    public void cleanUp()
+    {
+        for (Component component : getAllComponents())
+            component.cleanUp();
+        material.getShader().cleanUp();
+    }
 }

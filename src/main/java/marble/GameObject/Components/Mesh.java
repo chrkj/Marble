@@ -1,20 +1,16 @@
 package marble.gameobject.components;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
-import marble.renderer.VertexBuffer;
-import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 
+import marble.gameobject.components.light.DirectionalLight;
 import marble.imgui.ImGuiLayer;
+import marble.renderer.VertexBuffer;
 
 public class Mesh extends Component {
 
@@ -43,42 +39,25 @@ public class Mesh extends Component {
     }
 
     @Override
-    public void start()
-    {
-    }
-
-    @Override
-    public void update(float dt)
-    {
-    }
-
-    @Override
     public void render()
     {
-        if (ImGuiLayer.polygonMode.get())
+        if (ImGuiLayer.polygonMode.get() || gameObject.hasComponent(DirectionalLight.class))
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // Bind the texture
-        // TODO: Fix texture bindings (slow)
-        if (gameObject.hasComponent(Material.class)) {
-            if (gameObject.getComponent(Material.class).hasTexture() == 1) {
-                gameObject.getComponent(Material.class).getTexture().bind();
-            }
-        }
+        if (gameObject.material.hasTexture() == 1)
+            gameObject.material.getTexture().bind();
 
         // Draw the mesh
         glBindVertexArray(vaoId);
-
         glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
         ImGuiLayer.drawCalls++;
 
         // Restore state
+        if (gameObject.material.hasTexture() == 1)
+            gameObject.material.getTexture().unbind();
         glBindVertexArray(0);
-        if (gameObject.hasComponent(Material.class)) {
-            if (gameObject.getComponent(Material.class).hasTexture() == 1) {
-                gameObject.getComponent(Material.class).getTexture().unbind();
-            }
-        }
+
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 

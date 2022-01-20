@@ -48,6 +48,7 @@ struct Material
 };
 
 uniform Material material;
+uniform vec4 ambientLight;
 uniform float specularPower;
 uniform sampler2D uTextureSampler;
 uniform DirectionalLight directionalLight;
@@ -104,5 +105,5 @@ void main()
 
     vec4 diffuseSpecularComp = calcDirectionalLight(directionalLight, fVertexPos, fVertexNormal);;
 
-    fragColor = ambientC * vec4(0.01, 0.01, 0.01, 1) + diffuseSpecularComp;
+    fragColor = ambientC * ambientLight + diffuseSpecularComp;
 }

@@ -9,4 +9,5 @@ public class DirectionalLight extends Light {
         this.intensity = 1f;
         this.color = new Vector4f(1,1,1,1);
     }
+    
 }

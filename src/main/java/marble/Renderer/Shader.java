@@ -1,12 +1,14 @@
 package marble.renderer;
 
 import java.io.IOException;
+import java.lang.Math;
 import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-import marble.gameobject.components.Material;
+import imgui.ImGui;
+import marble.gameobject.Material;
 import marble.gameobject.components.light.Light;
 import org.joml.*;
 import org.lwjgl.BufferUtils;
@@ -65,9 +67,7 @@ public class Shader {
 
     public void compile()
     {
-        ////
         // Compile and link shaders
-        ////
         int vertexID, fragmentID;
 
         // Load and compile vertex shader
@@ -198,10 +198,14 @@ public class Shader {
         }
     }
 
-    public void setUniformDirLight(Light light, int i)
+    public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
+        Vector4f dir = new Vector4f((float) Math.sin(Math.toRadians(light.getGameObject().transform.rotation.y)),
+                (float) -(Math.cos(Math.toRadians(light.getGameObject().transform.rotation.y)) * Math.sin(Math.toRadians(light.getGameObject().transform.rotation.x))),
+                (float) (Math.cos(Math.toRadians(light.getGameObject().transform.rotation.y)) * Math.cos(Math.toRadians(light.getGameObject().transform.rotation.x))),
+                0).mul(viewMatrix);
         setUniform4f("directionalLight.color", light.getColor());
-        setUniform3f("directionalLight.direction", light.getGameObject().transform.rotation);
+        setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
         setUniform1f("directionalLight.intensity", light.getIntensity());
     }
 

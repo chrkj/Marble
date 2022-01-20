@@ -4,17 +4,21 @@ import java.util.List;
 import java.util.ArrayList;
 
 import marble.Window;
-import marble.gameobject.components.light.Light;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.renderer.Renderer;
 import marble.gameobject.GameObject;
-import marble.gameobject.components.Component;
+import marble.gameobject.components.light.Light;
+import marble.gameobject.components.light.SpotLight;
+import marble.gameobject.components.light.PointLight;
+import marble.gameobject.components.light.DirectionalLight;
+import org.joml.Vector4f;
 
 public abstract class Scene {
 
     protected Camera camera;
     protected Renderer renderer = new Renderer();
+    protected Vector4f ambientLight = new Vector4f(0f, 0f, 0f, 0f);
     protected final List<Light> lights = new ArrayList<>();
     protected final List<GameObject> gameObjects = new ArrayList<>();
 
@@ -42,8 +46,13 @@ public abstract class Scene {
             gameObject.start();
             renderer.add(gameObject);
         }
-        if (gameObject.hasComponent(Light.class))
-            lights.add(gameObject.getComponent(Light.class));
+        // TODO
+        if (gameObject.hasComponent(DirectionalLight.class))
+            lights.add(gameObject.getComponent(DirectionalLight.class));
+        if (gameObject.hasComponent(SpotLight.class))
+            lights.add(gameObject.getComponent(SpotLight.class));
+        if (gameObject.hasComponent(PointLight.class))
+            lights.add(gameObject.getComponent(PointLight.class));
     }
 
     public void changeScene(Scene newScene)
@@ -71,9 +80,13 @@ public abstract class Scene {
 
     public void cleanUp()
     {
-        for (GameObject gameObject : gameObjects) {
-            for (Component component : gameObject.getAllComponents())
-                component.cleanUp();
-        }
+        for (GameObject gameObject : gameObjects)
+            gameObject.cleanUp();
     }
+
+    public Vector4f getAmbientLight()
+    {
+        return ambientLight;
+    }
+
 }

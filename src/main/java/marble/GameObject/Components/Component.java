@@ -10,10 +10,6 @@ public abstract class Component {
     {
     }
 
-    public abstract void start();
-
-    public abstract void update(float dt);
-
     public abstract void render();
 
     public abstract void cleanUp();

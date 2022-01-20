@@ -6,8 +6,6 @@ import imgui.ImGui;
 import imgui.type.ImFloat;
 import imgui.flag.ImGuiDataType;
 
-import marble.gameobject.components.Material;
-import marble.gameobject.components.light.Light;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -16,11 +14,11 @@ import marble.Window;
 import marble.scene.Scene;
 import marble.util.Loader;
 import marble.camera.Camera;
-import marble.renderer.Shader;
 import marble.gameobject.Transform;
 import marble.gameobject.GameObject;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
+import marble.gameobject.components.light.Light;
 import marble.gameobject.components.light.LightType;
 import marble.gameobject.components.light.LightFactory;
 
@@ -47,23 +45,22 @@ public class EditorScene extends Scene {
     {
         camera = new Camera(new Vector3f(0,0,10));
         {
-            GameObject go = new GameObject("Cube", new Transform(new Vector3f(0,0,0), new Vector3f(0, 0, 0)));
+            GameObject go = new GameObject("Cube", new Transform(new Vector3f(-3,-2,3)));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
-            go.addComponent(new Material(Loader.loadTexture("assets/textures/grassblock.png"), new Shader("assets/shaders/default.glsl")));
+            go.material.setTexture(Loader.loadTexture("assets/textures/grassblock.png"));
             addGameObjectToScene(go);
         }
         {
-            GameObject go = new GameObject("Bunny", new Transform(new Vector3f(10,0,0), new Vector3f(30, 78, 10)));
+            GameObject go = new GameObject("Bunny", new Transform(new Vector3f(3,-2,3)));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
-            go.addComponent(new Material(new Shader("assets/shaders/default.glsl")));
             addGameObjectToScene(go);
         }
         {
-            GameObject go = new GameObject("Light", new Transform(new Vector3f(0,0,10), new Vector3f(0, 0, 0), new Vector3f(0.1f, 0.1f, 0.1f)));
-            go.addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
-            go.addComponent(new Material(new Shader("assets/shaders/default.glsl")));
+            GameObject go = new GameObject("Light", new Transform(new Vector3f(-1,2,4), new Vector3f(333,53,0)));
+            go.addComponent(Loader.loadMeshOBJ("assets/obj/arrow.obj"));
             Light light = LightFactory.getLight(LightType.DIRECTIONAL);
             light.setIntensity(0.5f);
+            light.setColor(255,0,0,1);
             go.addComponent(light);
             addGameObjectToScene(go);
         }
@@ -153,16 +150,10 @@ public class EditorScene extends Scene {
         ImGui.sliderScalar("Ty" + i, ImGuiDataType.Float, yTrans[i], -30, 30);
         ImGui.sliderScalar("Tz" + i, ImGuiDataType.Float, zTrans[i], -30, 30);
         ImGui.text("Rotation");
-        if (gameObjects.get(i).hasComponent(Light.class)) {
-            ImGui.sliderScalar("Rx" + i, ImGuiDataType.Float, xRot[i], -1, 1);
-            ImGui.sliderScalar("Ry" + i, ImGuiDataType.Float, yRot[i], -1, 1);
-            ImGui.sliderScalar("Rz" + i, ImGuiDataType.Float, zRot[i], -1, 1);
-        } else {
-            ImGui.sliderScalar("Rx" + i, ImGuiDataType.Float, xRot[i], 0, 360);
-            ImGui.sliderScalar("Ry" + i, ImGuiDataType.Float, yRot[i], 0, 360);
-            ImGui.sliderScalar("Rz" + i, ImGuiDataType.Float, zRot[i], 0, 360);
-            ImGui.sliderScalar("Speed" + i, ImGuiDataType.Float, rotSpeed[i], 0, 10);
-        }
+        ImGui.sliderScalar("Rx" + i, ImGuiDataType.Float, xRot[i], 0, 360);
+        ImGui.sliderScalar("Ry" + i, ImGuiDataType.Float, yRot[i], 0, 360);
+        ImGui.sliderScalar("Rz" + i, ImGuiDataType.Float, zRot[i], 0, 360);
+        ImGui.sliderScalar("Speed" + i, ImGuiDataType.Float, rotSpeed[i], 0, 10);
         ImGui.text("Scale");
         ImGui.sliderScalar("xScale" + i, ImGuiDataType.Float, xScale[i], 0.1f, 10);
         ImGui.sliderScalar("yScale" + i, ImGuiDataType.Float, yScale[i], 0.1f, 10);
