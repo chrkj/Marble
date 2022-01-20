@@ -17,26 +17,26 @@ public class Material {
 
     private final String DEFAULT_SHADER_PATH = "assets/shaders/default.glsl";
 
-    private static final Vector4f DEFAULT_COLOR = new Vector4f(1f, 0f, 1f, 1f);
+    private final Vector4f DEFAULT_COLOR = new Vector4f(1f, 0f, 1f, 1f);
 
     public Material()
     {
-        init(null, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 1);
+        init(null, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
     }
 
     public Material(Texture texture)
     {
-        init(texture, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 1);
+        init(texture, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
     }
 
     public Material(Shader shader)
     {
-        init(null, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 1);
+        init(null, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
     }
 
     public Material(Texture texture, Shader shader)
     {
-        init(texture, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 1);
+        init(texture, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
     }
 
     public void init(Texture texture, Shader shader, Vector4f ambient, Vector4f diffuse, Vector4f specular, float reflectance)

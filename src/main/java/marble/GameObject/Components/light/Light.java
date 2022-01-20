@@ -31,9 +31,9 @@ public abstract class Light extends Component {
     public void setColor(float r, float g, float b, float a)
     {
         this.color.x = r;
-        this.color.x = g;
-        this.color.x = b;
-        this.color.x = a;
+        this.color.y = g;
+        this.color.z = b;
+        this.color.w = a;
     }
 
     public void setColor(Vector4f color)

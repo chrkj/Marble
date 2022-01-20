@@ -59,9 +59,9 @@ public class EditorScene extends Scene {
             GameObject go = new GameObject("Light", new Transform(new Vector3f(-1,2,4), new Vector3f(333,53,0)));
             go.addComponent(Loader.loadMeshOBJ("assets/obj/arrow.obj"));
             Light light = LightFactory.getLight(LightType.DIRECTIONAL);
-            light.setIntensity(0.5f);
-            light.setColor(255,0,0,1);
+            light.setIntensity(0.7f);
             go.addComponent(light);
+            go.material.setAmbient(1,1,0,1);
             addGameObjectToScene(go);
         }
 
