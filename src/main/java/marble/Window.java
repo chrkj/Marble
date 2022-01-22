@@ -1,43 +1,41 @@
 package marble;
 
+import static java.sql.Types.*;
+
 import imgui.ImGui;
 import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+import imgui.flag.ImGuiConfigFlags;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.GLFWErrorCallback;
-
-import static java.sql.Types.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import sandbox.EditorScene;
-
 import marble.util.Time;
 import marble.scene.Scene;
-import marble.imgui.ImGuiLayer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 
+import sandbox.EditorScene;
+
 public class Window {
+
     public static long windowPtr;
     public static Scene nextScene;
     public static boolean shouldChangeScene;
 
-    private static int width;
-    private static int height;
-
     private final String title;
     private final String glslVersion = "#version 460";
-    private final ImGuiLayer imguiLayer = new ImGuiLayer();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
+    private static int width;
+    private static int height;
     private static boolean resized;
     private static Scene currentScene;
 
@@ -101,11 +99,11 @@ public class Window {
             throw new IllegalStateException("Failed to create the GLFW window.");
 
         // Set callback
+        glfwSetKeyCallback(windowPtr, KeyListener::keyCallback);
         glfwSetScrollCallback(windowPtr, MouseListener::mouseScrollCallback);
         glfwSetCursorPosCallback(windowPtr, MouseListener::mousePosCallback);
-        glfwSetMouseButtonCallback(windowPtr, MouseListener::mouseButtonCallback);
         glfwSetCursorEnterCallback(windowPtr, MouseListener::mouseEnterCallback);
-        glfwSetKeyCallback(windowPtr, KeyListener::keyCallback);
+        glfwSetMouseButtonCallback(windowPtr, MouseListener::mouseButtonCallback);
         glfwSetWindowSizeCallback(windowPtr, ResizeListener::windowResizeCallback);
 
         // Make the OpenGl context current
@@ -129,20 +127,6 @@ public class Window {
         initScene(new EditorScene());
     }
 
-    private void initScene(Scene scene)
-    {
-        currentScene = scene;
-        currentScene.init();
-        currentScene.start();
-    }
-
-    private void initImGui()
-    {
-        ImGui.createContext();
-        ImGuiIO io = ImGui.getIO();
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
-    }
-
     public void loop()
     {
         float beginTime = Time.getTime();
@@ -156,7 +140,6 @@ public class Window {
             imGuiGlfw.newFrame();
             ImGui.newFrame();
             update(dt);
-            imguiLayer.createDiagnosticLayer(dt);
             ImGui.render();
             imGuiGl3.renderDrawData(ImGui.getDrawData());
 
@@ -177,13 +160,6 @@ public class Window {
             dt = endTime - beginTime;
             beginTime = endTime;
         }
-    }
-
-    private void update(float dt)
-    {
-        if (dt >= 0)
-            MouseListener.input();
-            currentScene.update(dt);
     }
 
     public void destroy()
@@ -225,5 +201,26 @@ public class Window {
     public static boolean isResized()
     {
         return resized;
+    }
+
+    private void initScene(Scene scene)
+    {
+        currentScene = scene;
+        currentScene.init();
+        currentScene.start();
+    }
+
+    private void initImGui()
+    {
+        ImGui.createContext();
+        ImGuiIO io = ImGui.getIO();
+        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+    }
+
+    private void update(float dt)
+    {
+        if (dt >= 0)
+            MouseListener.input();
+        currentScene.updateScene(dt);
     }
 }

@@ -6,16 +6,16 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class MouseListener {
-    private static double scrollX, scrollY;
-    private static double xPos, yPos, lastY, lastX;
-
-    private static final Vector2f rotationVec = new Vector2f();
-    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private static int timesRun = 0;
+    private static double scrollX, scrollY;
+    private static double xPos, yPos, lastY, lastX;
     private static boolean inWindow = false;
     private static boolean isDragging = false;
     private static boolean allowInput = false;
+
+    private static final Vector2f rotationVec = new Vector2f();
+    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private MouseListener()
     {
@@ -35,7 +35,7 @@ public class MouseListener {
         yPos = yPosition;
         isDragging = mouseButtonPressed[0] || mouseButtonPressed[1] || mouseButtonPressed[2];
 
-        // Making sure current and last pos is set before allowing input calculations
+        // Making sure current / last pos is set before allowing input calculations
         if (timesRun < 2)
             timesRun++;
         else

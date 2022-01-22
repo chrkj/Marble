@@ -4,7 +4,6 @@ import java.nio.IntBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.system.MemoryUtil;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -12,7 +11,7 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
 public class VertexBuffer {
 
-    private VertexBuffer() {}
+    private VertexBuffer() { }
 
     public static int createVbo(float[] data, int index, int size)
     {

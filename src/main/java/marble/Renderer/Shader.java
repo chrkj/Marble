@@ -1,30 +1,30 @@
 package marble.renderer;
 
-import java.io.IOException;
 import java.lang.Math;
-import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.nio.FloatBuffer;
 
-import imgui.ImGui;
-import marble.gameobject.Material;
-import marble.gameobject.components.light.Light;
 import org.joml.*;
-import org.lwjgl.BufferUtils;
 
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
+import marble.gameobject.Material;
+import marble.gameobject.components.light.Light;
+
 public class Shader {
 
     private int shaderProgramID;
+    private boolean inUse = false;
     private String vertexSource;
     private String fragmentSource;
-    private final String filepath;
-    private boolean inUse = false;
 
+    private final String filepath;
     private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
 
     public Shader(String filepath)
@@ -67,7 +67,6 @@ public class Shader {
 
     public void compile()
     {
-        // Compile and link shaders
         int vertexID, fragmentID;
 
         // Load and compile vertex shader
@@ -117,16 +116,15 @@ public class Shader {
             System.out.println("ERROR: '" + filepath + "'\n\tLinking shaders failed.");
             System.out.println(glGetProgramInfoLog(shaderProgramID, len));
             assert false : "";
-        } else {
-            System.out.println("Shaders linked successfully.");
         }
     }
 
     public void bind()
     {
-        if (!inUse)
+        if (!inUse) {
             inUse = true;
             glUseProgram(shaderProgramID);
+        }
     }
 
     public void unbind()
@@ -181,23 +179,6 @@ public class Shader {
         glUniformMatrix4fv(varLocation, false, buffer);
     }
 
-    private int getUniformLocation(String varName)
-    {
-        if (uniformLocationCache.containsKey(varName))
-            return uniformLocationCache.get(varName);
-        int location = glGetUniformLocation(shaderProgramID, varName);
-        uniformLocationCache.put(varName, location);
-        return location;
-    }
-
-    public void cleanUp()
-    {
-        unbind();
-        if (shaderProgramID != 0) {
-            glDeleteProgram(shaderProgramID);
-        }
-    }
-
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
         Vector4f dir = new Vector4f((float) Math.sin(Math.toRadians(light.getGameObject().transform.rotation.y)),
@@ -217,4 +198,21 @@ public class Shader {
         setUniform1i("material.hasTexture", material.hasTexture());
         setUniform1f("material.reflectance", material.getReflectance());
     }
+
+    public void cleanUp()
+    {
+        unbind();
+        if (shaderProgramID != 0)
+            glDeleteProgram(shaderProgramID);
+    }
+
+    private int getUniformLocation(String varName)
+    {
+        if (uniformLocationCache.containsKey(varName))
+            return uniformLocationCache.get(varName);
+        int location = glGetUniformLocation(shaderProgramID, varName);
+        uniformLocationCache.put(varName, location);
+        return location;
+    }
+
 }

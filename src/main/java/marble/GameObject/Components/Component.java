@@ -1,26 +1,22 @@
 package marble.gameobject.components;
 
-import marble.gameobject.GameObject;
+import marble.gameobject.Entity;
 
 public abstract class Component {
 
-    protected GameObject gameObject = null;
-
-    public Component()
-    {
-    }
+    protected Entity entity = null;
 
     public abstract void render();
 
     public abstract void cleanUp();
 
-    public void setGameObject(GameObject gameObject)
+    public void setGameObject(Entity entity)
     {
-        this.gameObject = gameObject;
+        this.entity = entity;
     }
 
-    public GameObject getGameObject()
+    public Entity getGameObject()
     {
-        return this.gameObject;
+        return this.entity;
     }
 }

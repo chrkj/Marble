@@ -8,11 +8,11 @@ import static org.lwjgl.glfw.GLFW.*;
 public class ImGuiLayer {
 
     public static int drawCalls = 0;
-    private final ImBoolean vsync = new ImBoolean(true);
-    private final ImBoolean demoWindow = new ImBoolean(false);
-    public final static ImBoolean polygonMode = new ImBoolean(false);
+    private static final ImBoolean vsync = new ImBoolean(true);
+    public static final ImBoolean polygonMode = new ImBoolean(false);
+    private static final ImBoolean demoWindow = new ImBoolean(false);
 
-    public void createDiagnosticLayer(float dt)
+    public static void updateDiagnosticLayer(float dt)
     {
         ImGui.begin("Diagnostics");
         ImGui.text(String.format("%.1f", 1 / dt) + " Fps");
@@ -32,4 +32,5 @@ public class ImGuiLayer {
         ImGui.checkbox("Polygon", polygonMode);
         ImGui.end();
     }
+
 }

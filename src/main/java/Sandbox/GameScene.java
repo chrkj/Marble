@@ -2,50 +2,52 @@ package sandbox;
 
 import java.awt.event.KeyEvent;
 
-import org.joml.Vector3f;
+import static org.lwjgl.glfw.GLFW.*;
 
 import marble.Window;
 import marble.scene.Scene;
 import marble.camera.Camera;
-import marble.gameobject.GameObject;
 import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
 
 public class GameScene extends Scene {
-
-    public GameScene()
-    {
-        System.out.println("Loading Game scene...");
-    }
 
     @Override
     public void init()
     {
-        camera = new Camera(new Vector3f(0,0,10));
+        mainCamera = new Camera();
     }
 
     @Override
     public void update(float dt)
     {
-        float camSpeed = 10;
+        handleInput(dt);
+    }
+
+    private void handleInput(float dt)
+    {
+        float camSpeed = 10 * dt;
+        float camRotSpeed = 15 * dt;
+        // Movement
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-            camera.move(0, camSpeed,0);
+            mainCamera.move(0,0, -camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-            camera.move(0, -camSpeed,0);
+            mainCamera.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-            camera.move(-camSpeed,0,0);
+            mainCamera.move(-camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-            camera.move(camSpeed,0,0);
+            mainCamera.move(camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_E))
-            camera.move(0,0, -camSpeed);
+            mainCamera.move(0, -camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
-            camera.move(0,0, camSpeed);
+            mainCamera.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
             changeScene(new EditorScene());
-
-        for (GameObject gameObject : gameObjects)
-            gameObject.update(dt);
-
-        renderer.render(camera, lights);
-
+        if(KeyListener.isKeyPressed(KeyEvent.VK_1))
+            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(KeyListener.isKeyPressed(KeyEvent.VK_2))
+            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
+            mainCamera.rotate(-MouseListener.getRotationVec().x * camRotSpeed, -MouseListener.getRotationVec().y * camRotSpeed, 0);
     }
 }

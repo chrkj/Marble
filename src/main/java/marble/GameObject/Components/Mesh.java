@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
-import marble.gameobject.components.light.DirectionalLight;
 import marble.imgui.ImGuiLayer;
 import marble.renderer.VertexBuffer;
 
@@ -17,7 +16,7 @@ public class Mesh extends Component {
     private final int vaoId;
     private final int vertexCount;
     private final boolean enableSmoothShading;
-    private final List<Integer> vbos = new ArrayList<>();
+    private final List<Integer> vertexBufferObjectIds = new ArrayList<>();
 
     public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray, boolean enableSmoothShading)
     {
@@ -29,10 +28,10 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         // Create VBO's
-        vbos.add(VertexBuffer.createVbo(verticesArray, 0, 3));
-        vbos.add(VertexBuffer.createVbo(textureArray, 1, 2));
-        vbos.add(VertexBuffer.createVbo(normalsArray, 2, 3));
-        vbos.add(VertexBuffer.createIndexVbo(indicesArray));
+        vertexBufferObjectIds.add(VertexBuffer.createVbo(verticesArray, 0, 3));
+        vertexBufferObjectIds.add(VertexBuffer.createVbo(textureArray, 1, 2));
+        vertexBufferObjectIds.add(VertexBuffer.createVbo(normalsArray, 2, 3));
+        vertexBufferObjectIds.add(VertexBuffer.createIndexVbo(indicesArray));
 
         // Unbind VAO
         glBindVertexArray(0);
@@ -41,12 +40,12 @@ public class Mesh extends Component {
     @Override
     public void render()
     {
-        if (ImGuiLayer.polygonMode.get() || gameObject.hasComponent(DirectionalLight.class))
+        if (ImGuiLayer.polygonMode.get())
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // Bind the texture
-        if (gameObject.material.hasTexture() == 1)
-            gameObject.material.getTexture().bind();
+        if (entity.material.hasTexture() == 1)
+            entity.material.getTexture().bind();
 
         // Draw the mesh
         glBindVertexArray(vaoId);
@@ -54,10 +53,10 @@ public class Mesh extends Component {
         ImGuiLayer.drawCalls++;
 
         // Restore state
-        if (gameObject.material.hasTexture() == 1)
-            gameObject.material.getTexture().unbind();
-        glBindVertexArray(0);
+        if (entity.material.hasTexture() == 1)
+            entity.material.getTexture().unbind();
 
+        glBindVertexArray(0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
@@ -67,7 +66,7 @@ public class Mesh extends Component {
 
         // Delete VBOs
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        for (int vboId : vbos)
+        for (int vboId : vertexBufferObjectIds)
             glDeleteBuffers(vboId);
 
         // Delete VAO

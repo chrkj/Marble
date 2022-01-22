@@ -10,4 +10,5 @@ public class ResizeListener {
         Window.setHeight(height);
         Window.setResized(true);
     }
+
 }

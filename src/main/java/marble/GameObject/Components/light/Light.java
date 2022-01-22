@@ -9,10 +9,6 @@ public abstract class Light extends Component {
     protected Vector4f color;
     protected float intensity;
 
-    public Light()
-    {
-    }
-
     @Override
     public void render()
     {

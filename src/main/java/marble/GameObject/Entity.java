@@ -3,31 +3,39 @@ package marble.gameobject;
 import java.util.*;
 
 import marble.gameobject.components.Component;
+import marble.gameobject.components.Texture;
 
-public class GameObject {
+import javax.swing.text.TabExpander;
+
+public class Entity {
 
     public String name;
     public Material material;
     public Transform transform;
 
-    private final Map<Class<?>, Component> components = new HashMap<>();
+    private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
-    public GameObject(String name)
+    public Entity()
     {
-        init(name, new Transform(), new Material());
+        init(null, new Transform(), new Material());
     }
 
-    public GameObject(String name, Transform transform)
+    public Entity(String tag)
+    {
+        init(tag, new Transform(), new Material());
+    }
+
+    public Entity(String name, Transform transform)
     {
         init(name, transform, new Material());
     }
 
-    public GameObject(String name, Transform transform, Material material)
+    public Entity(String name, Transform transform, Material material)
     {
         init(name, transform, material);
     }
 
-    public GameObject(String name, Material material)
+    public Entity(String name, Material material)
     {
         init(name, new Transform(), material);
     }
@@ -60,10 +68,11 @@ public class GameObject {
         return componentClass.cast(components.remove(componentClass));
     }
 
-    public void addComponent(Component component)
+    public Entity addComponent(Component component)
     {
         components.put(component.getClass(), component);
         component.setGameObject(this);
+        return this;
     }
 
     public void render()
@@ -88,4 +97,23 @@ public class GameObject {
             component.cleanUp();
         material.getShader().cleanUp();
     }
+
+    public Entity setPosition(float x, float y, float z)
+    {
+        transform.setPosition(x,y,z);
+        return this;
+    }
+
+    public Entity setRotation(float x, float y, float z)
+    {
+        transform.setRotation(x,y,z);
+        return this;
+    }
+
+    public Entity addTexture(Texture texture)
+    {
+        material.setTexture(texture);
+        return this;
+    }
+
 }
