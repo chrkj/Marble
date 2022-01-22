@@ -1,4 +1,4 @@
-package marble.gameobject.components.light;
+package marble.entity.components.light;
 
 import org.joml.Vector4f;
 

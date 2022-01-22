@@ -7,12 +7,12 @@ import marble.Window;
 import marble.util.Time;
 import marble.util.Transformation;
 import marble.camera.Camera;
-import marble.gameobject.Material;
-import marble.gameobject.Entity;
-import marble.gameobject.components.light.Light;
-import marble.gameobject.components.light.SpotLight;
-import marble.gameobject.components.light.PointLight;
-import marble.gameobject.components.light.DirectionalLight;
+import marble.entity.Material;
+import marble.entity.Entity;
+import marble.entity.components.light.Light;
+import marble.entity.components.light.SpotLight;
+import marble.entity.components.light.PointLight;
+import marble.entity.components.light.DirectionalLight;
 
 import static org.lwjgl.opengl.GL11.*;
 

@@ -14,8 +14,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
-import marble.gameobject.Material;
-import marble.gameobject.components.light.Light;
+import marble.entity.Material;
+import marble.entity.components.light.Light;
 
 public class Shader {
 
@@ -181,9 +181,9 @@ public class Shader {
 
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
-        Vector4f dir = new Vector4f((float) Math.sin(Math.toRadians(light.getGameObject().transform.rotation.y)),
-                (float) -(Math.cos(Math.toRadians(light.getGameObject().transform.rotation.y)) * Math.sin(Math.toRadians(light.getGameObject().transform.rotation.x))),
-                (float) (Math.cos(Math.toRadians(light.getGameObject().transform.rotation.y)) * Math.cos(Math.toRadians(light.getGameObject().transform.rotation.x))),
+        Vector4f dir = new Vector4f((float) Math.sin(Math.toRadians(light.getEntity().transform.rotation.y)),
+                (float) -(Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.sin(Math.toRadians(light.getEntity().transform.rotation.x))),
+                (float) (Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.cos(Math.toRadians(light.getEntity().transform.rotation.x))),
                 0).mul(viewMatrix);
         setUniform4f("directionalLight.color", light.getColor());
         setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));

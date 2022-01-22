@@ -1,4 +1,4 @@
-package marble.gameobject.components;
+package marble.entity.components;
 
 import java.util.List;
 import java.util.ArrayList;

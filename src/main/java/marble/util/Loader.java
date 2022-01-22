@@ -17,8 +17,8 @@ import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-import marble.gameobject.components.Mesh;
-import marble.gameobject.components.Texture;
+import marble.entity.components.Mesh;
+import marble.entity.components.Texture;
 
 public final class Loader {
 

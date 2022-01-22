@@ -1,10 +1,9 @@
-package marble.gameobject;
+package marble.entity;
 
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import marble.renderer.Shader;
-import marble.gameobject.components.Texture;
+import marble.entity.components.Texture;
 
 public class Material {
 

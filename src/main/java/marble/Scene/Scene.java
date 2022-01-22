@@ -13,11 +13,11 @@ import marble.imgui.ImGuiLayer;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.renderer.Renderer;
-import marble.gameobject.Entity;
-import marble.gameobject.components.light.Light;
-import marble.gameobject.components.light.SpotLight;
-import marble.gameobject.components.light.PointLight;
-import marble.gameobject.components.light.DirectionalLight;
+import marble.entity.Entity;
+import marble.entity.components.light.Light;
+import marble.entity.components.light.SpotLight;
+import marble.entity.components.light.PointLight;
+import marble.entity.components.light.DirectionalLight;
 
 public abstract class Scene {
 
@@ -88,7 +88,7 @@ public abstract class Scene {
         return new Entity(tag);
     }
 
-    protected void addGameObjectToScene(Entity entity)
+    protected void addEntityToScene(Entity entity)
     {
         if (!isRunning) {
             entities.add(entity);

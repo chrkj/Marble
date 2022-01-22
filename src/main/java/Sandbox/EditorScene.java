@@ -10,11 +10,11 @@ import marble.Window;
 import marble.scene.Scene;
 import marble.util.Loader;
 import marble.camera.Camera;
-import marble.gameobject.Entity;
+import marble.entity.Entity;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
-import marble.gameobject.components.light.LightType;
-import marble.gameobject.components.light.LightFactory;
+import marble.entity.components.light.LightType;
+import marble.entity.components.light.LightFactory;
 
 public class EditorScene extends Scene {
 
@@ -28,13 +28,13 @@ public class EditorScene extends Scene {
                     .setPosition(-3,-2,3)
                     .addTexture(Loader.loadTexture("assets/textures/grassblock.png"))
                     .addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
-            addGameObjectToScene(entity);
+            addEntityToScene(entity);
         }
         {
             Entity entity = createEntity("Bunny")
                     .setPosition(3,-2,3)
                     .addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
-            addGameObjectToScene(entity);
+            addEntityToScene(entity);
         }
         {
             Entity entity = createEntity("DirLight")
@@ -42,7 +42,7 @@ public class EditorScene extends Scene {
                     .setRotation(333,53,0)
                     .addComponent(Loader.loadMeshOBJ("assets/obj/arrow.obj"))
                     .addComponent(LightFactory.getLight(LightType.DIRECTIONAL));
-            addGameObjectToScene(entity);
+            addEntityToScene(entity);
         }
     }
 

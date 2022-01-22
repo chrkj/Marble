@@ -1,11 +1,9 @@
-package marble.gameobject;
+package marble.entity;
 
 import java.util.*;
 
-import marble.gameobject.components.Component;
-import marble.gameobject.components.Texture;
-
-import javax.swing.text.TabExpander;
+import marble.entity.components.Component;
+import marble.entity.components.Texture;
 
 public class Entity {
 
@@ -71,7 +69,7 @@ public class Entity {
     public Entity addComponent(Component component)
     {
         components.put(component.getClass(), component);
-        component.setGameObject(this);
+        component.setEntity(this);
         return this;
     }
 

@@ -1,8 +1,8 @@
-package marble.gameobject.components.light;
+package marble.entity.components.light;
 
 import org.joml.Vector4f;
 
-import marble.gameobject.components.Component;
+import marble.entity.components.Component;
 
 public abstract class Light extends Component {
 

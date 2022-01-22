@@ -1,6 +1,6 @@
-package marble.gameobject.components;
+package marble.entity.components;
 
-import marble.gameobject.Entity;
+import marble.entity.Entity;
 
 public abstract class Component {
 
@@ -10,12 +10,12 @@ public abstract class Component {
 
     public abstract void cleanUp();
 
-    public void setGameObject(Entity entity)
+    public void setEntity(Entity entity)
     {
         this.entity = entity;
     }
 
-    public Entity getGameObject()
+    public Entity getEntity()
     {
         return this.entity;
     }

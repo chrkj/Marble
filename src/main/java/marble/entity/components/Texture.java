@@ -1,4 +1,4 @@
-package marble.gameobject.components;
+package marble.entity.components;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
