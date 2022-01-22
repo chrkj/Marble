@@ -31,6 +31,7 @@ public abstract class Scene {
     private ImFloat[] yScale;
     private ImFloat[] zScale;
     private float sceneStartedTime;
+    private float specularPower = 10;
     private boolean isRunning = false;
     private boolean debugMode = false;
     private final Renderer renderer = new Renderer();
@@ -76,6 +77,11 @@ public abstract class Scene {
     public Vector4f getAmbientLight()
     {
         return ambientLight;
+    }
+
+    public float getSpecularPower()
+    {
+        return specularPower;
     }
 
     protected Entity createEntity()
@@ -130,6 +136,11 @@ public abstract class Scene {
     protected void disableDebugging()
     {
         debugMode = false;
+    }
+
+    protected void setSpecularPower(float specularPower)
+    {
+        this.specularPower = specularPower;
     }
 
     protected void setAmbientLight(float r, float g, float b, float a)

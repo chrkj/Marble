@@ -23,28 +23,6 @@ public class Entity {
         init(tag, new Transform(), new Material());
     }
 
-    public Entity(String name, Transform transform)
-    {
-        init(name, transform, new Material());
-    }
-
-    public Entity(String name, Transform transform, Material material)
-    {
-        init(name, transform, material);
-    }
-
-    public Entity(String name, Material material)
-    {
-        init(name, new Transform(), material);
-    }
-
-    public void init(String name, Transform transform, Material material)
-    {
-        this.name = name;
-        this.material = material;
-        this.transform = transform;
-    }
-
     public void start()
     {
     }
@@ -112,6 +90,13 @@ public class Entity {
     {
         material.setTexture(texture);
         return this;
+    }
+
+    private void init(String name, Transform transform, Material material)
+    {
+        this.name = name;
+        this.material = material;
+        this.transform = transform;
     }
 
 }

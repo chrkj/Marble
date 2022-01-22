@@ -185,18 +185,18 @@ public class Shader {
                 (float) -(Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.sin(Math.toRadians(light.getEntity().transform.rotation.x))),
                 (float) (Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.cos(Math.toRadians(light.getEntity().transform.rotation.x))),
                 0).mul(viewMatrix);
-        setUniform4f("directionalLight.color", light.getColor());
-        setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
-        setUniform1f("directionalLight.intensity", light.getIntensity());
+        setUniform4f("uDirectionalLight.color", light.getColor());
+        setUniform3f("uDirectionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
+        setUniform1f("uDirectionalLight.intensity", light.getIntensity());
     }
 
     public void setUniformMaterial(Material material)
     {
-        setUniform4f("material.ambient", material.getAmbient());
-        setUniform4f("material.diffuse", material.getDiffuse());
-        setUniform4f("material.specular", material.getSpecular());
-        setUniform1i("material.hasTexture", material.hasTexture());
-        setUniform1f("material.reflectance", material.getReflectance());
+        setUniform4f("uMaterial.ambient", material.getAmbient());
+        setUniform4f("uMaterial.diffuse", material.getDiffuse());
+        setUniform4f("uMaterial.specular", material.getSpecular());
+        setUniform1i("uMaterial.hasTexture", material.hasTexture());
+        setUniform1f("uMaterial.reflectance", material.getReflectance());
     }
 
     public void cleanUp()
