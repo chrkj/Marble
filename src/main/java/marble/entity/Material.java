@@ -15,7 +15,6 @@ public class Material {
     private float reflectance;
 
     private final String DEFAULT_SHADER_PATH = "assets/shaders/default.glsl";
-
     private final Vector4f DEFAULT_COLOR = new Vector4f(1f, 0f, 1f, 1f);
 
     public Material()

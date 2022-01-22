@@ -26,6 +26,9 @@ public class EditorScene extends Scene {
         {
             Entity entity = createEntity("Cube")
                     .setPosition(-3,-2,3)
+                    .setAmbient(1,1,1,1)
+                    .setDiffuse(1,1,1,1)
+                    .setReflectance(0)
                     .addTexture(Loader.loadTexture("assets/textures/grassblock.png"))
                     .addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
             addEntityToScene(entity);

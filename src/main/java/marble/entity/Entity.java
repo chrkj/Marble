@@ -86,6 +86,24 @@ public class Entity {
         return this;
     }
 
+    public Entity setAmbient(float r, float g, float b, float a)
+    {
+        material.setAmbient(r,g,b,a);
+        return this;
+    }
+
+    public Entity setDiffuse(float r, float g, float b, float a)
+    {
+        material.setDiffuse(r,g,b,a);
+        return this;
+    }
+
+    public Entity setReflectance(float reflectance)
+    {
+        material.setReflectance(reflectance);
+        return this;
+    }
+
     public Entity addTexture(Texture texture)
     {
         material.setTexture(texture);
