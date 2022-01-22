@@ -22,21 +22,6 @@ public class Material {
         init(null, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
     }
 
-    public Material(Texture texture)
-    {
-        init(texture, new Shader(DEFAULT_SHADER_PATH), DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
-    }
-
-    public Material(Shader shader)
-    {
-        init(null, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
-    }
-
-    public Material(Texture texture, Shader shader)
-    {
-        init(texture, shader, DEFAULT_COLOR, DEFAULT_COLOR, DEFAULT_COLOR, 0);
-    }
-
     public void init(Texture texture, Shader shader, Vector4f ambient, Vector4f diffuse, Vector4f specular, float reflectance)
     {
         this.shader = shader;
