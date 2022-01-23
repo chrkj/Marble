@@ -213,8 +213,7 @@ public class Window {
     private void initImGui()
     {
         ImGui.createContext();
-        ImGuiIO io = ImGui.getIO();
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+        // ImGuiIO io = ImGui.getIO();
     }
 
     private void update(float dt)
