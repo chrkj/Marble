@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.FloatBuffer;
+import java.nio.file.NoSuchFileException;
 
-import marble.imgui.Logger;
-import marble.util.Time;
 import org.joml.*;
 
 import org.lwjgl.BufferUtils;
@@ -16,6 +15,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
+import marble.imgui.Logger;
 import marble.entity.Material;
 import marble.entity.components.light.Light;
 
@@ -25,13 +25,6 @@ public class Shader {
     private boolean inUse = false;
     private String vertexSource;
     private String fragmentSource;
-    private String fallbackShader =
-            """
-            #version 460 core
-            void main()
-            {
-            }
-            """;
 
     private final String filepath;
     private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
@@ -39,6 +32,13 @@ public class Shader {
     public Shader(String filepath)
     {
         this.filepath = filepath;
+        String fallbackShader =
+                """
+                #version 460 core
+                void main()
+                {
+                }
+                """;
         try {
             String source = new String(Files.readAllBytes(Paths.get(filepath)));
             String[] splitString = source.split("(#type)( )+([a-zA-Z]+)");
@@ -68,10 +68,15 @@ public class Shader {
             } else {
                 throw new IOException("Unexpected token '" + secondPattern + "'");
             }
+
+        } catch (NoSuchFileException e) {
+            vertexSource = fallbackShader;
+            fragmentSource = fallbackShader;
+            Logger.log("NoSuchFileException: " + filepath);
         } catch (IOException e) {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            Logger.log("IOException: '" + filepath + "' Shader file not found.");
+            Logger.log("IOException: '" + filepath + "' " + e.getMessage());
         }
     }
 
@@ -88,8 +93,7 @@ public class Shader {
 
         // Check for errors in compilation
         int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
-        {
+        if (success == GL_FALSE) {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
             Logger.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
@@ -103,8 +107,7 @@ public class Shader {
 
         // Check for errors in compilation
         success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
-        if (success == GL_FALSE)
-        {
+        if (success == GL_FALSE) {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
             Logger.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
@@ -117,8 +120,7 @@ public class Shader {
 
         // Check for errors
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
-        if (success == GL_FALSE)
-        {
+        if (success == GL_FALSE) {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
             Logger.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
