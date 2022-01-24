@@ -3,21 +3,17 @@ package marble.listeners;
 import marble.imgui.ImGuiLayer;
 import org.joml.Vector2f;
 
-import java.lang.reflect.Array;
-
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class MouseListener {
 
-    private static int timesRun = 0;
     private static double scrollX, scrollY;
     private static double xPos, yPos, lastY, lastX;
     private static boolean inWindow = false;
     private static boolean isDragging = false;
-    private static boolean allowInput = false;
 
-    private static final Vector2f rotationVec = new Vector2f();
+    private static final Vector2f delta = new Vector2f();
     private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private MouseListener()
@@ -37,12 +33,6 @@ public class MouseListener {
         xPos = xPosition;
         yPos = yPosition;
         isDragging = mouseButtonPressed[0] || mouseButtonPressed[1] || mouseButtonPressed[2];
-
-        // Making sure current / last pos is set before allowing input calculations
-        if (timesRun < 2)
-            timesRun++;
-        else
-            allowInput = true;
     }
 
     public static void mouseButtonCallback(long window, int button, int action, int mods)
@@ -85,30 +75,27 @@ public class MouseListener {
             return false;
     }
 
-    /**
-     * Returns the cursor x-coordinate of the in game screen coordinate with {x=0, y=0} being at the upper-left corner.
-     * @return The float value of the cursor x-coordinate in game screen coordinate space.
-     */
+    public static Vector2f mousePosition()
+    {
+        return new Vector2f((float) xPos - ImGuiLayer.getCursorScreenPos.x, (float) yPos - ImGuiLayer.getCursorScreenPos.y);
+    }
+
     public static float getX()
     {
-        return (float) xPos - ImGuiLayer.getCursorScreenPos.x;
+        return (float) xPos;
     }
 
-    /**
-     * Returns the cursor y-coordinate of the in game screen coordinate with {x=0, y=0} being at the upper-left corner.
-     * @return The float value of the cursor y-coordinate in game screen coordinate space.
-     */
     public static float getY()
     {
-        return (float) yPos - ImGuiLayer.getCursorScreenPos.y;
+        return (float) yPos;
     }
 
-    public static float getDx()
+    private static float getDx()
     {
         return (float) (lastX - xPos);
     }
 
-    public static float getDy()
+    private static float getDy()
     {
         return (float) (lastY - yPos);
     }
@@ -123,29 +110,32 @@ public class MouseListener {
         return (float) scrollY;
     }
 
-    public static boolean getIsDragging()
+    public static boolean isDragging()
     {
         return isDragging;
     }
 
-    public static void input()
+    public static void calcDelta()
     {
-        if (allowInput) {
-            rotationVec.x = 0;
-            rotationVec.y = 0;
-            boolean rotateX = getDx() != 0;
-            boolean rotateY = getDy() != 0;
-            if (rotateX)
-                rotationVec.y = getDx();
-            if (rotateY)
-                rotationVec.x = getDy();
-            lastX = xPos;
-            lastY = yPos;
-        }
+        delta.x = 0;
+        delta.y = 0;
+        boolean rotateX = getDx() != 0;
+        boolean rotateY = getDy() != 0;
+        if (rotateX)
+            delta.y = getDx();
+        if (rotateY)
+            delta.x = getDy();
+        lastX = xPos;
+        lastY = yPos;
     }
 
-    public static Vector2f getRotationVec()
+    public static Vector2f mouseDelta()
     {
-        return rotationVec;
+        return delta;
+    }
+
+    public static boolean isInWindow()
+    {
+        return inWindow;
     }
 }

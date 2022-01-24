@@ -1,12 +1,14 @@
 package marble.imgui;
 
 import imgui.ImGui;
+import imgui.ImGuiIO;
 import imgui.ImGuiViewport;
 import imgui.ImVec2;
 import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 import marble.Window;
+import marble.listeners.MouseListener;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -18,8 +20,7 @@ public class ImGuiLayer {
     private static final ImBoolean demoWindow = new ImBoolean(false);
     public static ImVec2 gameViewportSize = new ImVec2();
     private static int stylesToPop = 0;
-    public static ImVec2 getCursorScreenPos;
-    public static ImVec2 getContentRegionAvail;
+    public static ImVec2 getCursorScreenPos = new ImVec2();
     private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
     public static void update(float dt)
@@ -38,6 +39,9 @@ public class ImGuiLayer {
         ImGui.text(String.format("%.1f", 1 / dt) + " Fps");
         ImGui.text(String.format("%.3f", dt * 1000) + " ms/frame");
         ImGui.text(String.format("%o", drawCalls) + " Draw calls");
+        ImGui.text(String.format("Pos: %s, %s", MouseListener.getX(), MouseListener.getY()));
+        ImGui.text(String.format("Delta: %s, %s", MouseListener.mouseDelta().x, MouseListener.mouseDelta().y));
+        ImGui.text(Boolean.toString(MouseListener.isDragging()));
 
         drawCalls = 0;
         if (ImGui.checkbox("Vsync", vsync)) {
@@ -57,7 +61,6 @@ public class ImGuiLayer {
     {
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
         getCursorScreenPos = ImGui.getCursorScreenPos();
-        getContentRegionAvail = ImGui.getContentRegionAvail();
 
         gameViewportSize = getGameViewportSize();
         ImVec2 windowPos = getGameRenderingPos();
@@ -83,9 +86,10 @@ public class ImGuiLayer {
                 | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
 
         ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
-
         ImGui.dockSpace(ImGui.getID("Dockspace"));
+
         createMenubar();
+
         ImGui.end();
     }
 
@@ -109,14 +113,11 @@ public class ImGuiLayer {
     {
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File")) {
-            if (ImGui.menuItem("Save", "Ctrl+S")) {
-            }
-            if (ImGui.menuItem("Load", "Ctrl+O")) {
-            }
+            if (ImGui.menuItem("Exit"))
+                glfwSetWindowShouldClose(Window.windowPtr, true);
             ImGui.endMenu();
         }
         ImGui.endMenuBar();
-
     }
 
     private static ImVec2 getGameViewportSize()

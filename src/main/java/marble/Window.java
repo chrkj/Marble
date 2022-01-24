@@ -8,9 +8,6 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
-import marble.imgui.ImGuiLayer;
-import marble.imgui.Logger;
-import marble.renderer.FrameBuffer;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
@@ -20,6 +17,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.scene.Scene;
+import marble.imgui.Logger;
+import marble.imgui.ImGuiLayer;
+import marble.renderer.FrameBuffer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
@@ -64,6 +64,7 @@ public class Window {
 
         // Game loop
         while (!glfwWindowShouldClose(windowPtr)) {
+            glfwPollEvents();
             glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
             imGuiGlfw.newFrame();
@@ -75,7 +76,7 @@ public class Window {
             imGuiGl3.renderDrawData(ImGui.getDrawData());
 
             glfwSwapBuffers(windowPtr);
-            glfwPollEvents();
+
             if(shouldChangeScene)
                 changeScene(nextScene);
 
@@ -221,7 +222,7 @@ public class Window {
     private void update(float dt)
     {
         if (dt >= 0) {
-            MouseListener.input();
+            MouseListener.calcDelta();
             ImGuiLayer.update(dt);
             currentScene.updateScene(dt);
         }
