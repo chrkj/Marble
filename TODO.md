@@ -14,8 +14,8 @@ Optimization
 
 ImGui:
 - ⬜ Add custom title bar
-- ⬜ Add logging window
 - ⬜ Setup custom theme
+- ✅ Add logging window
 - ✅ Fix screen coordinate space for MouseListener
 - ✅ Add game viewport
 - ✅ Fix zoom when maximizing application
