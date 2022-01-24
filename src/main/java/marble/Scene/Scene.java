@@ -8,8 +8,8 @@ import org.joml.Vector4f;
 import imgui.ImGui;
 import imgui.flag.ImGuiDataType;
 import imgui.type.ImFloat;
+
 import marble.Window;
-import marble.imgui.ImGuiLayer;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.renderer.Renderer;
@@ -33,7 +33,6 @@ public abstract class Scene {
     private float sceneStartedTime;
     private float specularPower = 10;
     private boolean isRunning = false;
-    private boolean debugMode = false;
     private final Renderer renderer = new Renderer();
     private final Vector4f ambientLight = new Vector4f(0f, 0f, 0f, 0f);
 
@@ -52,8 +51,7 @@ public abstract class Scene {
             renderer.add(entity);
         }
         isRunning = true;
-        if (debugMode)
-            InitImGuiDebugLayer();
+        InitImGuiDebugLayer(); // TODO: (Temp) Should be handled in ImGuiLayer
     }
 
     public void updateScene(float dt)
@@ -61,10 +59,7 @@ public abstract class Scene {
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        if (debugMode) {
-            updateImGuiLayer();
-            ImGuiLayer.updateDiagnosticLayer(dt);
-        }
+        updateImGuiLayer(); // TODO: (Temp) Should be handled in ImGuiLayer
         renderer.render(mainCamera, lights);
     }
 
@@ -128,16 +123,6 @@ public abstract class Scene {
         return mainCamera;
     }
 
-    protected void enableDebugging()
-    {
-        debugMode = true;
-    }
-
-    protected void disableDebugging()
-    {
-        debugMode = false;
-    }
-
     protected void setSpecularPower(float specularPower)
     {
         this.specularPower = specularPower;
@@ -180,8 +165,8 @@ public abstract class Scene {
     {
         ImGui.begin("Game Objects");
         ImGui.text("Camera");
-        ImGui.text(String.format("Position: %f %f %f", mainCamera.getPosition().x, mainCamera.getPosition().y, mainCamera.getPosition().z));
-        ImGui.text(String.format("Rotation: %f %f %f", mainCamera.getRotation().x, mainCamera.getRotation().y, mainCamera.getRotation().z));
+        ImGui.text(String.format("Position: %.3f %.3f %.3f", mainCamera.getPosition().x, mainCamera.getPosition().y, mainCamera.getPosition().z));
+        ImGui.text(String.format("Rotation: %.3f %.3f %.3f", mainCamera.getRotation().x, mainCamera.getRotation().y, mainCamera.getRotation().z));
         ImGui.spacing();
         ImGui.spacing();
         for (int i = 0; i < entities.size(); i++) {

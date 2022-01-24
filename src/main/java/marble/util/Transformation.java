@@ -1,9 +1,9 @@
 package marble.util;
 
+import marble.imgui.ImGuiLayer;
 import org.joml.Vector3f;
 import org.joml.Matrix4f;
 
-import marble.Window;
 import marble.camera.Camera;
 
 public class Transformation {
@@ -21,12 +21,6 @@ public class Transformation {
                 scale(scale.x, scale.y, scale.z);
     }
 
-    public static void adjustProjectionMatrix(Camera camera)
-    {
-        float aspectRatio = (float) Window.getWidth() / Window.getHeight();
-        projectionMatrix.setPerspective(camera.FOV, aspectRatio, camera.Z_NEAR, camera.Z_FAR);
-    }
-
     public static Matrix4f getViewMatrix(Camera camera)
     {
         Vector3f cameraPos = camera.getPosition();
@@ -41,6 +35,7 @@ public class Transformation {
 
     public static Matrix4f getProjectionMatrix(Camera camera)
     {
-        return projectionMatrix.setPerspective(camera.FOV, (float) Window.getWidth() / Window.getHeight(), camera.Z_NEAR, camera.Z_FAR);
+        float aspectRatio = ImGuiLayer.gameViewportSize.x / ImGuiLayer.gameViewportSize.y;
+        return projectionMatrix.setPerspective(camera.FOV, aspectRatio, camera.Z_NEAR, camera.Z_FAR);
     }
 }

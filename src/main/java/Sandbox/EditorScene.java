@@ -21,7 +21,6 @@ public class EditorScene extends Scene {
     @Override
     public void init()
     {
-        enableDebugging();
         mainCamera = new Camera(new Vector3f(0,0,10));
         {
             Entity entity = createEntity("Cube")

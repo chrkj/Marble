@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import marble.Window;
+import marble.imgui.ImGuiLayer;
 import marble.util.Time;
 import marble.util.Transformation;
 import marble.camera.Camera;
@@ -33,11 +34,6 @@ public class Renderer {
     public void render(Camera camera, List<Light> lights)
     {
         clear();
-        if (Window.isResized()) {
-            glViewport(0, 0, Window.getWidth(), Window.getHeight());
-            Transformation.adjustProjectionMatrix(camera);
-            Window.setResized(false);
-        }
 
         for (Entity entity : entities) {
             Material material = entity.material;

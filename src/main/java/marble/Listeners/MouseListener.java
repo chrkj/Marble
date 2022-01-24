@@ -1,6 +1,9 @@
 package marble.listeners;
 
+import marble.imgui.ImGuiLayer;
 import org.joml.Vector2f;
+
+import java.lang.reflect.Array;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -82,14 +85,22 @@ public class MouseListener {
             return false;
     }
 
+    /**
+     * Returns the cursor x-coordinate of the in game screen coordinate with {x=0, y=0} being at the upper-left corner.
+     * @return The float value of the cursor x-coordinate in game screen coordinate space.
+     */
     public static float getX()
     {
-        return (float) xPos;
+        return (float) xPos - ImGuiLayer.getCursorScreenPos.x;
     }
 
+    /**
+     * Returns the cursor y-coordinate of the in game screen coordinate with {x=0, y=0} being at the upper-left corner.
+     * @return The float value of the cursor y-coordinate in game screen coordinate space.
+     */
     public static float getY()
     {
-        return (float) yPos;
+        return (float) yPos - ImGuiLayer.getCursorScreenPos.y;
     }
 
     public static float getDx()

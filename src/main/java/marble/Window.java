@@ -8,6 +8,8 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.imgui.ImGuiLayer;
+import marble.renderer.FrameBuffer;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
@@ -38,20 +40,7 @@ public class Window {
     private static int height;
     private static boolean resized;
     private static Scene currentScene;
-
-    public static void changeScene(Scene newScene)
-    {
-        currentScene.cleanUp();
-        currentScene = newScene;
-        currentScene.init();
-        currentScene.start();
-        shouldChangeScene = false;
-    }
-
-    public static Scene getCurrentScene()
-    {
-        return Window.currentScene;
-    }
+    private static FrameBuffer frameBuffer;
 
     public Window(String title)
     {
@@ -61,9 +50,38 @@ public class Window {
        this.title = title;
     }
 
+    public static FrameBuffer getFramebuffer()
+    {
+        return frameBuffer;
+    }
+
     public void run()
     {
-        loop();
+        float beginTime = Time.getTime();
+        float endTime;
+        float dt = -1.0f;
+
+        // Game loop
+        while (!glfwWindowShouldClose(windowPtr)) {
+            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+            imGuiGlfw.newFrame();
+            ImGui.newFrame();
+            frameBuffer.bind();
+            update(dt);
+            frameBuffer.unbind();
+            ImGui.render();
+            imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+            glfwSwapBuffers(windowPtr);
+            glfwPollEvents();
+            if(shouldChangeScene)
+                changeScene(nextScene);
+
+            endTime = Time.getTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
+        }
     }
 
     public void init()
@@ -92,6 +110,7 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
         // Create the window
         windowPtr = glfwCreateWindow(width, height, this.title, NULL, NULL);
@@ -123,43 +142,19 @@ public class Window {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
+        frameBuffer = new FrameBuffer(width, height);
+
         // Set initial scene
         initScene(new EditorScene());
     }
 
-    public void loop()
+    public static void changeScene(Scene newScene)
     {
-        float beginTime = Time.getTime();
-        float endTime;
-        float dt = -1.0f;
-
-        // Game loop
-        while (!glfwWindowShouldClose(windowPtr)) {
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-            imGuiGlfw.newFrame();
-            ImGui.newFrame();
-            update(dt);
-            ImGui.render();
-            imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-            if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
-                final long backupWindowPtr = org.lwjgl.glfw.GLFW.glfwGetCurrentContext();
-                ImGui.updatePlatformWindows();
-                ImGui.renderPlatformWindowsDefault();
-                glfwMakeContextCurrent(backupWindowPtr);
-            }
-
-            glfwSwapBuffers(windowPtr);
-            glfwPollEvents();
-
-            if(shouldChangeScene)
-                changeScene(nextScene);
-
-            endTime = Time.getTime();
-            dt = endTime - beginTime;
-            beginTime = endTime;
-        }
+        currentScene.cleanUp();
+        currentScene = newScene;
+        currentScene.init();
+        currentScene.start();
+        shouldChangeScene = false;
     }
 
     public void destroy()
@@ -198,6 +193,11 @@ public class Window {
         resized = r;
     }
 
+    public static Scene getCurrentScene()
+    {
+        return Window.currentScene;
+    }
+
     public static boolean isResized()
     {
         return resized;
@@ -213,13 +213,16 @@ public class Window {
     private void initImGui()
     {
         ImGui.createContext();
-        // ImGuiIO io = ImGui.getIO();
+        ImGuiIO io = ImGui.getIO();
+        io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
     }
 
     private void update(float dt)
     {
-        if (dt >= 0)
+        if (dt >= 0) {
             MouseListener.input();
-        currentScene.updateScene(dt);
+            ImGuiLayer.update(dt);
+            currentScene.updateScene(dt);
+        }
     }
 }
