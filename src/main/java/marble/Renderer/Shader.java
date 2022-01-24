@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.FloatBuffer;
 
+import marble.imgui.Logger;
+import marble.util.Time;
 import org.joml.*;
 
 import org.lwjgl.BufferUtils;
@@ -23,6 +25,13 @@ public class Shader {
     private boolean inUse = false;
     private String vertexSource;
     private String fragmentSource;
+    private String fallbackShader =
+            """
+            #version 460 core
+            void main()
+            {
+            }
+            """;
 
     private final String filepath;
     private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
@@ -60,8 +69,9 @@ public class Shader {
                 throw new IOException("Unexpected token '" + secondPattern + "'");
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            assert false : "Error: Could not open file for shader: '" + filepath + "'";
+            vertexSource = fallbackShader;
+            fragmentSource = fallbackShader;
+            Logger.log("IOException: '" + filepath + "' Shader file not found.");
         }
     }
 
@@ -81,8 +91,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            System.out.println(glGetShaderInfoLog(vertexID, len));
-            assert false : "";
+            Logger.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
 
         // Load and compile fragment shader
@@ -97,9 +106,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: '" + filepath + "'\n\tFragment shader compilation failed.");
-            System.out.println(glGetShaderInfoLog(fragmentID, len));
-            assert false : "";
+            Logger.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
 
         // Link shaders
@@ -113,9 +120,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: '" + filepath + "'\n\tLinking shaders failed.");
-            System.out.println(glGetProgramInfoLog(shaderProgramID, len));
-            assert false : "";
+            Logger.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
     }
 

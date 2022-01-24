@@ -20,6 +20,7 @@ public class ImGuiLayer {
     private static int stylesToPop = 0;
     public static ImVec2 getCursorScreenPos;
     public static ImVec2 getContentRegionAvail;
+    private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
     public static void update(float dt)
     {
@@ -27,6 +28,7 @@ public class ImGuiLayer {
         setupDockspace();
         setupDiagnostics(dt);
         setupGameViewport();
+        setupConsole();
         popImGuiStyles();
     }
 
@@ -84,6 +86,22 @@ public class ImGuiLayer {
 
         ImGui.dockSpace(ImGui.getID("Dockspace"));
         createMenubar();
+        ImGui.end();
+    }
+
+    public static void setupConsole()
+    {
+        ImGui.setNextWindowSize(500, 400);
+        ImGui.begin("Console");
+        if (ImGui.button("Clear"))
+            Logger.clear();
+        ImGui.separator();
+        ImGui.beginChild("scrolling");
+        ImGui.textUnformatted(Logger.getBuffer().toString());
+        if (scrollToBottom.get())
+            ImGui.setScrollHereY(1f);
+        scrollToBottom.set(false);
+        ImGui.endChild();
         ImGui.end();
     }
 

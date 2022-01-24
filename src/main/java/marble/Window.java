@@ -9,6 +9,7 @@ import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
 import marble.imgui.ImGuiLayer;
+import marble.imgui.Logger;
 import marble.renderer.FrameBuffer;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
@@ -86,7 +87,7 @@ public class Window {
 
     public void init()
     {
-        System.out.println("LWJGL Version: " + Version.getVersion() + "!");
+        Logger.log("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
         initImGui();
         imGuiGlfw.init(windowPtr, true);

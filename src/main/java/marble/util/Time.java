@@ -10,4 +10,6 @@ public class Time {
     {
         return (float) (glfwGetTime() - timeStarted);
     }
+
+
 }
