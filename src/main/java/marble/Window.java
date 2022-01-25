@@ -25,6 +25,7 @@ import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 
 import game.EditorScene;
+import org.lwjgl.opengl.GL30;
 
 public class Window {
 
@@ -93,6 +94,9 @@ public class Window {
         initImGui();
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);
+        Logger.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        Logger.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        Logger.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     private void initWindow()
