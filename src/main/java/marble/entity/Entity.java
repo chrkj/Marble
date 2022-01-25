@@ -2,8 +2,8 @@ package marble.entity;
 
 import java.util.*;
 
-import marble.entity.components.Component;
 import marble.entity.components.Texture;
+import marble.entity.components.Component;
 
 public class Entity {
 

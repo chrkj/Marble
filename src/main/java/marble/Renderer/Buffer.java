@@ -9,11 +9,11 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
-public class VertexBuffer {
+public class Buffer {
 
-    private VertexBuffer() { }
+    private Buffer() { }
 
-    public static int createVbo(float[] data, int index, int size)
+    public static int createVertexbuffer(float[] data, int index, int size)
     {
         int vboID = glGenBuffers();
         FloatBuffer buffer = MemoryUtil.memAllocFloat(data.length);
@@ -27,7 +27,7 @@ public class VertexBuffer {
         return vboID;
     }
 
-    public static int createIndexVbo(int[] data)
+    public static int createIndexbuffer(int[] data)
     {
         int indexVboId = glGenBuffers();
         IntBuffer buffer = MemoryUtil.memAllocInt(data.length);

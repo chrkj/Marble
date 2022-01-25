@@ -3,8 +3,9 @@ package marble.renderer;
 import java.util.List;
 import java.util.ArrayList;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import marble.Window;
-import marble.imgui.ImGuiLayer;
 import marble.util.Time;
 import marble.util.Transformation;
 import marble.camera.Camera;
@@ -14,8 +15,6 @@ import marble.entity.components.light.Light;
 import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
 import marble.entity.components.light.DirectionalLight;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Renderer {
 
@@ -39,7 +38,6 @@ public class Renderer {
             Material material = entity.material;
             Shader shader = material.getShader();
             shader.bind();
-            shader.setUniformMaterial(material);
 
             // Set lighting uniforms
             for (int i = 0; i < lights.size(); i++) {
@@ -52,6 +50,7 @@ public class Renderer {
                 }
             }
 
+            shader.setUniformMaterial(material);
             shader.setUniform1f("uTime", Time.getTime());
             shader.setUniform1i("uTextureSampler", 0);
             shader.setUniform4f("uAmbientLight", Window.getCurrentScene().getAmbientLight());

@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
 import marble.imgui.ImGuiLayer;
-import marble.renderer.VertexBuffer;
+import marble.renderer.Buffer;
 
 public class Mesh extends Component {
 
@@ -28,10 +28,10 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         // Create VBO's
-        vertexBufferObjectIds.add(VertexBuffer.createVbo(verticesArray, 0, 3));
-        vertexBufferObjectIds.add(VertexBuffer.createVbo(textureArray, 1, 2));
-        vertexBufferObjectIds.add(VertexBuffer.createVbo(normalsArray, 2, 3));
-        vertexBufferObjectIds.add(VertexBuffer.createIndexVbo(indicesArray));
+        vertexBufferObjectIds.add(Buffer.createVertexbuffer(verticesArray, 0, 3));
+        vertexBufferObjectIds.add(Buffer.createVertexbuffer(textureArray, 1, 2));
+        vertexBufferObjectIds.add(Buffer.createVertexbuffer(normalsArray, 2, 3));
+        vertexBufferObjectIds.add(Buffer.createIndexbuffer(indicesArray));
 
         // Unbind VAO
         glBindVertexArray(0);
