@@ -24,7 +24,7 @@ import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 
-import sandbox.EditorScene;
+import game.EditorScene;
 
 public class Window {
 
