@@ -1,14 +1,10 @@
 package marble.util;
 
 import java.io.*;
-import java.util.List;
-import java.util.ArrayList;
 import java.nio.IntBuffer;
 import java.nio.ByteBuffer;
 
 import de.javagl.obj.*;
-import marble.entity.Material;
-import marble.imgui.Logger;
 
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
@@ -16,6 +12,7 @@ import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
+import marble.imgui.Logger;
 import marble.entity.components.Mesh;
 import marble.entity.components.Texture;
 

@@ -3,10 +3,7 @@ package marble.scene;
 import java.util.List;
 import java.util.ArrayList;
 
-import marble.entity.components.Mesh;
-import marble.imgui.ImGuiLayer;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiDataType;
@@ -15,8 +12,10 @@ import imgui.type.ImFloat;
 import marble.Window;
 import marble.util.Time;
 import marble.camera.Camera;
-import marble.renderer.Renderer;
 import marble.entity.Entity;
+import marble.imgui.ImGuiLayer;
+import marble.renderer.Renderer;
+import marble.entity.components.Mesh;
 import marble.entity.components.light.Light;
 import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
