@@ -9,12 +9,13 @@ Terrain
 - ⬜ Add procedural chunk generation
 
 Optimization
-- ⬜ Frustum culling
+- ⬜ Add Frustum culling
 - ⬜ Better ECS (Entity component system)
+- ⬜ Add Object pooling
 
 ImGui:
 - ⬜ Add custom title bar
-- ⬜ Setup custom theme
+- ✅ Setup custom theme
 - ✅ Add logging window
 - ✅ Fix screen coordinate space for MouseListener
 - ✅ Add game viewport
