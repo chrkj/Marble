@@ -21,7 +21,8 @@ public class EditorScene extends Scene {
     @Override
     public void init()
     {
-        mainCamera = new Camera(new Vector3f(0f, 0f, 10f));
+        mainCamera = new Camera(new Vector3f(20f, 0f, 26f));
+        mainCamera.rotate(7f,-35f,-30f);
         ambientLight.set(0.1f);
         //{
         //    Entity entity = createEntity("Cube")
@@ -36,7 +37,6 @@ public class EditorScene extends Scene {
         {
             Entity entity = createEntity("Beer")
                     .setPosition(3,-2,3)
-                    .setScale(0.1f, 0.1f, 0.1f)
                     .addComponent(Loader.loadMeshObj("assets/obj/helm.obj"));
             addEntityToScene(entity);
         }
