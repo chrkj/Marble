@@ -19,7 +19,7 @@ public class Material {
         Vector4f DEFAULT_COLOR = new Vector4f(1f, 0f, 1f, 1f);
         this.shader = new Shader("assets/shaders/default.glsl");
         this.texture = null;
-        this.ambient = DEFAULT_COLOR;
+        this.ambient = new Vector4f();
         this.diffuse = DEFAULT_COLOR;
         this.specular = DEFAULT_COLOR;
         this.reflectance = 0;

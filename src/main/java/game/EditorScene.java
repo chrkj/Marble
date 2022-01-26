@@ -35,7 +35,7 @@ public class EditorScene extends Scene {
         //    addEntityToScene(entity);
         //}
         {
-            Entity entity = createEntity("Beer")
+            Entity entity = createEntity("Helm")
                     .setPosition(3,-2,3)
                     .addComponent(Loader.loadMeshObj("assets/obj/helm.obj"));
             addEntityToScene(entity);
@@ -58,7 +58,7 @@ public class EditorScene extends Scene {
 
     private void handleInput(float dt)
     {
-        float camSpeed = 100 * dt;
+        float camSpeed = 10 * dt;
         float camRotSpeed = 15 * dt;
         // Movement
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))

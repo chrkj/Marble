@@ -32,6 +32,7 @@ public abstract class Scene {
     private ImFloat[] xScale;
     private ImFloat[] yScale;
     private ImFloat[] zScale;
+    private ImFloat[] reflectance;
     private float sceneStartedTime;
     private boolean isRunning = false;
     private final Renderer renderer = new Renderer();
@@ -148,6 +149,7 @@ public abstract class Scene {
         xScale = new ImFloat[entities.size()];
         yScale = new ImFloat[entities.size()];
         zScale = new ImFloat[entities.size()];
+        reflectance = new ImFloat[entities.size()];
         for (int i = 0; i < entities.size(); i++) {
             xTrans[i] = new ImFloat(entities.get(i).transform.position.x);
             yTrans[i] = new ImFloat(entities.get(i).transform.position.y);
@@ -158,6 +160,7 @@ public abstract class Scene {
             xScale[i] = new ImFloat(entities.get(i).transform.scale.x);
             yScale[i] = new ImFloat(entities.get(i).transform.scale.y);
             zScale[i] = new ImFloat(entities.get(i).transform.scale.z);
+            reflectance[i] = new ImFloat(entities.get(i).material.getReflectance());
         }
     }
 
@@ -185,12 +188,16 @@ public abstract class Scene {
             ImGui.sliderScalar("Sx" + i, ImGuiDataType.Float, xScale[i], 0.1f, 10);
             ImGui.sliderScalar("Sy" + i, ImGuiDataType.Float, yScale[i], 0.1f, 10);
             ImGui.sliderScalar("Sz" + i, ImGuiDataType.Float, zScale[i], 0.1f, 10);
+            ImGui.text("Material");
+            ImGui.sliderScalar("Reflect" + i, ImGuiDataType.Float, reflectance[i], 0f, 10f);
+
             ImGui.spacing();
             ImGui.spacing();
 
             entities.get(i).transform.setRotation(xRot[i].get(), yRot[i].get(), zRot[i].get());
             entities.get(i).transform.setScale(xScale[i].get(), yScale[i].get(), zScale[i].get());
             entities.get(i).transform.setPosition(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
+            entities.get(i).material.setReflectance(reflectance[i].get());
         }
         ImGuiLayer.totalVertexCount = totalVertexCount;
         ImGui.end();
