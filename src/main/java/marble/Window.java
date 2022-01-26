@@ -9,8 +9,9 @@ import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
 import org.lwjgl.Version;
-import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -25,7 +26,6 @@ import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 
 import game.EditorScene;
-import org.lwjgl.opengl.GL30;
 
 public class Window {
 

@@ -53,7 +53,7 @@ public class Renderer {
             shader.setUniformMaterial(material);
             shader.setUniform1f("uTime", Time.getTime());
             shader.setUniform1i("uTextureSampler", 0);
-            shader.setUniform4f("uAmbientLight", Window.getCurrentScene().getAmbientLight());
+            shader.setUniform3f("uAmbientLight", Window.getCurrentScene().getAmbientLight());
             shader.setUniform1f("uSpecularPower", Window.getCurrentScene().getSpecularPower());
             shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
             shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));

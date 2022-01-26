@@ -14,9 +14,8 @@ public class FrameBuffer {
         fboId = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 
-        this.texture = new Texture(width, height);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
-                this.texture.getId(), 0);
+        texture = new Texture(width, height);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.getId(), 0);
 
         int rboId = glGenRenderbuffers();
         glBindRenderbuffer(GL_RENDERBUFFER, rboId);
@@ -37,7 +36,7 @@ public class FrameBuffer {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    public int getFboId()
+    public int getId()
     {
         return fboId;
     }

@@ -1,10 +1,11 @@
 package marble.listeners;
 
-import marble.imgui.ImGuiLayer;
 import org.joml.Vector2f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+
+import marble.imgui.ImGuiLayer;
 
 public class MouseListener {
 

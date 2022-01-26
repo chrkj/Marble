@@ -13,6 +13,7 @@ import marble.listeners.MouseListener;
 public class ImGuiLayer {
 
     public static int drawCalls = 0;
+    public static int totalVertexCount = 0;
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 getCursorScreenPos = new ImVec2();
     public static final ImBoolean polygonMode = new ImBoolean(false);
@@ -35,6 +36,7 @@ public class ImGuiLayer {
         ImGui.begin("Diagnostics", ImGuiWindowFlags.NoCollapse);
         ImGui.text(String.format("%.1f fps", 1 / dt));
         ImGui.text(String.format("%.3f ms/frame", dt * 1000));
+        ImGui.text(String.format("%d vertices", totalVertexCount));
         ImGui.text(String.format("%o Draw calls", drawCalls));
         ImGui.text(String.format("Pos: %s, %s", MouseListener.getX(), MouseListener.getY()));
         ImGui.text(String.format("Delta: %s, %s", MouseListener.mouseDelta().x, MouseListener.mouseDelta().y));

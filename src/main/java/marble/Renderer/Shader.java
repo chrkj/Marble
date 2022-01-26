@@ -155,19 +155,37 @@ public class Shader {
     public void setUniform2f(String varName, Vector2f vec2)
     {
         int varLocation = getUniformLocation(varName);
-        glUniform2fv(varLocation, new float[]{vec2.x, vec2.y});
+        glUniform2f(varLocation, vec2.x, vec2.y);
+    }
+
+    public void setUniform2f(String varName, float x, float y)
+    {
+        int varLocation = getUniformLocation(varName);
+        glUniform2f(varLocation, x, y);
     }
 
     public void setUniform3f(String varName, Vector3f vec3)
     {
         int varLocation = getUniformLocation(varName);
-        glUniform3fv(varLocation, new float[]{vec3.x, vec3.y, vec3.z});
+        glUniform3f(varLocation, vec3.x, vec3.y, vec3.z);
+    }
+
+    public void setUniform3f(String varName, float x, float y, float z)
+    {
+        int varLocation = getUniformLocation(varName);
+        glUniform3f(varLocation, x, y, z);
     }
 
     public void setUniform4f(String varName, Vector4f vec4)
     {
         int varLocation = getUniformLocation(varName);
-        glUniform4fv(varLocation, new float[]{vec4.x, vec4.y, vec4.z, vec4.w});
+        glUniform4f(varLocation, vec4.x, vec4.y, vec4.z, vec4.w);
+    }
+
+    public void setUniform4f(String varName, float x, float y, float z, float w)
+    {
+        int varLocation = getUniformLocation(varName);
+        glUniform4f(varLocation, x, y, z, w);
     }
 
     public void setUniformMat3(String varName, Matrix3f mat3)
@@ -188,12 +206,13 @@ public class Shader {
 
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
-        Vector4f dir = new Vector4f((float) Math.sin(Math.toRadians(light.getEntity().transform.rotation.y)),
+        Vector4f dir = new Vector4f(
+                (float) Math.sin(Math.toRadians(light.getEntity().transform.rotation.y)),
                 (float) -(Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.sin(Math.toRadians(light.getEntity().transform.rotation.x))),
                 (float) (Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.cos(Math.toRadians(light.getEntity().transform.rotation.x))),
                 0).mul(viewMatrix);
         setUniform4f("uDirectionalLight.color", light.getColor());
-        setUniform3f("uDirectionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
+        setUniform3f("uDirectionalLight.direction", dir.x, dir.y, dir.z);
         setUniform1f("uDirectionalLight.intensity", light.getIntensity());
     }
 

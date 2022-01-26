@@ -45,4 +45,8 @@ dependencies {
 
     // PngDecoder
     implementation 'im.bci:pngdecoder:0.13'
+
+    // Javagl.obj
+    implementation group: 'de.javagl', name: 'obj', version: '0.2.1'
+
 }

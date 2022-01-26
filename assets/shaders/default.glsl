@@ -4,10 +4,10 @@ layout (location=0) in vec3 aPos;
 layout (location=1) in vec2 aTexCoord;
 layout (location=2) in vec3 aVertexNormal;
 
-uniform float uTime;
 uniform mat4 uView;
 uniform mat4 uWorld;
 uniform mat4 uProjection;
+uniform float uTime;
 
 out vec2 fTexCoord;
 out vec3 fVertexPos;
@@ -53,7 +53,7 @@ vec4 speculrC;
 
 uniform Material uMaterial;
 uniform DirectionalLight uDirectionalLight;
-uniform vec4 uAmbientLight;
+uniform vec3 uAmbientLight;
 uniform float uSpecularPower;
 uniform sampler2D uTextureSampler;
 
@@ -105,5 +105,5 @@ void main()
 
     vec4 diffuseSpecularComp = calcDirectionalLight(uDirectionalLight, fVertexPos, fVertexNormal);;
 
-    fragColor = ambientC * uAmbientLight + diffuseSpecularComp;
+    fragColor = ambientC * vec4(uAmbientLight, 1) + diffuseSpecularComp;
 }

@@ -21,28 +21,30 @@ public class EditorScene extends Scene {
     @Override
     public void init()
     {
-        mainCamera = new Camera(new Vector3f(0,0,10));
+        mainCamera = new Camera(new Vector3f(0f, 0f, 10f));
+        ambientLight.set(0.1f);
+        //{
+        //    Entity entity = createEntity("Cube")
+        //            .setPosition(-3,-2,3)
+        //            .setAmbient(1,1,1,1)
+        //            .setDiffuse(1,1,1,1)
+        //            .setReflectance(0)
+        //            .addTexture(Loader.loadTexture("assets/textures/grassblock.png"))
+        //            .addComponent(Loader.loadMeshObj("assets/obj/cube.obj"));
+        //    addEntityToScene(entity);
+        //}
         {
-            Entity entity = createEntity("Cube")
-                    .setPosition(-3,-2,3)
-                    .setAmbient(1,1,1,1)
-                    .setDiffuse(1,1,1,1)
-                    .setReflectance(0)
-                    .addTexture(Loader.loadTexture("assets/textures/grassblock.png"))
-                    .addComponent(Loader.loadMeshOBJ("assets/obj/cube.obj"));
-            addEntityToScene(entity);
-        }
-        {
-            Entity entity = createEntity("Bunny")
+            Entity entity = createEntity("Beer")
                     .setPosition(3,-2,3)
-                    .addComponent(Loader.loadMeshOBJ("assets/obj/bunny.obj"));
+                    .setScale(0.1f, 0.1f, 0.1f)
+                    .addComponent(Loader.loadMeshObj("assets/obj/helm.obj"));
             addEntityToScene(entity);
         }
         {
             Entity entity = createEntity("DirLight")
                     .setPosition(-1,2,4)
                     .setRotation(333,53,0)
-                    .addComponent(Loader.loadMeshOBJ("assets/obj/arrow.obj"))
+                    .addComponent(Loader.loadMeshObj("assets/obj/arrow.obj"))
                     .addComponent(LightFactory.getLight(LightType.DIRECTIONAL));
             addEntityToScene(entity);
         }
@@ -56,7 +58,7 @@ public class EditorScene extends Scene {
 
     private void handleInput(float dt)
     {
-        float camSpeed = 10 * dt;
+        float camSpeed = 100 * dt;
         float camRotSpeed = 15 * dt;
         // Movement
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))

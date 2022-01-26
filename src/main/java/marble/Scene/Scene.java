@@ -3,6 +3,9 @@ package marble.scene;
 import java.util.List;
 import java.util.ArrayList;
 
+import marble.entity.components.Mesh;
+import marble.imgui.ImGuiLayer;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import imgui.ImGui;
@@ -31,14 +34,14 @@ public abstract class Scene {
     private ImFloat[] yScale;
     private ImFloat[] zScale;
     private float sceneStartedTime;
-    private float specularPower = 10;
     private boolean isRunning = false;
     private final Renderer renderer = new Renderer();
-    private final Vector4f ambientLight = new Vector4f(0f, 0f, 0f, 0f);
 
-    protected Camera mainCamera;
+    protected Camera mainCamera = new Camera();
+    protected float specularPower = 10;
     protected final List<Light> lights = new ArrayList<>();
     protected final List<Entity> entities = new ArrayList<>();
+    protected final Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
 
     public abstract void init();
     public abstract void update(float dt);
@@ -69,7 +72,7 @@ public abstract class Scene {
             entity.cleanUp();
     }
 
-    public Vector4f getAmbientLight()
+    public Vector3f getAmbientLight()
     {
         return ambientLight;
     }
@@ -133,7 +136,6 @@ public abstract class Scene {
         ambientLight.x = r;
         ambientLight.y = g;
         ambientLight.z = b;
-        ambientLight.w = a;
     }
 
     private void InitImGuiDebugLayer()
@@ -147,7 +149,6 @@ public abstract class Scene {
         xScale = new ImFloat[entities.size()];
         yScale = new ImFloat[entities.size()];
         zScale = new ImFloat[entities.size()];
-
         for (int i = 0; i < entities.size(); i++) {
             xTrans[i] = new ImFloat(entities.get(i).transform.position.x);
             yTrans[i] = new ImFloat(entities.get(i).transform.position.y);
@@ -169,7 +170,9 @@ public abstract class Scene {
         ImGui.text(String.format("Rotation: %.3f %.3f %.3f", mainCamera.getRotation().x, mainCamera.getRotation().y, mainCamera.getRotation().z));
         ImGui.spacing();
         ImGui.spacing();
+        int totalVertexCount = 0;
         for (int i = 0; i < entities.size(); i++) {
+            totalVertexCount += entities.get(i).getComponent(Mesh.class).getVertexCount();
             ImGui.text(entities.get(i).name);
             ImGui.text("Translation");
             ImGui.sliderScalar("Tx" + i, ImGuiDataType.Float, xTrans[i], -30, 30);
@@ -190,6 +193,7 @@ public abstract class Scene {
             entities.get(i).transform.setScale(xScale[i].get(), yScale[i].get(), zScale[i].get());
             entities.get(i).transform.setPosition(xTrans[i].get(), yTrans[i].get(), zTrans[i].get());
         }
+        ImGuiLayer.totalVertexCount = totalVertexCount;
         ImGui.end();
     }
 

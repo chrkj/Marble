@@ -14,14 +14,21 @@ import marble.renderer.Buffer;
 public class Mesh extends Component {
 
     private final int vaoId;
+    private final int indicesCount;
     private final int vertexCount;
-    private final boolean enableSmoothShading;
     private final List<Integer> vertexBufferObjectIds = new ArrayList<>();
 
-    public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray, boolean enableSmoothShading)
+    public Mesh()
     {
-        this.vertexCount = indicesArray.length;
-        this.enableSmoothShading = enableSmoothShading;
+        this.vaoId = -1;
+        this.indicesCount = 0;
+        this.vertexCount = 0;
+    }
+
+    public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray)
+    {
+        this.vertexCount = verticesArray.length / 3;
+        this.indicesCount = indicesArray.length;
 
         // Create and bind VAO
         vaoId = glGenVertexArrays();
@@ -47,10 +54,12 @@ public class Mesh extends Component {
         if (entity.material.hasTexture() == 1)
             entity.material.getTexture().bind();
 
-        // Draw the mesh
-        glBindVertexArray(vaoId);
-        glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
-        ImGuiLayer.drawCalls++;
+        // Draw mesh if vao is valid
+        if (vaoId != -1) {
+            glBindVertexArray(vaoId);
+            glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
+            ImGuiLayer.drawCalls++;
+        }
 
         // Restore state
         if (entity.material.hasTexture() == 1)
@@ -72,6 +81,11 @@ public class Mesh extends Component {
         // Delete VAO
         glBindVertexArray(0);
         glDeleteVertexArrays(vaoId);
+    }
+
+    public int getVertexCount()
+    {
+        return vertexCount;
     }
 
 }

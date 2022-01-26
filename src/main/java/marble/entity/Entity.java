@@ -86,6 +86,12 @@ public class Entity {
         return this;
     }
 
+    public Entity setScale(float x, float y, float z)
+    {
+        transform.setScale(x,y,z);
+        return this;
+    }
+
     public Entity setAmbient(float r, float g, float b, float a)
     {
         material.setAmbient(r,g,b,a);
