@@ -52,41 +52,6 @@ public class Window {
        this.title = title;
     }
 
-    public static FrameBuffer getFramebuffer()
-    {
-        return frameBuffer;
-    }
-
-    public void run()
-    {
-        float beginTime = Time.getTime();
-        float endTime;
-        float dt = -1.0f;
-
-        // Game loop
-        while (!glfwWindowShouldClose(windowPtr)) {
-            glfwPollEvents();
-            glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-            imGuiGlfw.newFrame();
-            ImGui.newFrame();
-            frameBuffer.bind();
-            update(dt);
-            frameBuffer.unbind();
-            ImGui.render();
-            imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-            glfwSwapBuffers(windowPtr);
-
-            if(shouldChangeScene)
-                changeScene(nextScene);
-
-            endTime = Time.getTime();
-            dt = endTime - beginTime;
-            beginTime = endTime;
-        }
-    }
-
     public void init()
     {
         Logger.log("LWJGL Version: " + Version.getVersion() + "!");
@@ -97,6 +62,55 @@ public class Window {
         Logger.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
         Logger.log("Renderer: " + GL30.glGetString(GL_RENDERER));
         Logger.log("Version: " + GL30.glGetString(GL_VERSION));
+    }
+
+    public void run()
+    {
+        float beginTime = Time.getTime();
+        float endTime;
+        float dt = -1.0f;
+
+        // Game loop
+        while (!glfwWindowShouldClose(windowPtr)) {
+
+            startFrame();
+            update(dt);
+            endFrame();
+
+            endTime = Time.getTime();
+            dt = endTime - beginTime;
+            beginTime = endTime;
+        }
+    }
+
+    private void update(float dt)
+    {
+        if (dt >= 0) {
+            MouseListener.calcDelta();
+            ImGuiLayer.update(dt);
+            currentScene.updateScene(dt);
+        }
+    }
+
+    public void startFrame()
+    {
+        glfwPollEvents();
+        imGuiGlfw.newFrame();
+        ImGui.newFrame();
+        frameBuffer.bind();
+    }
+
+    public void endFrame()
+    {
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        frameBuffer.unbind();
+        ImGui.render();
+        imGuiGl3.renderDrawData(ImGui.getDrawData());
+        glfwSwapBuffers(windowPtr);
+
+        // TODO: scenemanager
+        if(shouldChangeScene)
+            changeScene(nextScene);
     }
 
     private void initWindow()
@@ -174,6 +188,25 @@ public class Window {
         glfwTerminate();
     }
 
+    private void initScene(Scene scene)
+    {
+        currentScene = scene;
+        currentScene.init();
+        currentScene.start();
+    }
+
+    private void initImGui()
+    {
+        ImGui.createContext();
+        ImGuiIO io = ImGui.getIO();
+        io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
+    }
+
+    public static FrameBuffer getFramebuffer()
+    {
+        return frameBuffer;
+    }
+
     public static int getWidth()
     {
         return width;
@@ -209,26 +242,4 @@ public class Window {
         return resized;
     }
 
-    private void initScene(Scene scene)
-    {
-        currentScene = scene;
-        currentScene.init();
-        currentScene.start();
-    }
-
-    private void initImGui()
-    {
-        ImGui.createContext();
-        ImGuiIO io = ImGui.getIO();
-        io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
-    }
-
-    private void update(float dt)
-    {
-        if (dt >= 0) {
-            MouseListener.calcDelta();
-            ImGuiLayer.update(dt);
-            currentScene.updateScene(dt);
-        }
-    }
 }
