@@ -15,7 +15,7 @@ public class GameScene extends Scene {
     @Override
     public void init()
     {
-        mainCamera = new Camera();
+        editorCam = new Camera();
     }
 
     @Override
@@ -30,17 +30,17 @@ public class GameScene extends Scene {
         float camRotSpeed = 15 * dt;
         // Movement
         if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-            mainCamera.move(0,0, -camSpeed);
+            editorCam.move(0,0, -camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-            mainCamera.move(0,0, camSpeed);
+            editorCam.move(0,0, camSpeed);
         if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-            mainCamera.move(-camSpeed,0,0);
+            editorCam.move(-camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-            mainCamera.move(camSpeed,0,0);
+            editorCam.move(camSpeed,0,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_E))
-            mainCamera.move(0, -camSpeed,0);
+            editorCam.move(0, -camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
-            mainCamera.move(0, camSpeed,0);
+            editorCam.move(0, camSpeed,0);
         if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
             changeScene(new EditorScene());
         if(KeyListener.isKeyPressed(KeyEvent.VK_1))
@@ -48,6 +48,6 @@ public class GameScene extends Scene {
         if(KeyListener.isKeyPressed(KeyEvent.VK_2))
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) != GLFW_CURSOR_NORMAL)
-            mainCamera.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
+            editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
     }
 }

@@ -2,22 +2,25 @@ package marble.scene;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.awt.event.KeyEvent;
 
 import org.joml.Vector3f;
 
-import imgui.ImGui;
-import imgui.flag.ImGuiDataType;
-import imgui.type.ImFloat;
+import static org.lwjgl.glfw.GLFW.*;
 
 import marble.Window;
 import marble.util.Time;
 import marble.camera.Camera;
-import marble.entity.Entity;
 import marble.renderer.Renderer;
+import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
+import marble.entity.Entity;
 import marble.entity.components.light.Light;
 import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
 import marble.entity.components.light.DirectionalLight;
+
+import game.GameScene;
 
 public abstract class Scene {
 
@@ -25,7 +28,7 @@ public abstract class Scene {
     private boolean isRunning = false;
     private final Renderer renderer = new Renderer();
 
-    protected Camera mainCamera = new Camera();
+    protected Camera editorCam = new Camera();
     protected float specularPower = 10;
     protected final List<Light> lights = new ArrayList<>();
     protected final List<Entity> entities = new ArrayList<>();
@@ -46,10 +49,11 @@ public abstract class Scene {
 
     public void updateScene(float dt)
     {
+        handleEditorInput(dt);
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        renderer.render(mainCamera, lights);
+        renderer.render(editorCam, lights);
     }
 
     public void cleanUp()
@@ -107,9 +111,9 @@ public abstract class Scene {
         return Time.getTime() - sceneStartedTime;
     }
 
-    protected Camera getMainCamera()
+    protected Camera getEditorCam()
     {
-        return mainCamera;
+        return editorCam;
     }
 
     protected void setSpecularPower(float specularPower)
@@ -127,6 +131,34 @@ public abstract class Scene {
     public List<Entity> getEntities()
     {
         return entities;
+    }
+
+    private void handleEditorInput(float dt)
+    {
+        // TODO: Only allow input when viewport is active
+        float camSpeed = 10 * dt;
+        float camRotSpeed = 15 * dt;
+        // Movement
+        if (KeyListener.isKeyPressed(KeyEvent.VK_W))
+            editorCam.move(0,0, -camSpeed);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_S))
+            editorCam.move(0,0, camSpeed);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_A))
+            editorCam.move(-camSpeed,0,0);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_D))
+            editorCam.move(camSpeed,0,0);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_E))
+            editorCam.move(0, -camSpeed,0);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
+            editorCam.move(0, camSpeed,0);
+        if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
+            changeScene(new GameScene());
+        if(KeyListener.isKeyPressed(KeyEvent.VK_1))
+            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if(KeyListener.isKeyPressed(KeyEvent.VK_2))
+            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
+            editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
     }
 
 }
