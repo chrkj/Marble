@@ -166,6 +166,7 @@ public class ImGuiLayer {
                 ImGui.treePop();
             }
 
+            // TODO: Handle unselecting when clicking away from the entity
             if (ImGui.isItemClicked())
                 selectedEntity = entity;
         }
