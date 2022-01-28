@@ -128,7 +128,7 @@ public class Entity {
 
     public void setupInspector()
     {
-        name = ImGuiLayer.inputText(name);
+        name = ImGuiLayer.inputText("name", name);
         transform.setupInspector();
         material.setupInspector();
         for (Component component : components.values())

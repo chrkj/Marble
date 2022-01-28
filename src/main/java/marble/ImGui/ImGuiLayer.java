@@ -148,14 +148,19 @@ public class ImGuiLayer {
         ImGui.begin("Hierarchy");
 
         for (Entity entity : Window.getCurrentScene().getEntities()) {
-
+            boolean nodeOpen;
             int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+
             if (entity.getChildren().size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags.Leaf;
             if (entity == selectedEntity)
                 nodeFlags |= ImGuiTreeNodeFlags.Selected;
 
-            boolean nodeOpen = ImGui.treeNodeEx(entity.name, nodeFlags);
+            if (entity.name.length() == 0)
+                nodeOpen = ImGui.treeNodeEx("##" + entity.name, nodeFlags);
+            else
+                nodeOpen = ImGui.treeNodeEx(entity.name, nodeFlags);
+
             if (nodeOpen) {
                 // TODO: Add entity children
                 ImGui.treePop();
@@ -242,11 +247,15 @@ public class ImGuiLayer {
         style.setWindowRounding(4.0f);
     }
 
-    public static String inputText(String text)
+    public static String inputText(String label, String text)
     {
+        ImGui.pushID(label);
         ImString outString = new ImString(text, 256);
-        if (ImGui.inputText("##" + text, outString))
+        if (ImGui.inputText("##" + label, outString)) {
+            ImGui.popID();
             return outString.get();
+        }
+        ImGui.popID();
         return text;
     }
 
