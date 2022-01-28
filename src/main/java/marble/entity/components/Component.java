@@ -7,8 +7,8 @@ public abstract class Component {
     protected Entity entity = null;
 
     public abstract void render();
-
     public abstract void cleanUp();
+    public abstract void setupInspector();
 
     public void setEntity(Entity entity)
     {

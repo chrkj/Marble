@@ -1,8 +1,12 @@
 package marble.entity;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiTreeNodeFlags;
+
 import org.joml.Vector4f;
 
 import marble.renderer.Shader;
+import marble.imgui.ImGuiLayer;
 import marble.entity.components.Texture;
 
 public class Material {
@@ -16,12 +20,11 @@ public class Material {
 
     public Material()
     {
-        Vector4f DEFAULT_COLOR = new Vector4f(1f, 0f, 1f, 1f);
         this.shader = new Shader("assets/shaders/default.glsl");
         this.texture = null;
         this.ambient = new Vector4f();
-        this.diffuse = DEFAULT_COLOR;
-        this.specular = DEFAULT_COLOR;
+        this.diffuse = new Vector4f(1f, 1f, 1f, 1f);
+        this.specular = new Vector4f(1f, 1f, 1f, 1f);
         this.reflectance = 0;
         shader.compile();
     }
@@ -100,4 +103,16 @@ public class Material {
         return texture == null ? 0 : 1;
     }
 
+    public void setupInspector()
+    {
+        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+        boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
+        if (nodeOpen) {
+            ImGuiLayer.colorEdit4("Ambient", ambient);
+            ImGuiLayer.colorEdit4("Diffuse", diffuse);
+            ImGuiLayer.colorEdit4("Specular", specular);
+            reflectance = ImGuiLayer.dragFloat("Reflectance", reflectance);
+            ImGui.treePop();
+        }
+    }
 }

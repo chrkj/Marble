@@ -2,6 +2,7 @@ package marble.entity;
 
 import java.util.*;
 
+import marble.imgui.ImGuiLayer;
 import marble.entity.components.Texture;
 import marble.entity.components.Component;
 
@@ -11,6 +12,8 @@ public class Entity {
     public Material material;
     public Transform transform;
 
+    private Entity parent = null; // TODO: Implement this
+    private final List<Entity> children = new ArrayList<>(); // TODO: Implement this
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     public Entity()
@@ -18,9 +21,16 @@ public class Entity {
         init(null, new Transform(), new Material());
     }
 
-    public Entity(String tag)
+    public Entity(String name)
     {
-        init(tag, new Transform(), new Material());
+        init(name, new Transform(), new Material());
+    }
+
+    private void init(String name, Transform transform, Material material)
+    {
+        this.name = name;
+        this.material = material;
+        this.transform = transform;
     }
 
     public void start()
@@ -116,11 +126,31 @@ public class Entity {
         return this;
     }
 
-    private void init(String name, Transform transform, Material material)
+    public void setupInspector()
     {
-        this.name = name;
-        this.material = material;
-        this.transform = transform;
+        name = ImGuiLayer.inputText(name);
+        transform.setupInspector();
+        material.setupInspector();
+        for (Component component : components.values())
+            component.setupInspector();
+    }
+
+    public List<Entity> getChildren()
+    {
+        return children;
+    }
+
+    public Entity setParent(Entity entity)
+    {
+        this.parent = entity;
+        entity.children.add(this);
+        return this;
+    }
+
+    public Entity setChild(Entity entity){
+        this.children.add(entity);
+        entity.parent = this;
+        return this;
     }
 
 }

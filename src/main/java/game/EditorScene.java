@@ -24,16 +24,6 @@ public class EditorScene extends Scene {
         mainCamera = new Camera(new Vector3f(20f, 0f, 26f));
         mainCamera.rotate(7f,-35f,-30f);
         ambientLight.set(0.1f);
-        //{
-        //    Entity entity = createEntity("Cube")
-        //            .setPosition(-3,-2,3)
-        //            .setAmbient(1,1,1,1)
-        //            .setDiffuse(1,1,1,1)
-        //            .setReflectance(0)
-        //            .addTexture(Loader.loadTexture("assets/textures/grassblock.png"))
-        //            .addComponent(Loader.loadMeshObj("assets/obj/cube.obj"));
-        //    addEntityToScene(entity);
-        //}
         {
             Entity entity = createEntity("Helm")
                     .setPosition(3,-2,3)
@@ -58,6 +48,8 @@ public class EditorScene extends Scene {
 
     private void handleInput(float dt)
     {
+        // TODO: Editor cam should be a part of scene
+        // TODO: Only allow input when viewport is active
         float camSpeed = 10 * dt;
         float camRotSpeed = 15 * dt;
         // Movement

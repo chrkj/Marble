@@ -1,5 +1,8 @@
 package marble.entity.components;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiTreeNodeFlags;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
@@ -43,6 +46,16 @@ public class Texture extends Component {
     public void cleanUp()
     {
         glDeleteTextures(textureId);
+    }
+
+    @Override
+    public void setupInspector()
+    {
+        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+        boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
+        if (nodeOpen) {
+            ImGui.treePop();
+        }
     }
 
     @Override

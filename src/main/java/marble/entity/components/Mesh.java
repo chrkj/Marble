@@ -3,13 +3,16 @@ package marble.entity.components;
 import java.util.List;
 import java.util.ArrayList;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiTreeNodeFlags;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
-import marble.imgui.ImGuiLayer;
 import marble.renderer.Buffer;
+import marble.imgui.ImGuiLayer;
 
 public class Mesh extends Component {
 
@@ -83,9 +86,21 @@ public class Mesh extends Component {
         glDeleteVertexArrays(vaoId);
     }
 
+    @Override
+    public void setupInspector()
+    {
+        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+        boolean nodeOpen = ImGui.treeNodeEx("Mesh", nodeFlags);
+        if (nodeOpen) {
+            ImGui.treePop();
+        }
+    }
+
     public int getVertexCount()
     {
         return vertexCount;
     }
+
+
 
 }

@@ -1,23 +1,27 @@
 package marble.imgui;
 
 import imgui.*;
-import imgui.flag.ImGuiCol;
-import imgui.flag.ImGuiWindowFlags;
+import imgui.flag.*;
+import imgui.type.ImString;
 import imgui.type.ImBoolean;
+
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 import marble.Window;
+import marble.entity.Entity;
 import marble.listeners.MouseListener;
 
 public class ImGuiLayer {
 
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
+    public static Entity selectedEntity;
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 getCursorScreenPos = new ImVec2();
     public static final ImBoolean polygonMode = new ImBoolean(false);
-
     private static final ImBoolean vsync = new ImBoolean(true);
     private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
@@ -26,8 +30,9 @@ public class ImGuiLayer {
         setupTheme();
         setupDockspace();
         setupDiagnostics(dt);
+        setupSceneHierarchy();
+        setupEntityInspector();
         setupGameViewport();
-        ImGui.showDemoWindow();
         setupConsole();
     }
 
@@ -38,10 +43,10 @@ public class ImGuiLayer {
         ImGui.text(String.format("%.3f ms/frame", dt * 1000));
         ImGui.text(String.format("%d vertices", totalVertexCount));
         ImGui.text(String.format("%o Draw calls", drawCalls));
+        drawCalls = 0;
         ImGui.text(String.format("Pos: %s, %s", MouseListener.getX(), MouseListener.getY()));
         ImGui.text(String.format("Delta: %s, %s", MouseListener.mouseDelta().x, MouseListener.mouseDelta().y));
         ImGui.text(String.format("Dragging: %b", MouseListener.isDragging()));
-        drawCalls = 0;
 
         if (ImGui.checkbox("Vsync", vsync)) {
             if(vsync.get())
@@ -49,6 +54,7 @@ public class ImGuiLayer {
             else
                 glfwSwapInterval(GLFW_FALSE);
         }
+
         ImGui.checkbox("Polygon", polygonMode);
         ImGui.end();
     }
@@ -137,6 +143,38 @@ public class ImGuiLayer {
         return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
     }
 
+    public static void setupSceneHierarchy()
+    {
+        ImGui.begin("Hierarchy");
+
+        for (Entity entity : Window.getCurrentScene().getEntities()) {
+
+            int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+            if (entity.getChildren().size() == 0)
+                nodeFlags |= ImGuiTreeNodeFlags.Leaf;
+            if (entity == selectedEntity)
+                nodeFlags |= ImGuiTreeNodeFlags.Selected;
+
+            boolean nodeOpen = ImGui.treeNodeEx(entity.name, nodeFlags);
+            if (nodeOpen) {
+                // TODO: Add entity children
+                ImGui.treePop();
+            }
+
+            if (ImGui.isItemClicked())
+                selectedEntity = entity;
+        }
+        ImGui.end();
+    }
+
+    private static void setupEntityInspector()
+    {
+        ImGui.begin("Inspector");
+        if (selectedEntity != null)
+            selectedEntity.setupInspector();
+        ImGui.end();
+    }
+
     private static void setupTheme()
     {
         ImGuiStyle style = ImGui.getStyle();
@@ -202,6 +240,67 @@ public class ImGuiLayer {
         style.setTabBorderSize(1.0f);
         style.setTabRounding(0.0f);
         style.setWindowRounding(4.0f);
+    }
+
+    public static String inputText(String text)
+    {
+        ImString outString = new ImString(text, 256);
+        if (ImGui.inputText("##" + text, outString))
+            return outString.get();
+        return text;
+    }
+
+    public static void vec3Controller(String label, Vector3f values)
+    {
+        ImGui.pushID(label);
+        ImGui.text(label);
+        ImGui.nextColumn();
+
+        float widthEach = ImGui.calcItemWidth() / 3.0f;
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesX = {values.x};
+        ImGui.dragFloat("##X", vecValuesX, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("X");
+        ImGui.sameLine();
+        ImGui.popItemWidth();
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesY = {values.y};
+        ImGui.dragFloat("##Y", vecValuesY, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("Y");
+        ImGui.sameLine();
+        ImGui.popItemWidth();
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesZ = {values.z};
+        ImGui.dragFloat("##Z", vecValuesZ, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("Z");
+        ImGui.popItemWidth();
+
+        ImGui.popID();
+        values.x = vecValuesX[0];
+        values.y = vecValuesY[0];
+        values.z = vecValuesZ[0];
+    }
+
+    public static void colorEdit4(String label, Vector4f color)
+    {
+        ImGui.text(label);
+        float[] imColor = {color.x, color.y, color.z, color.w};
+        if (ImGui.colorEdit4(label, imColor))
+            color.set(imColor[0], imColor[1], imColor[2], imColor[3]);
+    }
+
+    public static float dragFloat(String label, float value)
+    {
+        ImGui.text(label);
+        float[] valArr = {value};
+        ImGui.dragFloat("##" + label, valArr, 0.1f);
+        return valArr[0];
     }
 
 }
