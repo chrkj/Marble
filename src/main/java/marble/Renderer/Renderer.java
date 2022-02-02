@@ -1,20 +1,19 @@
 package marble.renderer;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.Window;
 import marble.util.Time;
-import marble.util.Transformation;
 import marble.camera.Camera;
-import marble.entity.Material;
+import marble.util.Transformation;
 import marble.entity.Entity;
-import marble.entity.components.light.Light;
-import marble.entity.components.light.SpotLight;
-import marble.entity.components.light.PointLight;
+import marble.entity.Material;
+import marble.entity.components.Component;
+import marble.entity.components.Registry;
 import marble.entity.components.light.DirectionalLight;
+import marble.entity.components.light.Light;
 
 public class Renderer {
 
@@ -30,7 +29,7 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Camera camera, List<Light> lights)
+    public void render(Camera camera, Registry registry)
     {
         clear();
 
@@ -39,15 +38,10 @@ public class Renderer {
             Shader shader = material.getShader();
             shader.bind();
 
-            // Set lighting uniforms
-            for (int i = 0; i < lights.size(); i++) {
-                if (lights.get(i).getClass().isAssignableFrom(DirectionalLight.class)) {
-                    shader.setUniformDirLight(lights.get(i), Transformation.getViewMatrix(camera), i);
-                } else if (lights.get(i).getClass().isAssignableFrom(SpotLight.class)) {
-                    //shader.setUniformSpotLight(lights.get(i));
-                } else if (lights.get(i).getClass().isAssignableFrom(PointLight.class)) {
-                    //shader.setUniformPointLight(lights.get(i));
-                }
+            int index = 0;
+            for (Component light : registry.get(DirectionalLight.class)) {
+                shader.setUniformDirLight((Light) light, Transformation.getViewMatrix(camera), index);
+                index++;
             }
 
             shader.setUniformMaterial(material);

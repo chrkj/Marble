@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 
+import marble.entity.components.Component;
+import marble.entity.components.Registry;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -15,10 +17,6 @@ import marble.renderer.Renderer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.entity.Entity;
-import marble.entity.components.light.Light;
-import marble.entity.components.light.SpotLight;
-import marble.entity.components.light.PointLight;
-import marble.entity.components.light.DirectionalLight;
 
 import game.GameScene;
 
@@ -30,7 +28,7 @@ public abstract class Scene {
 
     protected Camera editorCam = new Camera();
     protected float specularPower = 10;
-    protected final List<Light> lights = new ArrayList<>();
+    protected final Registry registry = new Registry();
     protected final List<Entity> entities = new ArrayList<>();
     protected final Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
 
@@ -53,7 +51,7 @@ public abstract class Scene {
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        renderer.render(editorCam, lights);
+        renderer.render(editorCam, registry);
     }
 
     public void cleanUp()
@@ -91,13 +89,8 @@ public abstract class Scene {
             entity.start();
             renderer.add(entity);
         }
-
-        if (entity.hasComponent(SpotLight.class))
-            lights.add(entity.getComponent(SpotLight.class));
-        if (entity.hasComponent(PointLight.class))
-            lights.add(entity.getComponent(PointLight.class));
-        if (entity.hasComponent(DirectionalLight.class))
-            lights.add(entity.getComponent(DirectionalLight.class));
+        for (Component component : entity.getAllComponents())
+            registry.register(component);
     }
 
     protected void changeScene(Scene newScene)
@@ -161,4 +154,8 @@ public abstract class Scene {
             editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
     }
 
+    public List<Entity> getSceneEntities()
+    {
+        return entities;
+    }
 }
