@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.Window;
+import marble.entity.components.Mesh;
+import marble.entity.components.light.Light;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.util.Transformation;
 import marble.entity.Entity;
 import marble.entity.Material;
-import marble.entity.components.Component;
 import marble.entity.components.Registry;
-import marble.entity.components.light.DirectionalLight;
-import marble.entity.components.light.Light;
 
 public class Renderer {
 
@@ -33,14 +32,14 @@ public class Renderer {
     {
         clear();
 
-        for (Entity entity : entities) {
-            Material material = entity.material;
+        for (Mesh mesh : registry.getMeshes()) {
+            Material material = mesh.material;
             Shader shader = material.getShader();
             shader.bind();
 
             int index = 0;
-            for (Component light : registry.get(DirectionalLight.class)) {
-                shader.setUniformDirLight((Light) light, Transformation.getViewMatrix(camera), index);
+            for (Light light : registry.getLights()) {
+                shader.setUniformDirLight(light, Transformation.getViewMatrix(camera), index);
                 index++;
             }
 
@@ -51,9 +50,9 @@ public class Renderer {
             shader.setUniform1f("uSpecularPower", Window.getCurrentScene().getSpecularPower());
             shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
             shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
-            shader.setUniformMat4("uWorld", Transformation.getWorldMatrix(entity.transform.position, entity.transform.rotation, entity.transform.scale));
+            shader.setUniformMat4("uWorld", Transformation.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
 
-            entity.render();
+            mesh.getEntity().render();
             shader.unbind();
         }
     }

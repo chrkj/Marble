@@ -24,7 +24,7 @@ public class EditorScene extends Scene {
             addEntityToScene(entity);
         }
         {
-            Entity entity = createEntity("DirLight")
+            Entity entity = createEntity("Directional light")
                     .setPosition(-1,2,4)
                     .setRotation(333,53,0)
                     .addComponent(LightFactory.getLight(LightType.DIRECTIONAL));

@@ -11,13 +11,15 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
+import marble.entity.Material;
 import marble.renderer.Buffer;
 import marble.imgui.ImGuiLayer;
 
 public class Mesh extends Component {
 
-    private String filePath = "";
+    public Material material;
 
+    private String filePath = "";
     private final int vaoId;
     private final int vertexCount;
     private final int indicesCount;
@@ -28,11 +30,13 @@ public class Mesh extends Component {
         this.vaoId = -1;
         this.indicesCount = 0;
         this.vertexCount = 0;
+        this.material = new Material();
     }
 
     public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray, String filePath)
     {
         this.filePath = filePath;
+        this.material = new Material();
         this.vertexCount = verticesArray.length / 3;
         this.indicesCount = indicesArray.length;
 
@@ -57,8 +61,8 @@ public class Mesh extends Component {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // Bind the texture
-        if (entity.material.hasTexture() == 1)
-            entity.material.getTexture().bind();
+        if (material.hasTexture() == 1)
+            material.getTexture().bind();
 
         // Draw mesh if vao is valid
         if (vaoId != -1) {
@@ -68,8 +72,8 @@ public class Mesh extends Component {
         }
 
         // Restore state
-        if (entity.material.hasTexture() == 1)
-            entity.material.getTexture().unbind();
+        if (material.hasTexture() == 1)
+            material.getTexture().unbind();
 
         glBindVertexArray(0);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -87,6 +91,8 @@ public class Mesh extends Component {
         // Delete VAO
         glBindVertexArray(0);
         glDeleteVertexArrays(vaoId);
+
+        material.getShader().cleanUp();
     }
 
     @Override
@@ -101,6 +107,7 @@ public class Mesh extends Component {
             ImGuiLayer.text("Indices count: " + indicesCount);
             ImGui.treePop();
         }
+        material.setupInspector();
     }
 
     public int getVertexCount()
@@ -108,6 +115,24 @@ public class Mesh extends Component {
         return vertexCount;
     }
 
+    public void setAmbient(float r, float g, float b, float a)
+    {
+        material.setAmbient(r,g,b,a);
+    }
 
+    public void setDiffuse(float r, float g, float b, float a)
+    {
+        material.setDiffuse(r,g,b,a);
+    }
+
+    public void setReflectance(float reflectance)
+    {
+        material.setReflectance(reflectance);
+    }
+
+    public void addTexture(Texture texture)
+    {
+        material.setTexture(texture);
+    }
 
 }

@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 public class Logger {
 
-    private static StringBuffer buffer = new StringBuffer();
+    private static final StringBuffer buffer = new StringBuffer();
     private static final SimpleDateFormat sdf3 = new SimpleDateFormat("HH:mm:ss.SSS");
 
     private Logger() { }

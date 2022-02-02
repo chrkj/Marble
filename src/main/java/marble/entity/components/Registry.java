@@ -31,24 +31,33 @@ public class Registry {
             directionalLights.add((DirectionalLight) component);
     }
 
-    public List<? extends Component> get(Class<? extends Component> componentClass)
+    public List<Mesh> getMeshes()
     {
-        if (componentClass == Mesh.class)
-            return meshes;
-        if (componentClass == SpotLight.class)
-            return spotLights;
-        if (componentClass == PointLight.class)
-            return pointLights;
-        if (componentClass == DirectionalLight.class)
-            return directionalLights;
-        if (componentClass == Light.class) {
-            List<Light> lights = new ArrayList<>();
-            lights.addAll(spotLights);
-            lights.addAll(pointLights);
-            lights.addAll(directionalLights);
-            return lights;
-        }
-        return null;
+        return meshes;
+    }
+
+    public List<SpotLight> getSpotLights()
+    {
+        return spotLights;
+    }
+
+    public List<PointLight> getPointLights()
+    {
+        return pointLights;
+    }
+
+    public List<DirectionalLight> getDirectionalLights()
+    {
+        return directionalLights;
+    }
+
+    public List<Light> getLights()
+    {
+        List<Light> lights = new ArrayList<>();
+        lights.addAll(spotLights);
+        lights.addAll(pointLights);
+        lights.addAll(directionalLights);
+        return lights;
     }
 
     public void remove(Component component)

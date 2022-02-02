@@ -10,7 +10,6 @@ import marble.entity.components.Component;
 public class Entity {
 
     public String name;
-    public Material material;
     public Transform transform;
 
     private Entity parent = null;
@@ -19,18 +18,17 @@ public class Entity {
 
     public Entity()
     {
-        init("Entity", new Transform(), new Material());
+        init("Entity", new Transform());
     }
 
     public Entity(String name)
     {
-        init(name, new Transform(), new Material());
+        init(name, new Transform());
     }
 
-    private void init(String name, Transform transform, Material material)
+    private void init(String name, Transform transform)
     {
         this.name = name;
-        this.material = material;
         this.transform = transform;
     }
 
@@ -82,7 +80,6 @@ public class Entity {
     {
         for (Component component : getAllComponents())
             component.cleanUp();
-        material.getShader().cleanUp();
     }
 
     public Entity setPosition(float x, float y, float z)
@@ -103,35 +100,10 @@ public class Entity {
         return this;
     }
 
-    public Entity setAmbient(float r, float g, float b, float a)
-    {
-        material.setAmbient(r,g,b,a);
-        return this;
-    }
-
-    public Entity setDiffuse(float r, float g, float b, float a)
-    {
-        material.setDiffuse(r,g,b,a);
-        return this;
-    }
-
-    public Entity setReflectance(float reflectance)
-    {
-        material.setReflectance(reflectance);
-        return this;
-    }
-
-    public Entity addTexture(Texture texture)
-    {
-        material.setTexture(texture);
-        return this;
-    }
-
     public void setupInspector()
     {
         name = ImGuiLayer.inputText("name", name);
         transform.setupInspector();
-        material.setupInspector();
         for (Component component : components.values())
             component.setupInspector();
         ImGui.separator();
