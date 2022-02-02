@@ -42,7 +42,8 @@ public class Window {
     private static int height;
     private static boolean resized;
     private static Scene currentScene;
-    private static FrameBuffer frameBuffer;
+    private static FrameBuffer gameViewportFramebuffer;
+    private static FrameBuffer sceneViewportFramebuffer;
 
     public Window(String title)
     {
@@ -97,13 +98,11 @@ public class Window {
         glfwPollEvents();
         imGuiGlfw.newFrame();
         ImGui.newFrame();
-        frameBuffer.bind();
     }
 
     public void endFrame()
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        frameBuffer.unbind();
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
         glfwSwapBuffers(windowPtr);
@@ -163,7 +162,9 @@ public class Window {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        frameBuffer = new FrameBuffer(getWidth(), getHeight());
+        sceneViewportFramebuffer = new FrameBuffer(width, height);
+        gameViewportFramebuffer = new FrameBuffer(width, height);
+
 
         // Set initial scene
         initScene(new EditorScene());
@@ -203,9 +204,14 @@ public class Window {
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
     }
 
-    public static FrameBuffer getFramebuffer()
+    public static FrameBuffer getSceneFramebuffer()
     {
-        return frameBuffer;
+        return sceneViewportFramebuffer;
+    }
+
+    public static FrameBuffer getGameFramebuffer()
+    {
+        return gameViewportFramebuffer;
     }
 
     public static int getWidth()

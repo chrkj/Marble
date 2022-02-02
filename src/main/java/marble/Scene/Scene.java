@@ -26,7 +26,9 @@ public abstract class Scene {
     private boolean isRunning = false;
     private final Renderer renderer = new Renderer();
 
-    protected Camera editorCam = new Camera();
+    // TODO: Make a camera component for main camera
+    protected Camera mainCamera = new Camera();
+    protected Camera editorCamera = new Camera();
     protected float specularPower = 10;
     protected final Registry registry = new Registry();
     protected final List<Entity> entities = new ArrayList<>();
@@ -50,7 +52,8 @@ public abstract class Scene {
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        renderer.render(editorCam, registry);
+        renderer.render(mainCamera, registry, Window.getGameFramebuffer(), 0);
+        renderer.render(editorCamera, registry, Window.getSceneFramebuffer(), 1);
     }
 
     public void cleanUp()
@@ -102,9 +105,9 @@ public abstract class Scene {
         return Time.getTime() - sceneStartedTime;
     }
 
-    protected Camera getEditorCam()
+    protected Camera getEditorCamera()
     {
-        return editorCam;
+        return editorCamera;
     }
 
     protected void setSpecularPower(float specularPower)
@@ -126,25 +129,25 @@ public abstract class Scene {
 
     private void handleSceneViewportInput(float dt)
     {
-        if (ImGuiLayer.allowSceneViewportMovement) {
+        if (ImGuiLayer.allowSceneViewportInput) {
             float camSpeed = 10 * dt;
             float camRotSpeed = 15 * dt;
 
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
+            editorCamera.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
 
             if (KeyListener.isKeyPressed(GLFW_KEY_W))
-                editorCam.move(0, 0, -camSpeed);
+                editorCamera.move(0, 0, -camSpeed);
             if (KeyListener.isKeyPressed(GLFW_KEY_S))
-                editorCam.move(0, 0, camSpeed);
+                editorCamera.move(0, 0, camSpeed);
             if (KeyListener.isKeyPressed(GLFW_KEY_A))
-                editorCam.move(-camSpeed, 0, 0);
+                editorCamera.move(-camSpeed, 0, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_D))
-                editorCam.move(camSpeed, 0, 0);
+                editorCamera.move(camSpeed, 0, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_E))
-                editorCam.move(0, -camSpeed, 0);
+                editorCamera.move(0, -camSpeed, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_Q))
-                editorCam.move(0, camSpeed, 0);
+                editorCamera.move(0, camSpeed, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && timeSinceSceneStarted() > 1)
                 changeScene(new GameScene());
         } else {

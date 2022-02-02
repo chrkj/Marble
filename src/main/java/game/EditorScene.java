@@ -14,8 +14,9 @@ public class EditorScene extends Scene {
     @Override
     public void init()
     {
-        editorCam = new Camera(new Vector3f(20f, 0f, 26f));
-        editorCam.rotate(7f,-35f,-30f);
+        mainCamera = new Camera(new Vector3f(0f, 0f, 30f));
+        editorCamera = new Camera(new Vector3f(20f, 0f, 26f));
+        editorCamera.rotate(7f,-35f,-30f);
         ambientLight.set(0.1f);
         {
             Entity entity = createEntity("Helm")
@@ -36,6 +37,5 @@ public class EditorScene extends Scene {
     public void update(float dt)
     {
     }
-
 
 }

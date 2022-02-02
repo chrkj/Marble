@@ -1,7 +1,5 @@
 package marble.renderer;
 
-import java.util.ArrayList;
-
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.Window;
@@ -20,8 +18,9 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Camera camera, Registry registry)
+    public void render(Camera camera, Registry registry, FrameBuffer frameBuffer, int bufferId)
     {
+        frameBuffer.bind();
         clear();
 
         for (Mesh mesh : registry.getMeshes()) {
@@ -41,12 +40,17 @@ public class Renderer {
             shader.setUniform3f("uAmbientLight", Window.getCurrentScene().getAmbientLight());
             shader.setUniform1f("uSpecularPower", Window.getCurrentScene().getSpecularPower());
             shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
-            shader.setUniformMat4("uProjection", Transformation.getProjectionMatrix(camera));
+            if (bufferId == 0)
+                shader.setUniformMat4("uProjection", Transformation.getProjectionMatrixGame(camera));
+            else
+                shader.setUniformMat4("uProjection", Transformation.getProjectionMatrixScene(camera));
+
             shader.setUniformMat4("uWorld", Transformation.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
 
             mesh.getEntity().render();
             shader.unbind();
         }
+        frameBuffer.unbind();
     }
 
 }

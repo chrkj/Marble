@@ -80,7 +80,7 @@ public class MouseListener {
 
     public static Vector2f mousePosition()
     {
-        return new Vector2f((float) xPos - ImGuiLayer.getCursorScreenPos.x, (float) yPos - ImGuiLayer.getCursorScreenPos.y);
+        return new Vector2f((float) xPos, (float) yPos);
     }
 
     public static boolean isMousePressed(int keyCode)
