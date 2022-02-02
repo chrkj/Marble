@@ -46,8 +46,8 @@ public class Window {
 
     public Window(String title)
     {
-       width = 1280;
-       height = 720;
+       width = 1920;
+       height = 1080;
        resized = false;
        this.title = title;
     }
@@ -130,6 +130,7 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
         //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
         // Create the window
@@ -162,7 +163,7 @@ public class Window {
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
 
-        frameBuffer = new FrameBuffer(width, height);
+        frameBuffer = new FrameBuffer(getWidth(), getHeight());
 
         // Set initial scene
         initScene(new EditorScene());

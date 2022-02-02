@@ -27,7 +27,6 @@ public class EditorScene extends Scene {
             Entity entity = createEntity("DirLight")
                     .setPosition(-1,2,4)
                     .setRotation(333,53,0)
-                    .addComponent(Loader.loadMeshObj("assets/obj/arrow.obj"))
                     .addComponent(LightFactory.getLight(LightType.DIRECTIONAL));
             addEntityToScene(entity);
         }
