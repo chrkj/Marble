@@ -35,7 +35,7 @@ public class Transformation {
 
     public static Matrix4f getProjectionMatrix(Camera camera)
     {
-        float aspectRatio = ImGuiLayer.gameViewportSize.x / ImGuiLayer.gameViewportSize.y;
+        float aspectRatio = ImGuiLayer.sceneViewportSize.x / ImGuiLayer.sceneViewportSize.y;
         return projectionMatrix.setPerspective(camera.FOV, aspectRatio, camera.Z_NEAR, camera.Z_FAR);
     }
 }

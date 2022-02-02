@@ -7,15 +7,17 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 import marble.imgui.ImGuiLayer;
 
+import java.awt.event.MouseEvent;
+
 public class MouseListener {
 
     private static double scrollX, scrollY;
     private static double xPos, yPos, lastY, lastX;
     private static boolean inWindow = false;
     private static boolean isDragging = false;
+    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private static final Vector2f delta = new Vector2f();
-    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private MouseListener()
     {
@@ -79,6 +81,11 @@ public class MouseListener {
     public static Vector2f mousePosition()
     {
         return new Vector2f((float) xPos - ImGuiLayer.getCursorScreenPos.x, (float) yPos - ImGuiLayer.getCursorScreenPos.y);
+    }
+
+    public static boolean isMousePressed(int keyCode)
+    {
+        return mouseButtonPressed[keyCode];
     }
 
     public static float getX()

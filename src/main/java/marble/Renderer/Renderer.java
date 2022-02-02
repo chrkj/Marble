@@ -10,18 +10,10 @@ import marble.entity.components.light.Light;
 import marble.util.Time;
 import marble.camera.Camera;
 import marble.util.Transformation;
-import marble.entity.Entity;
 import marble.entity.Material;
 import marble.entity.components.Registry;
 
 public class Renderer {
-
-    private final ArrayList<Entity> entities = new ArrayList<>();
-
-    public void add(Entity entity)
-    {
-        entities.add(entity);
-    }
 
     public void clear()
     {

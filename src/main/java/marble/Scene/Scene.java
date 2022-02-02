@@ -2,10 +2,10 @@ package marble.scene;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.awt.event.KeyEvent;
 
 import marble.entity.components.Component;
 import marble.entity.components.Registry;
+import marble.imgui.ImGuiLayer;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -40,14 +40,13 @@ public abstract class Scene {
         sceneStartedTime = Time.getTime();
         for (Entity entity : entities) {
             entity.start();
-            renderer.add(entity);
         }
         isRunning = true;
     }
 
     public void updateScene(float dt)
     {
-        handleEditorInput(dt);
+        handleSceneViewportInput(dt);
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
@@ -87,7 +86,6 @@ public abstract class Scene {
         } else {
             entities.add(entity);
             entity.start();
-            renderer.add(entity);
         }
         for (Component component : entity.getAllComponents())
             registry.register(component);
@@ -126,32 +124,32 @@ public abstract class Scene {
         return entities;
     }
 
-    private void handleEditorInput(float dt)
+    private void handleSceneViewportInput(float dt)
     {
-        // TODO: Only allow input when viewport is active
-        float camSpeed = 10 * dt;
-        float camRotSpeed = 15 * dt;
-        // Movement
-        if (KeyListener.isKeyPressed(KeyEvent.VK_W))
-            editorCam.move(0,0, -camSpeed);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_S))
-            editorCam.move(0,0, camSpeed);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_A))
-            editorCam.move(-camSpeed,0,0);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_D))
-            editorCam.move(camSpeed,0,0);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_E))
-            editorCam.move(0, -camSpeed,0);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_Q))
-            editorCam.move(0, camSpeed,0);
-        if (KeyListener.isKeyPressed(KeyEvent.VK_SPACE) && timeSinceSceneStarted() > 1)
-            changeScene(new GameScene());
-        if(KeyListener.isKeyPressed(KeyEvent.VK_1))
-            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        if(KeyListener.isKeyPressed(KeyEvent.VK_2))
+        if (ImGuiLayer.allowSceneViewportMovement) {
+            float camSpeed = 10 * dt;
+            float camRotSpeed = 15 * dt;
+
             glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        if (glfwGetInputMode(Window.windowPtr, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
             editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
+
+            if (KeyListener.isKeyPressed(GLFW_KEY_W))
+                editorCam.move(0, 0, -camSpeed);
+            if (KeyListener.isKeyPressed(GLFW_KEY_S))
+                editorCam.move(0, 0, camSpeed);
+            if (KeyListener.isKeyPressed(GLFW_KEY_A))
+                editorCam.move(-camSpeed, 0, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_D))
+                editorCam.move(camSpeed, 0, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_E))
+                editorCam.move(0, -camSpeed, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_Q))
+                editorCam.move(0, camSpeed, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && timeSinceSceneStarted() > 1)
+                changeScene(new GameScene());
+        } else {
+            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
 
     public List<Entity> getSceneEntities()

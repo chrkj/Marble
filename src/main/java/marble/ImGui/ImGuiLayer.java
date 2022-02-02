@@ -19,10 +19,10 @@ public class ImGuiLayer {
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
     public static Entity selectedEntity;
-    public static ImVec2 gameViewportSize = new ImVec2();
+    public static ImVec2 sceneViewportSize = new ImVec2();
     public static ImVec2 getCursorScreenPos = new ImVec2();
     public static final ImBoolean polygonMode = new ImBoolean(false);
-    public static boolean gameViewportActive = false;
+    public static boolean allowSceneViewportMovement = false;
     private static final ImBoolean vsync = new ImBoolean(true);
     private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
@@ -33,7 +33,7 @@ public class ImGuiLayer {
         setupDiagnostics(dt);
         setupSceneHierarchy();
         setupEntityInspector();
-        setupGameViewport();
+        setupSceneViewport();
         setupConsole();
     }
 
@@ -60,21 +60,30 @@ public class ImGuiLayer {
         ImGui.end();
     }
 
-    private static void setupGameViewport()
+    private static void setupSceneViewport()
     {
-        ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-        gameViewportActive = ImGui.isWindowFocused();
+        ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
+
+        setSceneViewportInputFlag();
 
         getCursorScreenPos = ImGui.getCursorScreenPos();
 
-        gameViewportSize = getGameViewportSize();
-        ImVec2 windowPos = getGameRenderingPos();
+        sceneViewportSize = getSceneViewportSize();
+        ImVec2 windowPos = getSceneRenderingPos();
         ImGui.setCursorPos(windowPos.x, windowPos.y);
 
         int textureId = Window.getFramebuffer().getTextureId();
-        ImGui.image(textureId, gameViewportSize.x, gameViewportSize.y, 0, 1, 1, 0);
+        ImGui.image(textureId, sceneViewportSize.x, sceneViewportSize.y, 0, 1, 1, 0);
 
         ImGui.end();
+    }
+
+    private static void setSceneViewportInputFlag()
+    {
+        if (ImGui.isWindowHovered() && ImGui.isMouseClicked(1))
+            allowSceneViewportMovement = true;
+        if (ImGui.isMouseReleased(1))
+            allowSceneViewportMovement = false;
     }
 
     private static void setupDockspace()
@@ -126,24 +135,24 @@ public class ImGuiLayer {
         ImGui.end();
     }
 
-    private static ImVec2 getGameViewportSize()
+    private static ImVec2 getSceneViewportSize()
     {
-        gameViewportSize = ImGui.getWindowSize();
-        float aspectRatio = gameViewportSize.x / gameViewportSize.y;
-        float aspectWidth = gameViewportSize.x;
+        sceneViewportSize = ImGui.getWindowSize();
+        float aspectRatio = sceneViewportSize.x / sceneViewportSize.y;
+        float aspectWidth = sceneViewportSize.x;
         float aspectHeight = aspectWidth / aspectRatio;
-        if (aspectHeight > gameViewportSize.y) {
-            aspectHeight = gameViewportSize.y;
+        if (aspectHeight > sceneViewportSize.y) {
+            aspectHeight = sceneViewportSize.y;
             aspectWidth = aspectHeight * aspectRatio;
         }
         return new ImVec2(aspectWidth, aspectHeight);
     }
 
-    private static ImVec2 getGameRenderingPos() {
+    private static ImVec2 getSceneRenderingPos() {
         ImVec2 windowSize = new ImVec2();
         ImGui.getContentRegionAvail(windowSize);
-        float viewportX = (windowSize.x / 2.0f) - (gameViewportSize.x / 2.0f);
-        float viewportY = (windowSize.y / 2.0f) - (gameViewportSize.y / 2.0f);
+        float viewportX = (windowSize.x / 2.0f) - (sceneViewportSize.x / 2.0f);
+        float viewportY = (windowSize.y / 2.0f) - (sceneViewportSize.y / 2.0f);
         return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
     }
 
