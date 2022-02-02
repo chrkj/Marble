@@ -16,9 +16,11 @@ import marble.imgui.ImGuiLayer;
 
 public class Mesh extends Component {
 
+    private String filePath = "";
+
     private final int vaoId;
-    private final int indicesCount;
     private final int vertexCount;
+    private final int indicesCount;
     private final List<Integer> vertexBufferObjectIds = new ArrayList<>();
 
     public Mesh()
@@ -28,8 +30,9 @@ public class Mesh extends Component {
         this.vertexCount = 0;
     }
 
-    public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray)
+    public Mesh(float[] verticesArray, float[] textureArray, int[] indicesArray, float[] normalsArray, String filePath)
     {
+        this.filePath = filePath;
         this.vertexCount = verticesArray.length / 3;
         this.indicesCount = indicesArray.length;
 
@@ -92,6 +95,10 @@ public class Mesh extends Component {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Mesh", nodeFlags);
         if (nodeOpen) {
+            ImGuiLayer.text("File: " + filePath);
+            ImGuiLayer.text("VaoID: " + vaoId);
+            ImGuiLayer.text("Vertex count: " + vertexCount);
+            ImGuiLayer.text("Indices count: " + indicesCount);
             ImGui.treePop();
         }
     }

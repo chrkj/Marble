@@ -112,7 +112,17 @@ public class Material {
             ImGuiLayer.colorEdit4("Diffuse", diffuse);
             ImGuiLayer.colorEdit4("Specular", specular);
             reflectance = ImGuiLayer.dragFloat("Reflectance", reflectance);
+            ImGuiLayer.text("Shader");
+            shader.filepath = ImGuiLayer.inputText("Filepath:", shader.filepath);
+            if (ImGui.button("Reload"))
+                reloadAndCompileShader();
             ImGui.treePop();
         }
+    }
+
+    private void reloadAndCompileShader()
+    {
+        shader.load();
+        shader.compile();
     }
 }

@@ -21,17 +21,22 @@ import marble.entity.components.light.Light;
 
 public class Shader {
 
+    public String filepath;
+
     private int shaderProgramID;
-    private boolean inUse = false;
     private String vertexSource;
     private String fragmentSource;
-
-    private final String filepath;
+    private boolean inUse = false;
     private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
 
     public Shader(String filepath)
     {
         this.filepath = filepath;
+        load();
+    }
+
+    public void load()
+    {
         String fallbackShader =
                 """
                 #version 460 core
@@ -124,6 +129,7 @@ public class Shader {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
             Logger.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
+        uniformLocationCache.clear();
     }
 
     public void bind()

@@ -2,6 +2,7 @@ package marble.entity;
 
 import java.util.*;
 
+import imgui.ImGui;
 import marble.imgui.ImGuiLayer;
 import marble.entity.components.Texture;
 import marble.entity.components.Component;
@@ -12,13 +13,13 @@ public class Entity {
     public Material material;
     public Transform transform;
 
-    private Entity parent = null; // TODO: Implement this
-    private final List<Entity> children = new ArrayList<>(); // TODO: Implement this
+    private Entity parent = null;
+    private final List<Entity> children = new ArrayList<>();
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     public Entity()
     {
-        init(null, new Transform(), new Material());
+        init("Entity", new Transform(), new Material());
     }
 
     public Entity(String name)
@@ -133,6 +134,15 @@ public class Entity {
         material.setupInspector();
         for (Component component : components.values())
             component.setupInspector();
+        ImGui.separator();
+        if (ImGui.button("Add component"))
+            ImGui.openPopup("add_component_popup");
+        if (ImGui.beginPopup("add_component_popup")) {
+            if (ImGui.selectable("Example component")) {
+                // TODO: Add functionality
+            }
+            ImGui.endPopup();
+        }
     }
 
     public List<Entity> getChildren()

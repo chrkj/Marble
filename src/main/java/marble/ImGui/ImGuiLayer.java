@@ -22,6 +22,7 @@ public class ImGuiLayer {
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 getCursorScreenPos = new ImVec2();
     public static final ImBoolean polygonMode = new ImBoolean(false);
+    public static boolean gameViewportActive = false;
     private static final ImBoolean vsync = new ImBoolean(true);
     private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
@@ -62,6 +63,8 @@ public class ImGuiLayer {
     private static void setupGameViewport()
     {
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
+        gameViewportActive = ImGui.isWindowFocused();
+
         getCursorScreenPos = ImGui.getCursorScreenPos();
 
         gameViewportSize = getGameViewportSize();
@@ -74,7 +77,8 @@ public class ImGuiLayer {
         ImGui.end();
     }
 
-    private static void setupDockspace() {
+    private static void setupDockspace()
+    {
         int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.MenuBar;
 
         ImGuiViewport mainViewport = ImGui.getMainViewport();
@@ -90,12 +94,12 @@ public class ImGuiLayer {
         ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
         ImGui.dockSpace(ImGui.getID("Dockspace"));
 
-        createMenubar();
+        createMenuBar();
 
         ImGui.end();
     }
 
-    private static void createMenubar()
+    private static void createMenuBar()
     {
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File")) {
@@ -146,16 +150,15 @@ public class ImGuiLayer {
     public static void setupSceneHierarchy()
     {
         ImGui.begin("Hierarchy");
+        for (Entity entity : Window.getCurrentScene().getSceneEntities()) {
 
-        for (Entity entity : Window.getCurrentScene().getEntities()) {
-            boolean nodeOpen;
             int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-
             if (entity.getChildren().size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags.Leaf;
             if (entity == selectedEntity)
                 nodeFlags |= ImGuiTreeNodeFlags.Selected;
 
+            boolean nodeOpen;
             if (entity.name.length() == 0)
                 nodeOpen = ImGui.treeNodeEx("##" + entity.name, nodeFlags);
             else
@@ -311,6 +314,11 @@ public class ImGuiLayer {
         float[] valArr = {value};
         ImGui.dragFloat("##" + label, valArr, 0.1f);
         return valArr[0];
+    }
+
+    public static void text(String text)
+    {
+        ImGui.text(text);
     }
 
 }

@@ -26,7 +26,7 @@ public final class Loader {
             InputStream stream = new FileInputStream(filePath);
             Obj mesh = ObjUtils.convertToRenderable(ObjReader.read(stream));
             return new Mesh(ObjData.getVerticesArray(mesh), ObjData.getTexCoordsArray(mesh, 2),
-                    ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh));
+                    ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh), filePath);
         } catch (IOException e) {
             e.printStackTrace();
             Logger.log("Error: '" + "' invalid filepath.");
