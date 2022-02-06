@@ -3,32 +3,30 @@ package marble.scene;
 import java.util.List;
 import java.util.ArrayList;
 
-import marble.entity.components.Component;
-import marble.entity.components.Registry;
-import marble.imgui.ImGuiLayer;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import marble.Window;
+import marble.Application;
+import marble.EditorLayer;
 import marble.util.Time;
-import marble.camera.Camera;
 import marble.renderer.Renderer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.entity.Entity;
-
-import game.GameScene;
+import marble.entity.components.Registry;
+import marble.entity.components.Component;
+import marble.entity.components.camera.Camera;
+import marble.entity.components.camera.EditorCamera;
 
 public abstract class Scene {
 
     private float sceneStartedTime;
     private boolean isRunning = false;
+    private final EditorCamera editorCamera = new EditorCamera();
     private final Renderer renderer = new Renderer();
 
-    // TODO: Make a camera component for main camera
-    protected Camera mainCamera = new Camera();
-    protected Camera editorCamera = new Camera();
+    protected Camera mainCamera;
     protected float specularPower = 10;
     protected final Registry registry = new Registry();
     protected final List<Entity> entities = new ArrayList<>();
@@ -52,8 +50,9 @@ public abstract class Scene {
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        renderer.render(mainCamera, registry, Window.getGameFramebuffer(), 0);
-        renderer.render(editorCamera, registry, Window.getSceneFramebuffer(), 1);
+        renderer.render(editorCamera, registry, EditorLayer.sceneViewportFramebuffer, 1);
+        if (mainCamera != null)
+            renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, 0);
     }
 
     public void cleanUp()
@@ -90,14 +89,16 @@ public abstract class Scene {
             entities.add(entity);
             entity.start();
         }
-        for (Component component : entity.getAllComponents())
+        for (Component component : entity.getAllComponents()) {
+            if (component instanceof Camera)
+                mainCamera = (Camera) component;
             registry.register(component);
+        }
     }
 
     protected void changeScene(Scene newScene)
     {
-        Window.nextScene = newScene;
-        Window.shouldChangeScene = true;
+        // TODO: Scene manager
     }
 
     protected float timeSinceSceneStarted()
@@ -129,11 +130,11 @@ public abstract class Scene {
 
     private void handleSceneViewportInput(float dt)
     {
-        if (ImGuiLayer.allowSceneViewportInput) {
+        if (EditorLayer.allowSceneViewportInput) {
             float camSpeed = 10 * dt;
             float camRotSpeed = 15 * dt;
 
-            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
             editorCamera.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
 
             if (KeyListener.isKeyPressed(GLFW_KEY_W))
@@ -148,10 +149,8 @@ public abstract class Scene {
                 editorCamera.move(0, -camSpeed, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_Q))
                 editorCamera.move(0, camSpeed, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_SPACE) && timeSinceSceneStarted() > 1)
-                changeScene(new GameScene());
         } else {
-            glfwSetInputMode(Window.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
     }
 

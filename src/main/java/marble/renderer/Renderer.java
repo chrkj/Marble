@@ -2,14 +2,13 @@ package marble.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import marble.Window;
-import marble.entity.components.Mesh;
-import marble.entity.components.light.Light;
+import marble.EditorLayer;
 import marble.util.Time;
-import marble.camera.Camera;
-import marble.util.Transformation;
 import marble.entity.Material;
+import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
+import marble.entity.components.light.Light;
+import marble.entity.components.camera.Camera;
 
 public class Renderer {
 
@@ -30,24 +29,24 @@ public class Renderer {
 
             int index = 0;
             for (Light light : registry.getLights()) {
-                shader.setUniformDirLight(light, Transformation.getViewMatrix(camera), index);
+                shader.setUniformDirLight(light, camera.getViewMatrix(), index);
                 index++;
             }
 
             shader.setUniformMaterial(material);
             shader.setUniform1f("uTime", Time.getTime());
             shader.setUniform1i("uTextureSampler", 0);
-            shader.setUniform3f("uAmbientLight", Window.getCurrentScene().getAmbientLight());
-            shader.setUniform1f("uSpecularPower", Window.getCurrentScene().getSpecularPower());
-            shader.setUniformMat4("uView", Transformation.getViewMatrix(camera));
+            shader.setUniform3f("uAmbientLight", EditorLayer.currentScene.getAmbientLight());
+            shader.setUniform1f("uSpecularPower", EditorLayer.currentScene.getSpecularPower());
+            shader.setUniformMat4("uView", camera.getViewMatrix());
             if (bufferId == 0)
-                shader.setUniformMat4("uProjection", Transformation.getProjectionMatrixGame(camera));
+                shader.setUniformMat4("uProjection", camera.getProjectionMatrixGame());
             else
-                shader.setUniformMat4("uProjection", Transformation.getProjectionMatrixScene(camera));
+                shader.setUniformMat4("uProjection", camera.getProjectionMatrixScene());
 
-            shader.setUniformMat4("uWorld", Transformation.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
+            shader.setUniformMat4("uWorld", camera.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
 
-            mesh.getEntity().render();
+            mesh.render();
             shader.unbind();
         }
         frameBuffer.unbind();

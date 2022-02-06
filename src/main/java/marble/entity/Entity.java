@@ -4,7 +4,6 @@ import java.util.*;
 
 import imgui.ImGui;
 import marble.imgui.ImGuiLayer;
-import marble.entity.components.Texture;
 import marble.entity.components.Component;
 
 public class Entity {
@@ -58,12 +57,6 @@ public class Entity {
         components.put(component.getClass(), component);
         component.setEntity(this);
         return this;
-    }
-
-    public void render()
-    {
-        for (Component component : getAllComponents())
-            component.render();
     }
 
     public boolean hasComponent(Class<? extends Component> componentClass)

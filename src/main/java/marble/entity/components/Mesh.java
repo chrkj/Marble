@@ -54,7 +54,6 @@ public class Mesh extends Component {
         glBindVertexArray(0);
     }
 
-    @Override
     public void render()
     {
         if (ImGuiLayer.polygonMode.get())

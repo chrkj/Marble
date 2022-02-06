@@ -1,28 +1,47 @@
 package marble.imgui;
 
+import imgui.ImGui;
+import imgui.type.ImBoolean;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 public class Console {
 
     private static final StringBuffer buffer = new StringBuffer();
-    private static final SimpleDateFormat sdf3 = new SimpleDateFormat("HH:mm:ss.SSS");
+    private static final ImBoolean scrollToBottom = new ImBoolean(false);
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
 
-    private Console() { }
+    public Console()
+    {
+
+    }
+
+    public void draw()
+    {
+        ImGui.setNextWindowSize(500, 400);
+        ImGui.begin("Console");
+        if (ImGui.button("Clear"))
+            clear();
+        ImGui.separator();
+        ImGui.beginChild("scrolling");
+        ImGui.textUnformatted(buffer.toString());
+        if (scrollToBottom.get())
+            ImGui.setScrollHereY(1f);
+        scrollToBottom.set(false);
+        ImGui.endChild();
+        ImGui.end();
+    }
 
     public static void log(String s)
     {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        buffer.append("[" + sdf3.format(timestamp) + "]: ").append(s).append("\n");
+        buffer.append("[").append(formatter.format(timestamp)).append("]: ").append(s).append("\n");
     }
 
-    public static void clear()
+    private void clear()
     {
         buffer.delete(0, buffer.length());
     }
 
-    public static StringBuffer getBuffer()
-    {
-        return buffer;
-    }
 }

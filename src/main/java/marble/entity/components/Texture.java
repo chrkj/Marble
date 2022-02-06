@@ -58,8 +58,4 @@ public class Texture extends Component {
         }
     }
 
-    @Override
-    public void render()
-    {
-    }
 }

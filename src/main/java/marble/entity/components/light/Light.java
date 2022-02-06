@@ -13,11 +13,6 @@ public abstract class Light extends Component {
     protected float intensity;
 
     @Override
-    public void render()
-    {
-    }
-
-    @Override
     public void cleanUp()
     {
     }

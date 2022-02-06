@@ -1,13 +1,13 @@
-import marble.Window;
+import marble.Application;
 
 public class Main {
 
     public static void main(String[] args)
     {
-        Window window = new Window("Marble");
-        window.init();
-        window.run();
-        window.destroy();
+        Application application = new Application("Marble");
+        application.init();
+        application.run();
+        application.destroy();
     }
 
 }

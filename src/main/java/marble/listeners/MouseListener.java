@@ -5,10 +5,6 @@ import org.joml.Vector2f;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-import marble.imgui.ImGuiLayer;
-
-import java.awt.event.MouseEvent;
-
 public class MouseListener {
 
     private static double scrollX, scrollY;

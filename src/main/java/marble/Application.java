@@ -8,31 +8,22 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
-import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
-import marble.scene.Scene;
-import marble.imgui.Console;
-import marble.imgui.ImGuiLayer;
-import marble.renderer.FrameBuffer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 
-import game.EditorScene;
-
-public class Window {
+public class Application {
 
     public static long windowPtr;
-    public static Scene nextScene;
-    public static boolean shouldChangeScene;
 
+    private EditorLayer editorLayer;
     private final String title;
     private final String glslVersion = "#version 460";
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
@@ -41,11 +32,8 @@ public class Window {
     private static int width;
     private static int height;
     private static boolean resized;
-    private static Scene currentScene;
-    private static FrameBuffer gameViewportFramebuffer;
-    private static FrameBuffer sceneViewportFramebuffer;
 
-    public Window(String title)
+    public Application(String title)
     {
        width = 1920;
        height = 1080;
@@ -55,14 +43,11 @@ public class Window {
 
     public void init()
     {
-        Console.log("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
         initImGui();
+        editorLayer = new EditorLayer();
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);
-        Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        Console.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     public void run()
@@ -73,7 +58,6 @@ public class Window {
 
         // Game loop
         while (!glfwWindowShouldClose(windowPtr)) {
-
             startFrame();
             update(dt);
             endFrame();
@@ -86,30 +70,24 @@ public class Window {
 
     private void update(float dt)
     {
-        if (dt >= 0) {
-            MouseListener.calcDelta();
-            ImGuiLayer.update(dt);
-            currentScene.updateScene(dt);
-        }
+        if (dt >= 0)
+            editorLayer.onUpdate(dt);
     }
 
-    public void startFrame()
+    private void startFrame()
     {
         glfwPollEvents();
         imGuiGlfw.newFrame();
         ImGui.newFrame();
+        MouseListener.calcDelta();
     }
 
-    public void endFrame()
+    private void endFrame()
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
         glfwSwapBuffers(windowPtr);
-
-        // TODO: scenemanager
-        if(shouldChangeScene)
-            changeScene(nextScene);
     }
 
     private void initWindow()
@@ -161,22 +139,6 @@ public class Window {
         // Enable culling
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
-
-        sceneViewportFramebuffer = new FrameBuffer(width, height);
-        gameViewportFramebuffer = new FrameBuffer(width, height);
-
-
-        // Set initial scene
-        initScene(new EditorScene());
-    }
-
-    public static void changeScene(Scene newScene)
-    {
-        currentScene.cleanUp();
-        currentScene = newScene;
-        currentScene.init();
-        currentScene.start();
-        shouldChangeScene = false;
     }
 
     public void destroy()
@@ -184,17 +146,9 @@ public class Window {
         imGuiGl3.dispose();
         imGuiGlfw.dispose();
         ImGui.destroyContext();
-        currentScene.cleanUp();
         Callbacks.glfwFreeCallbacks(windowPtr);
         glfwDestroyWindow(windowPtr);
         glfwTerminate();
-    }
-
-    private void initScene(Scene scene)
-    {
-        currentScene = scene;
-        currentScene.init();
-        currentScene.start();
     }
 
     private void initImGui()
@@ -202,16 +156,6 @@ public class Window {
         ImGui.createContext();
         ImGuiIO io = ImGui.getIO();
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
-    }
-
-    public static FrameBuffer getSceneFramebuffer()
-    {
-        return sceneViewportFramebuffer;
-    }
-
-    public static FrameBuffer getGameFramebuffer()
-    {
-        return gameViewportFramebuffer;
     }
 
     public static int getWidth()
@@ -237,16 +181,6 @@ public class Window {
     public static void setResized(boolean r)
     {
         resized = r;
-    }
-
-    public static Scene getCurrentScene()
-    {
-        return Window.currentScene;
-    }
-
-    public static boolean isResized()
-    {
-        return resized;
     }
 
 }

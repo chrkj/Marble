@@ -10,40 +10,22 @@ import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-import marble.Window;
-import marble.entity.Entity;
 import marble.listeners.MouseListener;
 
 public class ImGuiLayer {
 
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
-    public static Entity selectedEntity;
-    public static boolean allowSceneViewportInput = false;
     public static final ImBoolean polygonMode = new ImBoolean(false);
+
     private static final ImBoolean vsync = new ImBoolean(true);
-    private static final ImBoolean scrollToBottom = new ImBoolean(false);
 
-    public static ImVec2 sceneViewportSize = new ImVec2();
-    public static ImVec2 gameViewportSize = new ImVec2();
-
-    public static void update(float dt)
-    {
-        setupTheme();
-        setupDockspace();
-        setupDiagnostics(dt);
-        setupSceneHierarchy();
-        setupEntityInspector();
-        setupSceneViewport();
-        setupGameViewport();
-        setupConsole();
-    }
-
-    private static void setupDiagnostics(float dt)
+    public static void drawDiagnostics(float dt)
     {
         ImGui.begin("Diagnostics", ImGuiWindowFlags.NoCollapse);
         ImGui.text(String.format("%.1f fps", 1 / dt));
         ImGui.text(String.format("%.3f ms/frame", dt * 1000));
+
         ImGui.text(String.format("%d vertices", totalVertexCount));
         ImGui.text(String.format("%o Draw calls", drawCalls));
         drawCalls = 0;
@@ -62,154 +44,7 @@ public class ImGuiLayer {
         ImGui.end();
     }
 
-    private static void setupSceneViewport()
-    {
-        ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-
-        setSceneViewportInputFlag();
-
-        sceneViewportSize = getViewportSize();
-        ImVec2 windowPos = getRenderingPos(sceneViewportSize);
-        ImGui.setCursorPos(windowPos.x, windowPos.y);
-
-        int textureId = Window.getSceneFramebuffer().getTextureId();
-        ImGui.image(textureId, sceneViewportSize.x, sceneViewportSize.y, 0, 1, 1, 0);
-
-        ImGui.end();
-    }
-
-    private static void setupGameViewport()
-    {
-        ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-
-        // Setup input handling when testing the game
-
-        gameViewportSize = getViewportSize();
-        ImVec2 windowPos = getRenderingPos(gameViewportSize);
-        ImGui.setCursorPos(windowPos.x, windowPos.y);
-
-        int textureId = Window.getGameFramebuffer().getTextureId();
-        ImGui.image(textureId, gameViewportSize.x, gameViewportSize.y, 0, 1, 1, 0);
-
-        ImGui.end();
-    }
-
-    private static void setSceneViewportInputFlag()
-    {
-        if (ImGui.isWindowHovered() && ImGui.isMouseClicked(1))
-            allowSceneViewportInput = true;
-        if (ImGui.isMouseReleased(1))
-            allowSceneViewportInput = false;
-    }
-
-    private static void setupDockspace()
-    {
-        int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.MenuBar;
-
-        ImGuiViewport mainViewport = ImGui.getMainViewport();
-        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
-        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
-        ImGui.setNextWindowViewport(mainViewport.getID());
-        ImGui.setNextWindowPos(0.0f, 0.0f);
-        ImGui.setNextWindowSize(Window.getWidth(), Window.getHeight());
-
-        windowFlags |= ImGuiWindowFlags.NoCollapse |  ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar
-                | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
-
-        ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
-        ImGui.dockSpace(ImGui.getID("Dockspace"));
-
-        createMenuBar();
-
-        ImGui.end();
-    }
-
-    private static void createMenuBar()
-    {
-        ImGui.beginMenuBar();
-        if (ImGui.beginMenu("File")) {
-            if (ImGui.menuItem("Exit"))
-                glfwSetWindowShouldClose(Window.windowPtr, true);
-            ImGui.endMenu();
-        }
-        ImGui.endMenuBar();
-    }
-
-    public static void setupConsole()
-    {
-        ImGui.setNextWindowSize(500, 400);
-        ImGui.begin("Console");
-        if (ImGui.button("Clear"))
-            Console.clear();
-        ImGui.separator();
-        ImGui.beginChild("scrolling");
-        ImGui.textUnformatted(Console.getBuffer().toString());
-        if (scrollToBottom.get())
-            ImGui.setScrollHereY(1f);
-        scrollToBottom.set(false);
-        ImGui.endChild();
-        ImGui.end();
-    }
-
-    private static ImVec2 getViewportSize()
-    {
-        ImVec2 viewportSize = ImGui.getWindowSize();
-        float aspectRatio = viewportSize.x / viewportSize.y;
-        float aspectWidth = viewportSize.x;
-        float aspectHeight = aspectWidth / aspectRatio;
-        if (aspectHeight > viewportSize.y) {
-            aspectHeight = viewportSize.y;
-            aspectWidth = aspectHeight * aspectRatio;
-        }
-        return new ImVec2(aspectWidth, aspectHeight);
-    }
-
-    private static ImVec2 getRenderingPos(ImVec2 viewportSize) {
-        ImVec2 windowSize = new ImVec2();
-        ImGui.getContentRegionAvail(windowSize);
-        float viewportX = (windowSize.x / 2.0f) - (viewportSize.x / 2.0f);
-        float viewportY = (windowSize.y / 2.0f) - (viewportSize.y / 2.0f);
-        return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
-    }
-
-    public static void setupSceneHierarchy()
-    {
-        ImGui.begin("Hierarchy");
-        for (Entity entity : Window.getCurrentScene().getSceneEntities()) {
-
-            int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-            if (entity.getChildren().size() == 0)
-                nodeFlags |= ImGuiTreeNodeFlags.Leaf;
-            if (entity == selectedEntity)
-                nodeFlags |= ImGuiTreeNodeFlags.Selected;
-
-            boolean nodeOpen;
-            if (entity.name.length() == 0)
-                nodeOpen = ImGui.treeNodeEx("##" + entity.name, nodeFlags);
-            else
-                nodeOpen = ImGui.treeNodeEx(entity.name, nodeFlags);
-
-            if (nodeOpen) {
-                // TODO: Add entity children
-                ImGui.treePop();
-            }
-
-            // TODO: Handle unselecting when clicking away from the entity
-            if (ImGui.isItemClicked())
-                selectedEntity = entity;
-        }
-        ImGui.end();
-    }
-
-    private static void setupEntityInspector()
-    {
-        ImGui.begin("Inspector");
-        if (selectedEntity != null)
-            selectedEntity.setupInspector();
-        ImGui.end();
-    }
-
-    private static void setupTheme()
+    public static void setupTheme()
     {
         ImGuiStyle style = ImGui.getStyle();
 
