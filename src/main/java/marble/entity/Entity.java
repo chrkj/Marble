@@ -104,7 +104,7 @@ public class Entity {
             ImGui.openPopup("add_component_popup");
         if (ImGui.beginPopup("add_component_popup")) {
             if (ImGui.selectable("Example component")) {
-                // TODO: Add functionality
+                // TODO: Add component functionality
             }
             ImGui.endPopup();
         }

@@ -1,10 +1,10 @@
 package marble.imgui;
 
-import imgui.ImGui;
-import imgui.type.ImBoolean;
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+
+import imgui.ImGui;
+import imgui.type.ImBoolean;
 
 public class Console {
 
@@ -14,7 +14,6 @@ public class Console {
 
     public Console()
     {
-
     }
 
     public void draw()
@@ -33,10 +32,10 @@ public class Console {
         ImGui.end();
     }
 
-    public static void log(String s)
+    public static void log(String text)
     {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        buffer.append("[").append(formatter.format(timestamp)).append("]: ").append(s).append("\n");
+        buffer.append("[").append(formatter.format(timestamp)).append("]: ").append(text).append("\n");
     }
 
     private void clear()

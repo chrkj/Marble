@@ -44,31 +44,25 @@ public abstract class Scene {
         isRunning = true;
     }
 
-    public void updateScene(float dt)
+    public void onUpdate(float dt)
     {
         handleSceneViewportInput(dt);
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
-        renderer.render(editorCamera, registry, EditorLayer.sceneViewportFramebuffer, 1);
+    }
+
+    public void onRender()
+    {
+        renderer.render(editorCamera, registry, EditorLayer.sceneViewportFramebuffer, ambientLight, specularPower, 1);
         if (mainCamera != null)
-            renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, 0);
+            renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
     }
 
     public void cleanUp()
     {
         for (Entity entity : entities)
             entity.cleanUp();
-    }
-
-    public Vector3f getAmbientLight()
-    {
-        return ambientLight;
-    }
-
-    public float getSpecularPower()
-    {
-        return specularPower;
     }
 
     protected Entity createEntity()
@@ -109,18 +103,6 @@ public abstract class Scene {
     protected Camera getEditorCamera()
     {
         return editorCamera;
-    }
-
-    protected void setSpecularPower(float specularPower)
-    {
-        this.specularPower = specularPower;
-    }
-
-    protected void setAmbientLight(float r, float g, float b, float a)
-    {
-        ambientLight.x = r;
-        ambientLight.y = g;
-        ambientLight.z = b;
     }
 
     public List<Entity> getEntities()

@@ -45,10 +45,10 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         // Create VBO's
-        vertexBufferObjectIds.add(Buffer.createVertexbuffer(verticesArray, 0, 3));
-        vertexBufferObjectIds.add(Buffer.createVertexbuffer(textureArray, 1, 2));
-        vertexBufferObjectIds.add(Buffer.createVertexbuffer(normalsArray, 2, 3));
-        vertexBufferObjectIds.add(Buffer.createIndexbuffer(indicesArray));
+        vertexBufferObjectIds.add(Buffer.createVertexBuffer(verticesArray, 0, 3));
+        vertexBufferObjectIds.add(Buffer.createVertexBuffer(textureArray, 1, 2));
+        vertexBufferObjectIds.add(Buffer.createVertexBuffer(normalsArray, 2, 3));
+        vertexBufferObjectIds.add(Buffer.createIndexBuffer(indicesArray));
 
         // Unbind VAO
         glBindVertexArray(0);

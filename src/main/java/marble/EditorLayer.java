@@ -1,17 +1,17 @@
 package marble;
 
 import imgui.ImGui;
-import imgui.ImGuiViewport;
 import imgui.ImVec2;
-import imgui.flag.ImGuiTreeNodeFlags;
-import imgui.flag.ImGuiWindowFlags;
+import imgui.ImGuiViewport;
 import imgui.type.ImBoolean;
+import imgui.flag.ImGuiWindowFlags;
+import imgui.flag.ImGuiTreeNodeFlags;
 
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
-import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
+import static org.lwjgl.opengl.GL11.GL_RENDERER;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
 import game.emptyScene;
 import marble.scene.Scene;
@@ -22,22 +22,21 @@ import marble.renderer.FrameBuffer;
 
 public class EditorLayer {
 
-    public static Entity selectedEntity;
-    public static Scene currentScene, runtimeScene;
+    public static boolean allowSceneViewportInput = false;
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 sceneViewportSize = new ImVec2();
-    public static boolean allowSceneViewportInput = false;
-    public static final Console console = new Console();
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
     public static final FrameBuffer sceneViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
 
+    private static Entity selectedEntity;
+    private static Scene currentScene, runtimeScene;
+    private static final Console console = new Console();
 
     public EditorLayer()
     {
         currentScene = new emptyScene();
         currentScene.init();
         currentScene.start();
-        ImGuiLayer.setupTheme();
         Console.log("LWJGL Version: " + Version.getVersion() + "!");
         Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
         Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
@@ -53,8 +52,10 @@ public class EditorLayer {
         drawEntityInspector();
         drawSceneViewport();
         drawGameViewport();
+        ImGui.showDemoWindow();
         ImGuiLayer.drawDiagnostics(dt);
-        currentScene.updateScene(dt);
+        currentScene.onUpdate(dt);
+        currentScene.onRender();
     }
 
     private void drawSceneViewport()
@@ -72,7 +73,6 @@ public class EditorLayer {
     private void drawGameViewport()
     {
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-        // Setup input handling when testing the game
         gameViewportSize = getViewportSize();
         ImVec2 windowPos = getRenderingPos(gameViewportSize);
         ImGui.setCursorPos(windowPos.x, windowPos.y);
