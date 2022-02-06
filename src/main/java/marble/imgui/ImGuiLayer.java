@@ -140,10 +140,10 @@ public class ImGuiLayer {
         ImGui.setNextWindowSize(500, 400);
         ImGui.begin("Console");
         if (ImGui.button("Clear"))
-            Logger.clear();
+            Console.clear();
         ImGui.separator();
         ImGui.beginChild("scrolling");
-        ImGui.textUnformatted(Logger.getBuffer().toString());
+        ImGui.textUnformatted(Console.getBuffer().toString());
         if (scrollToBottom.get())
             ImGui.setScrollHereY(1f);
         scrollToBottom.set(false);

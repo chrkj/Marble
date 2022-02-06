@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.scene.Scene;
-import marble.imgui.Logger;
+import marble.imgui.Console;
 import marble.imgui.ImGuiLayer;
 import marble.renderer.FrameBuffer;
 import marble.listeners.KeyListener;
@@ -55,14 +55,14 @@ public class Window {
 
     public void init()
     {
-        Logger.log("LWJGL Version: " + Version.getVersion() + "!");
+        Console.log("LWJGL Version: " + Version.getVersion() + "!");
         initWindow();
         initImGui();
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);
-        Logger.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        Logger.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        Logger.log("Version: " + GL30.glGetString(GL_VERSION));
+        Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        Console.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     public void run()

@@ -3,12 +3,12 @@ package marble.imgui;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class Logger {
+public class Console {
 
     private static final StringBuffer buffer = new StringBuffer();
     private static final SimpleDateFormat sdf3 = new SimpleDateFormat("HH:mm:ss.SSS");
 
-    private Logger() { }
+    private Console() { }
 
     public static void log(String s)
     {

@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
-import marble.imgui.Logger;
+import marble.imgui.Console;
 import marble.entity.Material;
 import marble.entity.components.light.Light;
 
@@ -77,11 +77,11 @@ public class Shader {
         } catch (NoSuchFileException e) {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            Logger.log("NoSuchFileException: " + filepath);
+            Console.log("NoSuchFileException: " + filepath);
         } catch (IOException e) {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            Logger.log("IOException: '" + filepath + "' " + e.getMessage());
+            Console.log("IOException: '" + filepath + "' " + e.getMessage());
         }
     }
 
@@ -100,7 +100,7 @@ public class Shader {
         int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            Logger.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
+            Console.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
 
         // Load and compile fragment shader
@@ -114,7 +114,7 @@ public class Shader {
         success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            Logger.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
+            Console.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
 
         // Link shaders
@@ -127,7 +127,7 @@ public class Shader {
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
         if (success == GL_FALSE) {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
-            Logger.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
+            Console.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
         uniformLocationCache.clear();
     }

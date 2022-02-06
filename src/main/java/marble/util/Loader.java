@@ -12,7 +12,7 @@ import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-import marble.imgui.Logger;
+import marble.imgui.Console;
 import marble.entity.components.Mesh;
 import marble.entity.components.Texture;
 
@@ -29,7 +29,7 @@ public final class Loader {
                     ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh), filePath);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log("Error: '" + "' invalid filepath.");
+            Console.log("Error: '" + "' invalid filepath.");
             return new Mesh();
         }
     }
