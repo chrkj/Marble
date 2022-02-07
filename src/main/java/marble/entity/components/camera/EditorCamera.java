@@ -1,6 +1,6 @@
 package marble.entity.components.camera;
 
-import marble.EditorLayer;
+import marble.editor.EditorLayer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

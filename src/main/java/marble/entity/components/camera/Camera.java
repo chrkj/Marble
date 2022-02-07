@@ -7,9 +7,9 @@ import org.joml.Vector3f;
 
 public abstract class Camera extends Component {
 
-    protected final Matrix4f viewMatrix = new Matrix4f();
-    protected final Matrix4f worldMatrix = new Matrix4f();
-    protected final Matrix4f projectionMatrix = new Matrix4f();
+    protected final transient Matrix4f viewMatrix = new Matrix4f();
+    protected final transient Matrix4f worldMatrix = new Matrix4f();
+    protected final transient Matrix4f projectionMatrix = new Matrix4f();
 
     public Camera()
     {

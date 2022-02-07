@@ -49,4 +49,7 @@ dependencies {
     // Javagl.obj
     implementation group: 'de.javagl', name: 'obj', version: '0.2.1'
 
+    // Jackson yaml
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.1'
+
 }

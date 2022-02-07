@@ -1,10 +1,12 @@
 package marble.entity.components;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import marble.entity.Entity;
 
 public abstract class Component {
 
-    protected Entity entity = null;
+    protected transient Entity entity = null;
 
     public abstract void cleanUp();
     public abstract void setupInspector();

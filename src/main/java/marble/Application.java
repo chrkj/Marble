@@ -8,6 +8,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.editor.EditorLayer;
 import marble.imgui.ImGuiLayer;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;

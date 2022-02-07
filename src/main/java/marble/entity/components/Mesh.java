@@ -20,10 +20,10 @@ public class Mesh extends Component {
     public Material material;
 
     private String filePath = "";
-    private final int vaoId;
-    private final int vertexCount;
-    private final int indicesCount;
-    private final List<Integer> vertexBufferObjectIds = new ArrayList<>();
+    private transient final int vaoId;
+    private transient final int vertexCount;
+    private transient final int indicesCount;
+    private transient final List<Integer> vertexBufferObjectIds = new ArrayList<>();
 
     public Mesh()
     {

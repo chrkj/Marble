@@ -2,7 +2,7 @@ package marble.entity.components.camera;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.EditorLayer;
+import marble.editor.EditorLayer;
 import marble.imgui.ImGuiLayer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -11,7 +11,7 @@ public class PerspectiveCamera extends Camera {
 
     public float near = 0.3f;
     public float far = 1000.f;
-    public float fov = (float) Math.toRadians(60.0f);
+    public float fov = 60.0f;
 
     @Override
     public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, Vector3f scale)
@@ -40,14 +40,14 @@ public class PerspectiveCamera extends Camera {
     public Matrix4f getProjectionMatrixGame()
     {
         float aspectRatio = EditorLayer.gameViewportSize.x / EditorLayer.gameViewportSize.y;
-        return projectionMatrix.setPerspective(fov, aspectRatio, near, far);
+        return projectionMatrix.setPerspective((float) Math.toRadians(fov), aspectRatio, near, far);
     }
 
     @Override
     public Matrix4f getProjectionMatrixScene()
     {
         float aspectRatio = EditorLayer.sceneViewportSize.x / EditorLayer.sceneViewportSize.y;
-        return projectionMatrix.setPerspective(fov, aspectRatio, near, far);
+        return projectionMatrix.setPerspective((float) Math.toRadians(fov), aspectRatio, near, far);
     }
 
     @Override

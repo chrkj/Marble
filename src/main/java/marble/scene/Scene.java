@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
 import marble.Application;
-import marble.EditorLayer;
+import marble.editor.EditorLayer;
 import marble.util.Time;
 import marble.renderer.Renderer;
 import marble.listeners.KeyListener;
@@ -21,19 +21,25 @@ import marble.entity.components.camera.EditorCamera;
 
 public abstract class Scene {
 
-    private float sceneStartedTime;
-    private boolean isRunning = false;
-    private final EditorCamera editorCamera = new EditorCamera();
-    private final Renderer renderer = new Renderer();
+    private String name;
+    private transient float sceneStartedTime;
+    private transient boolean isRunning = false;
+    private transient final EditorCamera editorCamera = new EditorCamera();
+    private transient final Renderer renderer = new Renderer();
 
-    protected Camera mainCamera;
     protected float specularPower = 10;
-    protected final Registry registry = new Registry();
-    protected final List<Entity> entities = new ArrayList<>();
+    protected transient Camera mainCamera;
+    protected transient final Registry registry = new Registry();
     protected final Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
+    protected final List<Entity> entities = new ArrayList<>();
 
     public abstract void init();
     public abstract void update(float dt);
+
+    public Scene(String name)
+    {
+        this.name = name;
+    }
 
     public void start()
     {
@@ -136,8 +142,9 @@ public abstract class Scene {
         }
     }
 
-    public List<Entity> getSceneEntities()
+    public String getName()
     {
-        return entities;
+        return name.replaceAll("\\s+", "_").toLowerCase();
     }
+
 }

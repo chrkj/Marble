@@ -2,7 +2,6 @@ package marble.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import marble.EditorLayer;
 import marble.util.Time;
 import marble.entity.Material;
 import marble.entity.components.Mesh;

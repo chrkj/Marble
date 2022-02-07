@@ -1,4 +1,4 @@
-package marble;
+package marble.editor;
 
 import imgui.ImGui;
 import imgui.ImVec2;
@@ -7,13 +7,15 @@ import imgui.type.ImBoolean;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.Application;
+import marble.scene.SceneManager;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
-import game.emptyScene;
+import marble.scene.emptyScene;
 import marble.scene.Scene;
 import marble.entity.Entity;
 import marble.imgui.Console;
@@ -28,13 +30,15 @@ public class EditorLayer {
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
     public static final FrameBuffer sceneViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
 
-    private static Entity selectedEntity;
-    private static Scene currentScene, runtimeScene;
-    private static final Console console = new Console();
+    private Entity selectedEntity;
+    private Scene currentScene, runtimeScene;
+    private final SceneManager sceneManager;
+    private final Console console = new Console();
 
     public EditorLayer()
     {
-        currentScene = new emptyScene();
+        sceneManager = new SceneManager();
+        currentScene = new emptyScene("Empty Scene");
         currentScene.init();
         currentScene.start();
         Console.log("LWJGL Version: " + Version.getVersion() + "!");
@@ -110,6 +114,10 @@ public class EditorLayer {
     {
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File")) {
+            if (ImGui.menuItem("Save scene"))
+                sceneManager.serialize(currentScene);
+            if (ImGui.menuItem("Load scene"))
+                sceneManager.deSerialize("TODO");
             if (ImGui.menuItem("Exit"))
                 glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
@@ -141,7 +149,7 @@ public class EditorLayer {
     private void drawSceneHierarchy()
     {
         ImGui.begin("Hierarchy");
-        for (Entity entity : currentScene.getSceneEntities()) {
+        for (Entity entity : currentScene.getEntities()) {
             int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
             if (entity.getChildren().size() == 0)
                 nodeFlags |= ImGuiTreeNodeFlags.Leaf;

@@ -1,4 +1,4 @@
-package game;
+package marble.scene;
 
 import marble.entity.components.camera.PerspectiveCamera;
 
@@ -9,6 +9,11 @@ import marble.entity.components.light.LightType;
 import marble.entity.components.light.LightFactory;
 
 public class emptyScene extends Scene {
+
+    public emptyScene(String name)
+    {
+        super(name);
+    }
 
     @Override
     public void init()

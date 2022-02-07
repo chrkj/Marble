@@ -11,12 +11,12 @@ import marble.entity.components.Texture;
 
 public class Material {
 
-    private Shader shader;
     private Texture texture;
     private float reflectance;
     private final Vector4f ambient;
     private final Vector4f diffuse;
     private final Vector4f specular;
+    private Shader shader;
 
     public Material()
     {

@@ -23,11 +23,11 @@ public class Shader {
 
     public String filepath;
 
-    private int shaderProgramID;
-    private String vertexSource;
-    private String fragmentSource;
-    private boolean inUse = false;
-    private final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
+    private transient int shaderProgramID;
+    private transient String vertexSource;
+    private transient String fragmentSource;
+    private transient boolean inUse = false;
+    private transient final HashMap<String, Integer> uniformLocationCache = new HashMap<>();
 
     public Shader(String filepath)
     {
