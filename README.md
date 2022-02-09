@@ -13,10 +13,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/chrkj/MarbleEngine">
-    <!-- <img src="images/logo.png" alt="Logo" width="80" height="80"> -->
+    <img src="docs/logo.jpg" width="100" height="100">
   </a>
 
-<h3 align="center">MarbleEngine</h3>
+<h3 align="center">Marble Engine</h3>
 
   <p align="center">
     A game engine made in Java
@@ -32,8 +32,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-The project was created learn about 2D/3D programming by programming a simple game engine using the
-[OpenGL](https://www.opengl.org//) rendering API.
+I created this project to learn about 2D/3D rendering by programming a simple game engine using the
+[OpenGL](https://www.opengl.org//) rendering API. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -84,7 +84,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [contributors-shield]: https://img.shields.io/github/contributors/chrkj/MarbleEngine.svg?style=for-the-badge
-[contributors-url]: https://github.com/chrkj/[repo-name]/graphs/contributors
+[contributors-url]: https://github.com/chrkj/MarbleEngine/graphs/contributors
 
 [forks-shield]: https://img.shields.io/github/forks/chrkj/MarbleEngine.svg?style=for-the-badge
 [forks-url]: https://github.com/chrkj/MarbleEngine/network/members
