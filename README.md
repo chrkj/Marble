@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/chrkj/MarbleEngine">
-    <img src="docs/icon.jpg" width="100" height="100">
+    <img src="docs/Example.png.jpg" width="525" height="250">
   </a>
 
 <h3 align="center">Marble Engine</h3>
