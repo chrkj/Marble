@@ -1,14 +1,17 @@
 package marble.scene;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
-import marble.imgui.Console;
 
-import java.io.File;
-import java.io.IOException;
+import marble.imgui.MarbleConsole;
 
 public class SceneManager {
 
@@ -27,14 +30,44 @@ public class SceneManager {
         mapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
         try {
             mapper.writeValue(new File("assets/scenes/" + scene.getName() + ".marble"), scene);
-            Console.log("Scene saved.");
+            MarbleConsole.log("Scene saved.");
         } catch (IOException e) {
-            Console.log("Failed to save scene: " + scene.getName());
+            MarbleConsole.log("Failed to save scene: " + scene.getName());
             e.printStackTrace();
         }
     }
 
-    public void deSerialize(String filePath)
+    public Scene deSerialize(String filePath)
+    {
+        Scene deserializedScene = null;
+        filePath = "assets/scenes/empty_scene.marble"; // Temp: For debugging
+        try {
+            String source = new String(Files.readAllBytes(Paths.get(filePath)));
+            String sceneName = source.substring(7, source.indexOf("\"",7));
+            deserializedScene = new Scene(sceneName) {
+                @Override
+                public void init()
+                {
+                }
+
+                @Override
+                public void update(float dt)
+                {
+                }
+            };
+
+            // TODO: Deserialize and add scene variables and entities to deserializedScene.
+
+            MarbleConsole.log("Loading scene: " + filePath);
+        } catch (IOException e) {
+            MarbleConsole.log("Failed to load scene: " + filePath);
+            e.printStackTrace();
+        }
+        return deserializedScene;
+    }
+
+    public void changeScene(Scene scene)
     {
     }
+
 }

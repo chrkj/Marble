@@ -19,14 +19,13 @@ entities:
       x: 0.0
       "y": 0.0
       z: 0.0
-  parent: null
   children: []
   components:
     marble.entity.components.camera.PerspectiveCamera:
       near: 0.3
       far: 1000.0
       fov: 60.0
-- name: "Entity"
+- name: "Helmet"
   transform:
     scale:
       x: 1.0
@@ -40,8 +39,55 @@ entities:
       x: 0.0
       "y": 0.0
       z: 0.0
-  parent: null
-  children: []
+  children:
+  - name: "ChildEntity1"
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": 0.0
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": 0.0
+        z: 0.0
+    children:
+    - name: "ChildEntity2"
+      transform:
+        scale:
+          x: 1.0
+          "y": 1.0
+          z: 1.0
+        position:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+        rotation:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+      children: []
+      components: {}
+    components: {}
+  - name: "ChildEntity3"
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": 0.0
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": 0.0
+        z: 0.0
+    children: []
+    components: {}
   components:
     marble.entity.components.Mesh:
       material:
@@ -79,7 +125,6 @@ entities:
       x: 333.0
       "y": 53.0
       z: 0.0
-  parent: null
   children: []
   components:
     marble.entity.components.light.DirectionalLight:

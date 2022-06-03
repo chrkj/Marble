@@ -10,9 +10,4 @@ public class Main {
         application.destroy();
     }
 
-    public void physics()
-    {
-        
-    }
-
 }

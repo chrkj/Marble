@@ -6,7 +6,7 @@ import imgui.flag.ImGuiTreeNodeFlags;
 import org.joml.Vector4f;
 
 import marble.renderer.Shader;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import marble.entity.components.Texture;
 
 public class Material {
@@ -108,12 +108,12 @@ public class Material {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
         if (nodeOpen) {
-            ImGuiLayer.colorEdit4("Ambient", ambient);
-            ImGuiLayer.colorEdit4("Diffuse", diffuse);
-            ImGuiLayer.colorEdit4("Specular", specular);
-            reflectance = ImGuiLayer.dragFloat("Reflectance", reflectance);
-            ImGuiLayer.text("Shader");
-            shader.filepath = ImGuiLayer.inputText("Filepath:", shader.filepath);
+            MarbleGui.colorEdit4("Ambient", ambient);
+            MarbleGui.colorEdit4("Diffuse", diffuse);
+            MarbleGui.colorEdit4("Specular", specular);
+            reflectance = MarbleGui.dragFloat("Reflectance", reflectance);
+            MarbleGui.text("Shader");
+            shader.filepath = MarbleGui.inputText("Filepath:", shader.filepath);
             if (ImGui.button("Reload"))
                 reloadAndCompileShader();
             ImGui.treePop();

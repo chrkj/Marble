@@ -2,7 +2,7 @@ package marble.entity.components.light;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import org.joml.Vector4f;
 
 import marble.entity.components.Component;
@@ -51,8 +51,8 @@ public abstract class Light extends Component {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Directional Light", nodeFlags);
         if (nodeOpen) {
-            ImGuiLayer.colorEdit4("Color", color);
-            intensity = ImGuiLayer.dragFloat("Intensity", intensity);
+            MarbleGui.colorEdit4("Color", color);
+            intensity = MarbleGui.dragFloat("Intensity", intensity);
             ImGui.treePop();
         }
     }

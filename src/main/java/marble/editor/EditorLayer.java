@@ -7,19 +7,19 @@ import imgui.type.ImBoolean;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.Application;
-import marble.scene.SceneManager;
+import marble.imgui.MarbleConsole;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
+import marble.Application;
+import marble.scene.SceneManager;
 import marble.scene.emptyScene;
 import marble.scene.Scene;
 import marble.entity.Entity;
-import marble.imgui.Console;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import marble.renderer.FrameBuffer;
 
 public class EditorLayer {
@@ -33,7 +33,6 @@ public class EditorLayer {
     private Entity selectedEntity;
     private Scene currentScene, runtimeScene;
     private final SceneManager sceneManager;
-    private final Console console = new Console();
 
     public EditorLayer()
     {
@@ -41,23 +40,22 @@ public class EditorLayer {
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();
         currentScene.start();
-        Console.log("LWJGL Version: " + Version.getVersion() + "!");
-        Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        Console.log("Version: " + GL30.glGetString(GL_VERSION));
+        MarbleConsole.log("LWJGL Version: " + Version.getVersion() + "!");
+        MarbleConsole.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        MarbleConsole.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        MarbleConsole.log("Version: " + GL30.glGetString(GL_VERSION));
     }
-
 
     public void onUpdate(float dt)
     {
         drawDockspace();
-        console.draw();
+        MarbleConsole.draw();
         drawSceneHierarchy();
         drawEntityInspector();
         drawSceneViewport();
         drawGameViewport();
         ImGui.showDemoWindow();
-        ImGuiLayer.drawDiagnostics(dt);
+        MarbleGui.drawDiagnostics(dt);
         currentScene.onUpdate(dt);
         currentScene.onRender();
     }
@@ -114,12 +112,17 @@ public class EditorLayer {
     {
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File")) {
-            if (ImGui.menuItem("Save scene"))
-                sceneManager.serialize(currentScene);
+            if (ImGui.menuItem("Save scene")) sceneManager.serialize(currentScene);
             if (ImGui.menuItem("Load scene"))
-                sceneManager.deSerialize("TODO");
-            if (ImGui.menuItem("Exit"))
-                glfwSetWindowShouldClose(Application.windowPtr, true);
+            {
+                Scene loadedScene = sceneManager.deSerialize("TODO"); // TODO: Fix filepath acquirement
+                if (loadedScene == null ) return;
+                currentScene.cleanUp();
+                currentScene = loadedScene;
+                currentScene.init();
+                currentScene.start();
+            }
+            if (ImGui.menuItem("Exit")) glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
         }
         ImGui.endMenuBar();
@@ -149,26 +152,34 @@ public class EditorLayer {
     private void drawSceneHierarchy()
     {
         ImGui.begin("Hierarchy");
-        for (Entity entity : currentScene.getEntities()) {
-            int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-            if (entity.getChildren().size() == 0)
-                nodeFlags |= ImGuiTreeNodeFlags.Leaf;
-            if (entity == selectedEntity)
-                nodeFlags |= ImGuiTreeNodeFlags.Selected;
-            boolean nodeOpen;
-            if (entity.name.length() == 0)
-                nodeOpen = ImGui.treeNodeEx("##" + entity.name, nodeFlags);
-            else
-                nodeOpen = ImGui.treeNodeEx(entity.name, nodeFlags);
-            if (nodeOpen) {
-                // TODO: Add entity children
-                ImGui.treePop();
-            }
-            // TODO: Handle unselecting when clicking away from the entity
-            if (ImGui.isItemClicked())
-                selectedEntity = entity;
-        }
+        int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+        for (Entity entity : currentScene.getEntities())
+            recursiveDrawCall(entity, nodeFlags);
         ImGui.end();
+    }
+
+    private void recursiveDrawCall(Entity entity, int nodeFlags)
+    {
+        int currentFlags = nodeFlags;
+        if (entity.getChildren().size() == 0) currentFlags |= ImGuiTreeNodeFlags.Leaf;
+        if (entity == selectedEntity)         currentFlags |= ImGuiTreeNodeFlags.Selected;
+
+        boolean nodeOpen;
+        if (entity.name.length() == 0)
+            nodeOpen = ImGui.treeNodeEx("##" + entity.name, currentFlags);
+        else
+            nodeOpen = ImGui.treeNodeEx(entity.name, currentFlags);
+
+        if (ImGui.isItemClicked())
+            selectedEntity = entity;
+
+        if (nodeOpen) {
+            for (Entity child : entity.getChildren())
+                recursiveDrawCall(child, nodeFlags);
+            ImGui.treePop();
+        }
+
+        // TODO: Handle unselecting when clicking away from the entity
     }
 
     private void drawEntityInspector()

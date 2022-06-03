@@ -3,7 +3,7 @@ package marble.entity.components.camera;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import marble.editor.EditorLayer;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -56,10 +56,10 @@ public class PerspectiveCamera extends Camera {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Camera", nodeFlags);
         if (nodeOpen) {
-            ImGuiLayer.text("Clipping planes");
-            near = ImGuiLayer.dragFloat("Near", near);
-            far = ImGuiLayer.dragFloat("Far", far);
-            fov = ImGuiLayer.dragFloat("Fov", fov);
+            MarbleGui.text("Clipping planes");
+            near = MarbleGui.dragFloat("Near", near);
+            far = MarbleGui.dragFloat("Far", far);
+            fov = MarbleGui.dragFloat("Fov", fov);
             ImGui.treePop();
         }
     }

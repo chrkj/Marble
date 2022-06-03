@@ -12,13 +12,18 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import marble.listeners.MouseListener;
 
-public class ImGuiLayer {
+public final class MarbleGui {
 
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
     public static final ImBoolean polygonMode = new ImBoolean(false);
 
     private static final ImBoolean vsync = new ImBoolean(true);
+
+    private MarbleGui()
+    {
+        throw new UnsupportedOperationException();
+    }
 
     public static void drawDiagnostics(float dt)
     {

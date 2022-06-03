@@ -60,9 +60,9 @@ public abstract class Scene {
 
     public void onRender()
     {
+        // TODO: Make Renderer API to call from scene
         renderer.render(editorCamera, registry, EditorLayer.sceneViewportFramebuffer, ambientLight, specularPower, 1);
-        if (mainCamera != null)
-            renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
+        renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
     }
 
     public void cleanUp()
@@ -96,17 +96,12 @@ public abstract class Scene {
         }
     }
 
-    protected void changeScene(Scene newScene)
-    {
-        // TODO: Scene manager
-    }
-
     protected float timeSinceSceneStarted()
     {
         return Time.getTime() - sceneStartedTime;
     }
 
-    protected Camera getEditorCamera()
+    public Camera getEditorCamera()
     {
         return editorCamera;
     }

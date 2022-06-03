@@ -2,7 +2,7 @@ package marble.entity;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import org.joml.Vector3f;
 
 public class Transform {
@@ -64,9 +64,9 @@ public class Transform {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
         if (nodeOpen) {
-            ImGuiLayer.vec3Controller("Position", position);
-            ImGuiLayer.vec3Controller("Rotation", rotation);
-            ImGuiLayer.vec3Controller("Scale", scale);
+            MarbleGui.vec3Controller("Position", position);
+            MarbleGui.vec3Controller("Rotation", rotation);
+            MarbleGui.vec3Controller("Scale", scale);
             ImGui.treePop();
         }
     }

@@ -5,8 +5,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class EditorCamera extends Camera {
-    private final Vector3f position = new Vector3f();
-    private final Vector3f rotation = new Vector3f();
+    public final Vector3f position = new Vector3f();
+    public final Vector3f rotation = new Vector3f();
 
     public float near = 0.3f;
     public float far = 1000.f;

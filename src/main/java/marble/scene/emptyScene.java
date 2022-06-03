@@ -2,7 +2,6 @@ package marble.scene;
 
 import marble.entity.components.camera.PerspectiveCamera;
 
-import marble.scene.Scene;
 import marble.util.Loader;
 import marble.entity.Entity;
 import marble.entity.components.light.LightType;
@@ -26,9 +25,15 @@ public class emptyScene extends Scene {
             addEntityToScene(entity);
         }
         {
-            Entity entity = createEntity("Entity")
+            Entity entity = createEntity("Helmet")
                     .setPosition(3,-2,3)
                     .addComponent(Loader.loadMeshObj("assets/obj/helm.obj"));
+            Entity child1 = createEntity("ChildEntity1");
+            Entity child2 = createEntity("ChildEntity2");
+            Entity child3 = createEntity("ChildEntity3");
+            child1.setChild(child2);
+            entity.setChild(child1);
+            entity.setChild(child3);
             addEntityToScene(entity);
         }
         {

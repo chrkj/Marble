@@ -9,7 +9,7 @@ import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
 import marble.editor.EditorLayer;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -158,7 +158,7 @@ public class Application {
         ImGui.createContext();
         ImGuiIO io = ImGui.getIO();
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
-        ImGuiLayer.setupTheme();
+        MarbleGui.setupTheme();
     }
 
     public static int getWidth()

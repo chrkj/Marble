@@ -3,7 +3,7 @@ package marble.entity;
 import java.util.*;
 
 import imgui.ImGui;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 import marble.entity.components.Component;
 
 public class Entity {
@@ -11,7 +11,7 @@ public class Entity {
     public String name;
     public Transform transform;
 
-    private Entity parent = null;
+    private transient Entity parent = null;
     private final List<Entity> children = new ArrayList<>();
     private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
@@ -95,7 +95,7 @@ public class Entity {
 
     public void setupInspector()
     {
-        name = ImGuiLayer.inputText("name", name);
+        name = MarbleGui.inputText("name", name);
         transform.setupInspector();
         for (Component component : components.values())
             component.setupInspector();
@@ -122,7 +122,8 @@ public class Entity {
         return this;
     }
 
-    public Entity setChild(Entity entity){
+    public Entity setChild(Entity entity)
+    {
         this.children.add(entity);
         entity.parent = this;
         return this;

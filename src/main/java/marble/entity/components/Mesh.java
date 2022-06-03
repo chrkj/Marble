@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 import marble.entity.Material;
 import marble.renderer.Buffer;
-import marble.imgui.ImGuiLayer;
+import marble.imgui.MarbleGui;
 
 public class Mesh extends Component {
 
@@ -56,7 +56,7 @@ public class Mesh extends Component {
 
     public void render()
     {
-        if (ImGuiLayer.polygonMode.get())
+        if (MarbleGui.polygonMode.get())
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         // Bind the texture
@@ -67,7 +67,7 @@ public class Mesh extends Component {
         if (vaoId != -1) {
             glBindVertexArray(vaoId);
             glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
-            ImGuiLayer.drawCalls++;
+            MarbleGui.drawCalls++;
         }
 
         // Restore state
@@ -100,10 +100,10 @@ public class Mesh extends Component {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Mesh", nodeFlags);
         if (nodeOpen) {
-            ImGuiLayer.text("File: " + filePath);
-            ImGuiLayer.text("VaoID: " + vaoId);
-            ImGuiLayer.text("Vertex count: " + vertexCount);
-            ImGuiLayer.text("Indices count: " + indicesCount);
+            MarbleGui.text("File: " + filePath);
+            MarbleGui.text("VaoID: " + vaoId);
+            MarbleGui.text("Vertex count: " + vertexCount);
+            MarbleGui.text("Indices count: " + indicesCount);
             ImGui.treePop();
         }
         material.setupInspector();

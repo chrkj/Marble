@@ -6,13 +6,13 @@ import java.nio.ByteBuffer;
 
 import de.javagl.obj.*;
 
+import marble.imgui.MarbleConsole;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-import marble.imgui.Console;
 import marble.entity.components.Mesh;
 import marble.entity.components.Texture;
 
@@ -29,7 +29,7 @@ public final class Loader {
                     ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh), filePath);
         } catch (IOException e) {
             e.printStackTrace();
-            Console.log("Error: '" + "' invalid filepath.");
+            MarbleConsole.log("Error: '" + "' invalid filepath.");
             return new Mesh();
         }
     }
