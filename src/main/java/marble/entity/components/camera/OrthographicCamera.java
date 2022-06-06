@@ -35,7 +35,7 @@ public class OrthographicCamera extends Camera {
     }
 
     @Override
-    public Matrix4f getProjectionMatrixScene()
+    public Matrix4f getProjectionMatrixEditor()
     {
         return null;
     }

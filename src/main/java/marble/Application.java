@@ -4,6 +4,7 @@ import static java.sql.Types.*;
 
 import imgui.ImGui;
 import imgui.ImGuiIO;
+import imgui.extension.imguizmo.ImGuizmo;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
@@ -81,6 +82,7 @@ public class Application {
         glfwPollEvents();
         imGuiGlfw.newFrame();
         ImGui.newFrame();
+        ImGuizmo.beginFrame();
         MouseListener.calcDelta();
     }
 

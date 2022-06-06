@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 
 import de.javagl.obj.*;
 
-import marble.imgui.MarbleConsole;
+import marble.editor.ConsolePanel;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
@@ -29,7 +29,7 @@ public final class Loader {
                     ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh), filePath);
         } catch (IOException e) {
             e.printStackTrace();
-            MarbleConsole.log("Error: '" + "' invalid filepath.");
+            ConsolePanel.log("Error: '" + "' invalid filepath.");
             return new Mesh();
         }
     }

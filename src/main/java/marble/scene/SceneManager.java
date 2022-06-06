@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
-import marble.imgui.MarbleConsole;
+import marble.editor.ConsolePanel;
 
 public class SceneManager {
 
@@ -30,9 +30,9 @@ public class SceneManager {
         mapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
         try {
             mapper.writeValue(new File("assets/scenes/" + scene.getName() + ".marble"), scene);
-            MarbleConsole.log("Scene saved.");
+            ConsolePanel.log("Scene saved.");
         } catch (IOException e) {
-            MarbleConsole.log("Failed to save scene: " + scene.getName());
+            ConsolePanel.log("Failed to save scene: " + scene.getName());
             e.printStackTrace();
         }
     }
@@ -58,9 +58,9 @@ public class SceneManager {
 
             // TODO: Deserialize and add scene variables and entities to deserializedScene.
 
-            MarbleConsole.log("Loading scene: " + filePath);
+            ConsolePanel.log("Loading scene: " + filePath);
         } catch (IOException e) {
-            MarbleConsole.log("Failed to load scene: " + filePath);
+            ConsolePanel.log("Failed to load scene: " + filePath);
             e.printStackTrace();
         }
         return deserializedScene;

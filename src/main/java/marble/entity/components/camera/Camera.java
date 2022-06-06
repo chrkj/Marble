@@ -1,9 +1,9 @@
 package marble.entity.components.camera;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import marble.entity.components.Component;
-import org.joml.Vector3f;
 
 public abstract class Camera extends Component {
 
@@ -17,7 +17,7 @@ public abstract class Camera extends Component {
 
     public abstract Matrix4f getViewMatrix();
     public abstract Matrix4f getProjectionMatrixGame();
-    public abstract Matrix4f getProjectionMatrixScene();
+    public abstract Matrix4f getProjectionMatrixEditor();
     public abstract Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, Vector3f scale);
 
 }

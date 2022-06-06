@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.nio.FloatBuffer;
 import java.nio.file.NoSuchFileException;
 
-import marble.imgui.MarbleConsole;
+import marble.editor.ConsolePanel;
 import org.joml.*;
 
 import org.lwjgl.BufferUtils;
@@ -77,11 +77,11 @@ public class Shader {
         } catch (NoSuchFileException e) {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            MarbleConsole.log("NoSuchFileException: " + filepath);
+            ConsolePanel.log("NoSuchFileException: " + filepath);
         } catch (IOException e) {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            MarbleConsole.log("IOException: '" + filepath + "' " + e.getMessage());
+            ConsolePanel.log("IOException: '" + filepath + "' " + e.getMessage());
         }
     }
 
@@ -100,7 +100,7 @@ public class Shader {
         int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            MarbleConsole.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
+            ConsolePanel.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
 
         // Load and compile fragment shader
@@ -114,7 +114,7 @@ public class Shader {
         success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            MarbleConsole.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
+            ConsolePanel.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
 
         // Link shaders
@@ -127,7 +127,7 @@ public class Shader {
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
         if (success == GL_FALSE) {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
-            MarbleConsole.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
+            ConsolePanel.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
         uniformLocationCache.clear();
     }

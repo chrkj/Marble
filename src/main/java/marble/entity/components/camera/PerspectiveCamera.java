@@ -44,9 +44,9 @@ public class PerspectiveCamera extends Camera {
     }
 
     @Override
-    public Matrix4f getProjectionMatrixScene()
+    public Matrix4f getProjectionMatrixEditor()
     {
-        float aspectRatio = EditorLayer.sceneViewportSize.x / EditorLayer.sceneViewportSize.y;
+        float aspectRatio = EditorLayer.editorViewportSize.x / EditorLayer.editorViewportSize.y;
         return projectionMatrix.setPerspective((float) Math.toRadians(fov), aspectRatio, near, far);
     }
 

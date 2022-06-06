@@ -3,11 +3,12 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.ImVec2;
 import imgui.ImGuiViewport;
+import imgui.extension.imguizmo.ImGuizmo;
+import imgui.extension.imguizmo.flag.Mode;
+import imgui.extension.imguizmo.flag.Operation;
 import imgui.type.ImBoolean;
 import imgui.flag.ImGuiWindowFlags;
-import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.imgui.MarbleConsole;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
@@ -18,7 +19,6 @@ import marble.Application;
 import marble.scene.SceneManager;
 import marble.scene.emptyScene;
 import marble.scene.Scene;
-import marble.entity.Entity;
 import marble.imgui.MarbleGui;
 import marble.renderer.FrameBuffer;
 
@@ -26,49 +26,97 @@ public class EditorLayer {
 
     public static boolean allowSceneViewportInput = false;
     public static ImVec2 gameViewportSize = new ImVec2();
-    public static ImVec2 sceneViewportSize = new ImVec2();
+    public static ImVec2 editorViewportSize = new ImVec2();
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
-    public static final FrameBuffer sceneViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
+    public static final FrameBuffer editorViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
 
-    private Entity selectedEntity;
-    private Scene currentScene, runtimeScene;
+    public static Scene currentScene, runtimeScene;
+
+    private final ConsolePanel console;
     private final SceneManager sceneManager;
+    private final SceneHierarchyPanel sceneHierarchy;
+    private final ContentBrowserPanel contentBrowserPanel;
 
     public EditorLayer()
     {
+        console = new ConsolePanel();
         sceneManager = new SceneManager();
+        sceneHierarchy = new SceneHierarchyPanel();
+        contentBrowserPanel = new ContentBrowserPanel();
+
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();
         currentScene.start();
-        MarbleConsole.log("LWJGL Version: " + Version.getVersion() + "!");
-        MarbleConsole.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        MarbleConsole.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        MarbleConsole.log("Version: " + GL30.glGetString(GL_VERSION));
+
+        ConsolePanel.log("LWJGL Version: " + Version.getVersion() + "!");
+        ConsolePanel.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        ConsolePanel.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        ConsolePanel.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     public void onUpdate(float dt)
     {
-        drawDockspace();
-        MarbleConsole.draw();
-        drawSceneHierarchy();
-        drawEntityInspector();
-        drawSceneViewport();
+        setupDockspace();
+        console.onUpdate();
+        sceneHierarchy.onUpdate();
+        contentBrowserPanel.onUpdate();
+
         drawGameViewport();
-        ImGui.showDemoWindow();
+        drawEditorViewport();
+        drawEntityInspector();
+
         MarbleGui.drawDiagnostics(dt);
         currentScene.onUpdate(dt);
         currentScene.onRender();
     }
 
-    private void drawSceneViewport()
+    private void drawEditorViewport()
     {
         ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
         setSceneViewportInputFlag();
-        sceneViewportSize = getViewportSize();
-        ImVec2 windowPos = getRenderingPos(sceneViewportSize);
+        editorViewportSize = getViewportSize();
+        ImVec2 windowPos = getRenderingPos(editorViewportSize);
         ImGui.setCursorPos(windowPos.x, windowPos.y);
-        int textureId = sceneViewportFramebuffer.getTextureId();
-        ImGui.image(textureId, sceneViewportSize.x, sceneViewportSize.y, 0, 1, 1, 0);
+        int textureId = editorViewportFramebuffer.getTextureId();
+        ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
+
+        // Gizmos (TODO: Merge Framebuffer with gizmos)
+        if (sceneHierarchy.selectedEntity != null)
+        {
+            ImGuizmo.setOrthographic(false);
+            ImGuizmo.setEnabled(true);
+            ImGuizmo.setDrawList();
+            float windowWidth = ImGui.getWindowWidth();
+            float windowHeight = ImGui.getWindowHeight();
+            ImGuizmo.setRect(ImGui.getWindowPos().x, ImGui.getWindowPos().y, windowWidth, windowHeight);
+
+            var camera = currentScene.getEditorCamera();
+            var view = camera.getViewMatrix();
+            var proj = camera.getProjectionMatrixEditor();
+            var transform = sceneHierarchy.selectedEntity.transform;
+
+            float[] v = {
+                    view.m00(), view.m10(), view.m20(), view.m30(),
+                    view.m01(), view.m11(), view.m21(), view.m31(),
+                    view.m02(), view.m12(), view.m22(), view.m32(),
+                    view.m03(), view.m13(), view.m23(), view.m33()};
+
+            float[] p = {
+                    proj.m00(), proj.m10(), proj.m20(), proj.m30(),
+                    proj.m01(), proj.m11(), proj.m21(), proj.m31(),
+                    proj.m02(), proj.m12(), proj.m22(), proj.m32(),
+                    proj.m03(), proj.m13(), proj.m23(), proj.m33()};
+
+            float[] t = new float[16];
+
+            ImGuizmo.recomposeMatrixFromComponents(t,
+                    new float[]{transform.position.x, transform.position.y, transform.position.z},
+                    new float[]{transform.rotation.x, transform.rotation.y, transform.rotation.z},
+                    new float[]{transform.scale.x, transform.scale.y, transform.scale.z});
+
+            ImGuizmo.manipulate(v, p, t, Operation.TRANSLATE, Mode.LOCAL);
+        }
+
         ImGui.end();
     }
 
@@ -91,7 +139,7 @@ public class EditorLayer {
             allowSceneViewportInput = false;
     }
 
-    private void drawDockspace()
+    private void setupDockspace()
     {
         int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.MenuBar;
         ImGuiViewport mainViewport = ImGui.getMainViewport();
@@ -149,44 +197,11 @@ public class EditorLayer {
         return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
     }
 
-    private void drawSceneHierarchy()
-    {
-        ImGui.begin("Hierarchy");
-        int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        for (Entity entity : currentScene.getEntities())
-            recursiveDrawCall(entity, nodeFlags);
-        ImGui.end();
-    }
-
-    private void recursiveDrawCall(Entity entity, int nodeFlags)
-    {
-        int currentFlags = nodeFlags;
-        if (entity.getChildren().size() == 0) currentFlags |= ImGuiTreeNodeFlags.Leaf;
-        if (entity == selectedEntity)         currentFlags |= ImGuiTreeNodeFlags.Selected;
-
-        boolean nodeOpen;
-        if (entity.name.length() == 0)
-            nodeOpen = ImGui.treeNodeEx("##" + entity.name, currentFlags);
-        else
-            nodeOpen = ImGui.treeNodeEx(entity.name, currentFlags);
-
-        if (ImGui.isItemClicked())
-            selectedEntity = entity;
-
-        if (nodeOpen) {
-            for (Entity child : entity.getChildren())
-                recursiveDrawCall(child, nodeFlags);
-            ImGui.treePop();
-        }
-
-        // TODO: Handle unselecting when clicking away from the entity
-    }
-
     private void drawEntityInspector()
     {
         ImGui.begin("Inspector");
-        if (selectedEntity != null)
-            selectedEntity.setupInspector();
+        if (sceneHierarchy.selectedEntity != null)
+            sceneHierarchy.selectedEntity.setupInspector();
         ImGui.end();
     }
 

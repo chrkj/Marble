@@ -61,7 +61,7 @@ public abstract class Scene {
     public void onRender()
     {
         // TODO: Make Renderer API to call from scene
-        renderer.render(editorCamera, registry, EditorLayer.sceneViewportFramebuffer, ambientLight, specularPower, 1);
+        renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, 1);
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
     }
 

@@ -1,12 +1,13 @@
 package marble.entity.components.camera;
 
-import marble.editor.EditorLayer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import marble.editor.EditorLayer;
+
 public class EditorCamera extends Camera {
-    public final Vector3f position = new Vector3f();
-    public final Vector3f rotation = new Vector3f();
+    public final Vector3f position = new Vector3f(2.5f, 15, 70);
+    public final Vector3f rotation = new Vector3f(22, 0, 0);
 
     public float near = 0.3f;
     public float far = 1000.f;
@@ -66,9 +67,9 @@ public class EditorCamera extends Camera {
     }
 
     @Override
-    public Matrix4f getProjectionMatrixScene()
+    public Matrix4f getProjectionMatrixEditor()
     {
-        float aspectRatio = EditorLayer.sceneViewportSize.x / EditorLayer.sceneViewportSize.y;
+        float aspectRatio = EditorLayer.editorViewportSize.x / EditorLayer.editorViewportSize.y;
         return projectionMatrix.setPerspective(fov, aspectRatio, near, far);
     }
 

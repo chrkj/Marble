@@ -42,7 +42,7 @@ public class Renderer {
             if (bufferId == 0)
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixGame());
             else
-                shader.setUniformMat4("uProjection", camera.getProjectionMatrixScene());
+                shader.setUniformMat4("uProjection", camera.getProjectionMatrixEditor());
 
             shader.setUniformMat4("uWorld", camera.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
 
