@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Objects;
 
 import imgui.ImGui;
+import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiMouseButton;
 
 import marble.util.Loader;
@@ -45,6 +46,14 @@ public class ContentBrowserPanel {
         {
             Texture icon = file.isDirectory() ? dirIcon : fileIcon;
             ImGui.imageButton(icon.getId(), thumbnailSize, thumbnailSize);
+
+            // Drag and drop
+            if (ImGui.beginDragDropSource())
+            {
+                ImGui.setDragDropPayload("CONTENT_BROWSER_FILE", file, ImGuiCond.Once);
+                ImGui.endDragDropSource();
+            }
+
             if (ImGui.isItemHovered() && ImGui.isMouseDoubleClicked(ImGuiMouseButton.Left))
             {
                 if (file.isDirectory())

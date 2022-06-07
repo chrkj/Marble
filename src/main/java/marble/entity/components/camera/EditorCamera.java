@@ -52,18 +52,19 @@ public class EditorCamera extends Camera {
     @Override
     public Matrix4f getViewMatrix()
     {
-        viewMatrix.identity();
-        viewMatrix.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
+        var view = new Matrix4f().identity();
+        view.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
                 .rotate((float)Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
-        viewMatrix.translate(-position.x, -position.y, -position.z);
-        return viewMatrix;
+        view.translate(-position.x, -position.y, -position.z);
+        return view;
     }
 
     @Override
     public Matrix4f getProjectionMatrixGame()
     {
+        var proj = new Matrix4f().identity();
         float aspectRatio = EditorLayer.gameViewportSize.x / EditorLayer.gameViewportSize.y;
-        return projectionMatrix.setPerspective(fov, aspectRatio, near, far);
+        return proj.setPerspective(fov, aspectRatio, near, far);
     }
 
     @Override

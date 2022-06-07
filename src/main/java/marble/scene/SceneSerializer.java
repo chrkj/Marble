@@ -13,9 +13,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import marble.editor.ConsolePanel;
 
-public class SceneManager {
+public class SceneSerializer {
 
-    public SceneManager()
+    public SceneSerializer()
     {
     }
 
@@ -40,7 +40,7 @@ public class SceneManager {
     public Scene deSerialize(String filePath)
     {
         Scene deserializedScene = null;
-        filePath = "assets/scenes/empty_scene.marble"; // Temp: For debugging
+        //filePath = "assets/scenes/empty_scene.marble"; // Temp: For debugging
         try {
             String source = new String(Files.readAllBytes(Paths.get(filePath)));
             String sceneName = source.substring(7, source.indexOf("\"",7));
@@ -64,10 +64,6 @@ public class SceneManager {
             e.printStackTrace();
         }
         return deserializedScene;
-    }
-
-    public void changeScene(Scene scene)
-    {
     }
 
 }
