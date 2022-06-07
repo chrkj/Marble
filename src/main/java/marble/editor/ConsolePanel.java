@@ -29,7 +29,7 @@ public final class ConsolePanel {
         ImGui.textUnformatted(BUFFER.toString());
         if (SHOULD_SCROLL_TO_BOTTOM.get())
             ImGui.setScrollHereY(1f);
-        SHOULD_SCROLL_TO_BOTTOM.set(false);
+        SHOULD_SCROLL_TO_BOTTOM.set(true);
         ImGui.endChild();
         ImGui.end();
     }
