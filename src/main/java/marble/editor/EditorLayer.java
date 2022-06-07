@@ -18,7 +18,7 @@ import marble.Application;
 import marble.scene.SceneSerializer;
 import marble.scene.emptyScene;
 import marble.scene.Scene;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import marble.renderer.FrameBuffer;
 
 public class EditorLayer {

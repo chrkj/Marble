@@ -1,4 +1,4 @@
-package marble.imgui;
+package marble.gui;
 
 import imgui.*;
 import imgui.flag.*;

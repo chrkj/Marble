@@ -4,7 +4,7 @@ import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import org.joml.Vector3f;
 
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 
 public class Transform {
 

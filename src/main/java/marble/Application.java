@@ -10,7 +10,7 @@ import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
 import marble.editor.EditorLayer;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;

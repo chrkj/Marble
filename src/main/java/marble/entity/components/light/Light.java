@@ -2,7 +2,7 @@ package marble.entity.components.light;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import org.joml.Vector4f;
 
 import marble.entity.components.Component;

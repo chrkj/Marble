@@ -6,7 +6,7 @@ import imgui.flag.ImGuiTreeNodeFlags;
 import org.joml.Vector4f;
 
 import marble.renderer.Shader;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import marble.entity.components.Texture;
 
 public class Material {

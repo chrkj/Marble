@@ -3,7 +3,7 @@ package marble.entity.components.camera;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import marble.editor.EditorLayer;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

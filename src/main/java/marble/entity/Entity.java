@@ -3,7 +3,7 @@ package marble.entity;
 import java.util.*;
 
 import imgui.ImGui;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
 public class Entity {

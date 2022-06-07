@@ -19,7 +19,7 @@ import marble.entity.components.Component;
 import marble.entity.components.camera.Camera;
 import marble.entity.components.camera.EditorCamera;
 
-public abstract class Scene {
+public class Scene {
 
     private String name;
     private transient float sceneStartedTime;
@@ -30,15 +30,28 @@ public abstract class Scene {
     protected float specularPower = 10;
     protected transient Camera mainCamera;
     protected transient final Registry registry = new Registry();
-    protected final Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
+    protected Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
     protected final List<Entity> entities = new ArrayList<>();
 
-    public abstract void init();
-    public abstract void update(float dt);
+    public void init()
+    {
+    }
+
+    public void update(float dt)
+    {
+
+    }
 
     public Scene(String name)
     {
         this.name = name;
+    }
+
+    public Scene(String name, float specularPower, Vector3f ambientLight)
+    {
+        this.name = name;
+        this.specularPower = specularPower;
+        this.ambientLight = ambientLight;
     }
 
     public void start()

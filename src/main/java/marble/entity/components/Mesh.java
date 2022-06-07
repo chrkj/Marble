@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL30.*;
 
 import marble.entity.Material;
 import marble.renderer.Buffer;
-import marble.imgui.MarbleGui;
+import marble.gui.MarbleGui;
 
 public class Mesh extends Component {
 
