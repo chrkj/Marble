@@ -54,24 +54,18 @@ Frameworks/libraries used for the project:
 <!-- ROADMAP -->
 ## Roadmap
 
-Lights:
-- ✅ Add directional light
-- ⬜ Add spot light
-- ⬜ Add point light
-- ⬜ Support multiple lights in scene
 
-Terrain:
-- ⬜ Add terrain generation
-- ⬜ Add procedural terrain generation
-
-Optimization:
-- ⬜ Add Frustum culling
-
-UI:
-- ⬜ Add custom title bar
-- ✅ Setup custom theme
-- ✅ Add console window
-- ✅ Add game / editor viewport
+- ✅ Directional light
+- ⬜ Spot light
+- ⬜ Point light
+- ⬜ Multiple lights in scenes
+- ⬜ Frustum culling
+- ⬜ Deferred rendering
+- ⬜ Custom title bar
+- ✅ Custom layout theme
+- ✅ Console panel
+- ✅ Game / editor viewport
+- ⬜ Scene serialization / deserialization
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
