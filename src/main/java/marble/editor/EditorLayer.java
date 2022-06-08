@@ -15,15 +15,15 @@ import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 
 import marble.Application;
-import marble.scene.SceneSerializer;
-import marble.scene.emptyScene;
 import marble.scene.Scene;
+import marble.scene.emptyScene;
+import marble.scene.SceneSerializer;
 import marble.gui.MarbleGui;
 import marble.renderer.FrameBuffer;
 
 public class EditorLayer {
 
-    public static boolean allowSceneViewportInput = false;
+    public static boolean allowEditorViewportInput = false;
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 editorViewportSize = new ImVec2();
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
@@ -33,15 +33,17 @@ public class EditorLayer {
 
     private final ConsolePanel consolePanel;
     private final SceneSerializer sceneSerializer;
-    private final SceneHierarchyPanel sceneHierarchy;
+    private final SceneHierarchyPanel sceneHierarchyPanel;
     private final ContentBrowserPanel contentBrowserPanel;
+    private final EntityInspectorPanel entityInspectorPanel;
 
     public EditorLayer()
     {
         consolePanel = new ConsolePanel();
         sceneSerializer = new SceneSerializer();
-        sceneHierarchy = new SceneHierarchyPanel();
+        sceneHierarchyPanel = new SceneHierarchyPanel();
         contentBrowserPanel = new ContentBrowserPanel();
+        entityInspectorPanel = new EntityInspectorPanel();
 
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();
@@ -57,14 +59,15 @@ public class EditorLayer {
     {
         setupDockspace();
         consolePanel.onUpdate();
-        sceneHierarchy.onUpdate();
+        sceneHierarchyPanel.onUpdate();
         contentBrowserPanel.onUpdate();
+        entityInspectorPanel.onUpdate(sceneHierarchyPanel.selectedEntity);
 
         drawGameViewport();
         drawEditorViewport();
-        drawEntityInspector();
 
         MarbleGui.drawDiagnostics(dt);
+
         currentScene.onUpdate(dt);
         currentScene.onRender();
     }
@@ -72,7 +75,7 @@ public class EditorLayer {
     private void drawEditorViewport()
     {
         ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-        setSceneViewportInputFlag();
+        setEditorViewportInputFlag();
         editorViewportSize = getViewportSize();
         ImVec2 windowPos = getRenderingPos(editorViewportSize);
         ImGui.setCursorPos(windowPos.x, windowPos.y);
@@ -80,14 +83,13 @@ public class EditorLayer {
         ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
         ImGui.setCursorPos(windowPos.x, windowPos.y);
 
-        // Drag and drop
+        // DragDrop open scene
         if (ImGui.beginDragDropTarget())
         {
             var payload = ImGui.acceptDragDropPayload("CONTENT_BROWSER_FILE");
             if (payload != null)
                 openScene(payload.toString());
         }
-
         ImGui.end();
     }
 
@@ -102,12 +104,12 @@ public class EditorLayer {
         ImGui.end();
     }
 
-    private void setSceneViewportInputFlag()
+    private void setEditorViewportInputFlag()
     {
         if (ImGui.isWindowHovered() && ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_2))
-            allowSceneViewportInput = true;
+            allowEditorViewportInput = true;
         if (ImGui.isMouseReleased(GLFW_MOUSE_BUTTON_2))
-            allowSceneViewportInput = false;
+            allowEditorViewportInput = false;
     }
 
     private void setupDockspace()
@@ -132,7 +134,7 @@ public class EditorLayer {
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File")) {
             if (ImGui.menuItem("Save scene")) sceneSerializer.serialize(currentScene);
-            if (ImGui.menuItem("Load scene")) openScene("TODO");
+            if (ImGui.menuItem("Open scene")) openScene("TODO");
             if (ImGui.menuItem("Exit")) glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
         }
@@ -168,14 +170,6 @@ public class EditorLayer {
         float viewportX = (windowSize.x / 2.0f) - (viewportSize.x / 2.0f);
         float viewportY = (windowSize.y / 2.0f) - (viewportSize.y / 2.0f);
         return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
-    }
-
-    private void drawEntityInspector()
-    {
-        ImGui.begin("Inspector");
-        if (sceneHierarchy.selectedEntity != null)
-            sceneHierarchy.selectedEntity.setupInspector();
-        ImGui.end();
     }
 
     public void cleanUp()

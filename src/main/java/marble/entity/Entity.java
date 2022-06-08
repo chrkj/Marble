@@ -3,6 +3,7 @@ package marble.entity;
 import java.util.*;
 
 import imgui.ImGui;
+
 import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
@@ -10,10 +11,10 @@ public class Entity {
 
     public String name;
     public Transform transform;
+    public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private transient Entity parent = null;
     private final List<Entity> children = new ArrayList<>();
-    private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     public Entity()
     {
@@ -91,23 +92,6 @@ public class Entity {
     {
         transform.setScale(x,y,z);
         return this;
-    }
-
-    public void setupInspector()
-    {
-        name = MarbleGui.inputText("name", name);
-        transform.setupInspector();
-        for (Component component : components.values())
-            component.setupInspector();
-        ImGui.separator();
-        if (ImGui.button("Add component"))
-            ImGui.openPopup("add_component_popup");
-        if (ImGui.beginPopup("add_component_popup")) {
-            if (ImGui.selectable("Example component")) {
-                // TODO: Add component functionality
-            }
-            ImGui.endPopup();
-        }
     }
 
     public List<Entity> getChildren()

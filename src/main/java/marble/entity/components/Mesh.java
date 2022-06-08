@@ -64,7 +64,8 @@ public class Mesh extends Component {
             material.getTexture().bind();
 
         // Draw mesh if vao is valid
-        if (vaoId != -1) {
+        if (vaoId != -1)
+        {
             glBindVertexArray(vaoId);
             glDrawElements(GL_TRIANGLES, indicesCount, GL_UNSIGNED_INT, 0);
             MarbleGui.drawCalls++;
@@ -99,7 +100,8 @@ public class Mesh extends Component {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Mesh", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
+        {
             MarbleGui.text("File: " + filePath);
             MarbleGui.text("VaoID: " + vaoId);
             MarbleGui.text("Vertex count: " + vertexCount);

@@ -126,7 +126,7 @@ public class Scene {
 
     private void handleSceneViewportInput(float dt)
     {
-        if (EditorLayer.allowSceneViewportInput) {
+        if (EditorLayer.allowEditorViewportInput) {
             float camSpeed = 10 * dt;
             float camRotSpeed = 15 * dt;
 
