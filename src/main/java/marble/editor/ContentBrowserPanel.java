@@ -16,6 +16,8 @@ public class ContentBrowserPanel {
     private final String assetsDir = "assets";
     private final Texture dirIcon;
     private final Texture fileIcon;
+    private final float padding = 15f;
+    private final float thumbnailSize = 128f;
 
     public ContentBrowserPanel()
     {
@@ -34,8 +36,6 @@ public class ContentBrowserPanel {
         ImGui.sameLine();
         ImGui.text(dir.getAbsolutePath());
 
-        float padding = 12f;
-        float thumbnailSize = 64f;
         float cellSize = thumbnailSize + padding;
         float panelWidth = ImGui.getContentRegionAvail().x;
 

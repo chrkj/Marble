@@ -13,12 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
-import marble.editor.ConsolePanel;
-import marble.entity.Entity;
-import marble.entity.Transform;
-import marble.entity.components.camera.PerspectiveCamera;
 import org.joml.Vector3f;
 import org.yaml.snakeyaml.Yaml;
+
+import marble.entity.Entity;
+import marble.entity.Transform;
+import marble.editor.ConsolePanel;
+import marble.entity.components.camera.PerspectiveCamera;
 
 public class SceneSerializer {
 
@@ -49,8 +50,8 @@ public class SceneSerializer {
     public Scene deSerialize(String filePath)
     {
         Scene deserializedScene = null;
-        //filePath = "assets/scenes/empty_scene.marble"; // Temp: For debugging
-        try {
+        try
+        {
             InputStream io = new FileInputStream(filePath);
             Yaml yaml = new Yaml();
             Map<String, Object> data = yaml.load(io);
@@ -62,12 +63,12 @@ public class SceneSerializer {
             double y = (double)al.get("y");
             double z = (double)al.get("z");
             Vector3f ambientLight = new Vector3f((float)x, (float)y, (float)z);
+
             deserializedScene = new Scene(sceneName, (float)specularPower, ambientLight);
 
             // TODO: Deserialize and add scene variables and entities to deserializedScene.
 
             List<Map> entities = (List<Map>) data.get("entities");
-
             for (Map entity : entities)
             {
                 String entityName = (String)entity.get("name");
@@ -81,9 +82,10 @@ public class SceneSerializer {
             }
 
             ConsolePanel.log("Loading scene: " + filePath);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             ConsolePanel.log("Failed to load scene: " + filePath);
-            e.printStackTrace();
         }
         return deserializedScene;
     }
@@ -94,7 +96,8 @@ public class SceneSerializer {
         {
             String componentName = (String)key;
             Map componentsData = (Map)components.get(key);
-            switch (componentName) {
+            switch (componentName)
+            {
                 //TODO: Load rest of components
                 case "marble.entity.components.camera.PerspectiveCamera":
                     PerspectiveCamera camera = new PerspectiveCamera();
@@ -120,7 +123,8 @@ public class SceneSerializer {
         return new Transform(
                 new Vector3f((float) position[0], (float) position[1], (float) position[2]),
                 new Vector3f((float) rotation[0], (float) rotation[1], (float) rotation[2]),
-                new Vector3f((float) scale[0], (float) scale[1], (float) scale[2]));
+                new Vector3f((float) scale[0], (float) scale[1], (float) scale[2])
+        );
     }
 
 }

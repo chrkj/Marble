@@ -9,8 +9,6 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
-import marble.editor.EditorLayer;
-import marble.gui.MarbleGui;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -21,6 +19,8 @@ import marble.util.Time;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
+import marble.editor.EditorLayer;
+import marble.gui.MarbleGui;
 
 public class Application {
 

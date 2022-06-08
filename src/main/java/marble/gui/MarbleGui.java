@@ -19,6 +19,7 @@ public final class MarbleGui {
     public static final ImBoolean polygonMode = new ImBoolean(false);
 
     private static final ImBoolean vsync = new ImBoolean(true);
+    private static final ImBoolean showImGuiDemo = new ImBoolean(false);
 
     private MarbleGui()
     {
@@ -38,12 +39,17 @@ public final class MarbleGui {
         ImGui.text(String.format("Delta: %s, %s", MouseListener.mouseDelta().x, MouseListener.mouseDelta().y));
         ImGui.text(String.format("Dragging: %b", MouseListener.isDragging()));
 
-        if (ImGui.checkbox("Vsync", vsync)) {
+        if (ImGui.checkbox("Vsync", vsync))
+        {
             if(vsync.get())
                 glfwSwapInterval(GLFW_TRUE);
             else
                 glfwSwapInterval(GLFW_FALSE);
         }
+
+        ImGui.checkbox("ImGuiDemo", showImGuiDemo);
+        if (showImGuiDemo.get())
+            ImGui.showDemoWindow();
 
         ImGui.checkbox("Polygon", polygonMode);
         ImGui.end();
