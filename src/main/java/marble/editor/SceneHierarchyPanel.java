@@ -3,6 +3,7 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import marble.entity.Entity;
+import marble.scene.Scene;
 
 public class SceneHierarchyPanel {
 
@@ -12,11 +13,11 @@ public class SceneHierarchyPanel {
     {
     }
 
-    public void onUpdate()
+    public void onUpdate(Scene currentScene)
     {
         ImGui.begin("Hierarchy");
         int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        for (Entity entity : EditorLayer.currentScene.getEntities())
+        for (Entity entity : currentScene.getEntities())
             recursiveDrawCall(entity, nodeFlags);
         ImGui.end();
     }

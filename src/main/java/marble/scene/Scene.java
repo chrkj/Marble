@@ -5,14 +5,9 @@ import java.util.ArrayList;
 
 import org.joml.Vector3f;
 
-import static org.lwjgl.glfw.GLFW.*;
-
-import marble.Application;
 import marble.editor.EditorLayer;
 import marble.util.Time;
 import marble.renderer.Renderer;
-import marble.listeners.KeyListener;
-import marble.listeners.MouseListener;
 import marble.entity.Entity;
 import marble.entity.components.Registry;
 import marble.entity.components.Component;
@@ -21,10 +16,11 @@ import marble.entity.components.camera.EditorCamera;
 
 public class Scene {
 
+    public transient final EditorCamera editorCamera = new EditorCamera();
+
     private String name;
     private transient float sceneStartedTime;
     private transient boolean isRunning = false;
-    private transient final EditorCamera editorCamera = new EditorCamera();
     private transient final Renderer renderer = new Renderer();
 
     protected float specularPower = 10;
@@ -39,7 +35,6 @@ public class Scene {
 
     public void update(float dt)
     {
-
     }
 
     public Scene(String name)
@@ -57,15 +52,13 @@ public class Scene {
     public void start()
     {
         sceneStartedTime = Time.getTime();
-        for (Entity entity : entities) {
+        for (Entity entity : entities)
             entity.start();
-        }
         isRunning = true;
     }
 
     public void onUpdate(float dt)
     {
-        handleSceneViewportInput(dt);
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
@@ -76,12 +69,6 @@ public class Scene {
         // TODO: Make Renderer API to call from scene
         renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, 1);
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
-    }
-
-    public void cleanUp()
-    {
-        for (Entity entity : entities)
-            entity.cleanUp();
     }
 
     protected Entity createEntity()
@@ -124,35 +111,15 @@ public class Scene {
         return entities;
     }
 
-    private void handleSceneViewportInput(float dt)
-    {
-        if (EditorLayer.allowEditorViewportInput) {
-            float camSpeed = 10 * dt;
-            float camRotSpeed = 15 * dt;
-
-            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            editorCamera.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_W))
-                editorCamera.move(0, 0, -camSpeed);
-            if (KeyListener.isKeyPressed(GLFW_KEY_S))
-                editorCamera.move(0, 0, camSpeed);
-            if (KeyListener.isKeyPressed(GLFW_KEY_A))
-                editorCamera.move(-camSpeed, 0, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_D))
-                editorCamera.move(camSpeed, 0, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_E))
-                editorCamera.move(0, -camSpeed, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_Q))
-                editorCamera.move(0, camSpeed, 0);
-        } else {
-            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
-    }
-
-    public String getName()
+    public String getSaveName()
     {
         return name.replaceAll("\\s+", "_").toLowerCase();
+    }
+
+    public void cleanUp()
+    {
+        for (Entity entity : entities)
+            entity.cleanUp();
     }
 
 }

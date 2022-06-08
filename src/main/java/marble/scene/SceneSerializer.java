@@ -38,10 +38,10 @@ public class SceneSerializer {
     public void serialize(Scene scene)
     {
         try {
-            mapper.writeValue(new File("assets/scenes/" + scene.getName() + ".marble"), scene);
+            mapper.writeValue(new File("assets/scenes/" + scene.getSaveName() + ".marble"), scene);
             ConsolePanel.log("Scene saved.");
         } catch (IOException e) {
-            ConsolePanel.log("Failed to save scene: " + scene.getName());
+            ConsolePanel.log("Failed to save scene: " + scene.getSaveName());
             e.printStackTrace();
         }
     }
