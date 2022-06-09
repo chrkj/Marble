@@ -66,9 +66,8 @@ public class Scene {
 
     public void onRender()
     {
-        // TODO: Make Renderer API to call from scene
-        renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, 1);
-        renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, 0);
+        renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
+        renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.GAME);
     }
 
     protected Entity createEntity()
@@ -83,12 +82,16 @@ public class Scene {
 
     protected void addEntityToScene(Entity entity)
     {
-        if (!isRunning) {
+        if (!isRunning)
+        {
             entities.add(entity);
-        } else {
+        }
+        else
+        {
             entities.add(entity);
             entity.start();
         }
+
         for (Component component : entity.getAllComponents()) {
             if (component instanceof Camera)
                 mainCamera = (Camera) component;

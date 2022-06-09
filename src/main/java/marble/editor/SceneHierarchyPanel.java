@@ -2,8 +2,9 @@ package marble.editor;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.entity.Entity;
+
 import marble.scene.Scene;
+import marble.entity.Entity;
 
 public class SceneHierarchyPanel {
 

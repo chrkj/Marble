@@ -8,17 +8,16 @@ import imgui.type.ImBoolean;
 
 public final class ConsolePanel {
 
+    private static final int MAX_LENGTH = 2500;
     private static final StringBuffer BUFFER = new StringBuffer();
     private static final ImBoolean SHOULD_SCROLL_TO_BOTTOM = new ImBoolean(false);
     private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
-    private static final int MAX_LENGTH = 2500;
 
     public ConsolePanel()
     {
     }
 
     public void onUpdate()
-
     {
         ImGui.setNextWindowSize(500, 400);
         ImGui.begin("Console");

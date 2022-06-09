@@ -14,17 +14,20 @@ import java.util.List;
 
 public class Renderer {
 
+    public enum ViewportId { EDITOR, GAME };
+
     public void clear()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Camera camera, Registry registry, FrameBuffer frameBuffer, Vector3f ambientLight, float specularPower, int bufferId)
+    public void render(Camera camera, Registry registry, FrameBuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)
     {
         frameBuffer.bind();
         clear();
 
-        for (Mesh mesh : registry.getMeshes()) {
+        for (Mesh mesh : registry.getMeshes())
+        {
             Material material = mesh.material;
             Shader shader = material.getShader();
             shader.bind();
@@ -39,7 +42,8 @@ public class Renderer {
             shader.setUniform3f("uAmbientLight", ambientLight);
             shader.setUniform1f("uSpecularPower", specularPower);
             shader.setUniformMat4("uView", camera.getViewMatrix());
-            if (bufferId == 0)
+
+            if (viewportId == ViewportId.GAME)
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixGame());
             else
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixEditor());

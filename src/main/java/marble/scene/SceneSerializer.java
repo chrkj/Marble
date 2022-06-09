@@ -38,10 +38,13 @@ public class SceneSerializer {
 
     public void serialize(Scene scene)
     {
-        try {
+        try
+        {
             mapper.writeValue(new File("assets/scenes/" + scene.getSaveName() + ".marble"), scene);
             ConsolePanel.log("Scene saved.");
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             ConsolePanel.log("Failed to save scene: " + scene.getSaveName());
             e.printStackTrace();
         }
@@ -65,8 +68,6 @@ public class SceneSerializer {
             Vector3f ambientLight = new Vector3f((float)x, (float)y, (float)z);
 
             deserializedScene = new Scene(sceneName, (float)specularPower, ambientLight);
-
-            // TODO: Deserialize and add scene variables and entities to deserializedScene.
 
             List<Map> entities = (List<Map>) data.get("entities");
             for (Map entity : entities)
@@ -123,8 +124,7 @@ public class SceneSerializer {
         return new Transform(
                 new Vector3f((float) position[0], (float) position[1], (float) position[2]),
                 new Vector3f((float) rotation[0], (float) rotation[1], (float) rotation[2]),
-                new Vector3f((float) scale[0], (float) scale[1], (float) scale[2])
-        );
+                new Vector3f((float) scale[0], (float) scale[1], (float) scale[2]));
     }
 
 }

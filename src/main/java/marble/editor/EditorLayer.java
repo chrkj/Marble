@@ -33,6 +33,7 @@ public class EditorLayer {
     private boolean inputFlag;
     private Scene currentScene, runtimeScene;
 
+    private final FileDialog fileDialog;
     private final ConsolePanel consolePanel;
     private final SceneSerializer sceneSerializer;
     private final SceneHierarchyPanel sceneHierarchyPanel;
@@ -42,6 +43,7 @@ public class EditorLayer {
 
     public EditorLayer()
     {
+        fileDialog = new FileDialog();
         consolePanel = new ConsolePanel();
         sceneSerializer = new SceneSerializer();
         sceneHierarchyPanel = new SceneHierarchyPanel();
@@ -61,6 +63,7 @@ public class EditorLayer {
     public void onUpdate(float dt)
     {
         setupDockspace();
+        fileDialog.onUpdate();
         consolePanel.onUpdate();
         contentBrowserPanel.onUpdate();
         sceneHierarchyPanel.onUpdate(currentScene);
@@ -139,19 +142,28 @@ public class EditorLayer {
     private void createMenuBar()
     {
         ImGui.beginMenuBar();
-        if (ImGui.beginMenu("File")) {
-            if (ImGui.menuItem("Save scene")) sceneSerializer.serialize(currentScene);
-            if (ImGui.menuItem("Open scene")) openScene("TODO");
-            if (ImGui.menuItem("Exit")) glfwSetWindowShouldClose(Application.windowPtr, true);
+        if (ImGui.beginMenu("File"))
+        {
+            // TODO: Shortcuts not handled
+            if (ImGui.menuItem("Save scene", "ctrl-s")) sceneSerializer.serialize(currentScene);
+            if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialog.open();
+            if (ImGui.menuItem("Exit"))       glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
+        }
+
+        // Deserialize file dialog selection
+        if (fileDialog.selection != null && !fileDialog.selection.isEmpty())
+        {
+            openScene(fileDialog.selection.values().stream().findFirst().get());
+            fileDialog.selection = null;
         }
         ImGui.endMenuBar();
     }
 
     private void openScene(String filePath)
     {
-        Scene loadedScene = sceneSerializer.deSerialize(filePath); // TODO: Fix filepath acquirement
-        if (loadedScene == null )
+        Scene loadedScene = sceneSerializer.deSerialize(filePath);
+        if (loadedScene == null)
             return;
         currentScene.cleanUp();
         currentScene = loadedScene;

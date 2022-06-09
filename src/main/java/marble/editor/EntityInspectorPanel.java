@@ -2,9 +2,10 @@ package marble.editor;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
+
+import marble.gui.MarbleGui;
 import marble.entity.Entity;
 import marble.entity.components.Component;
-import marble.gui.MarbleGui;
 
 public class EntityInspectorPanel {
     

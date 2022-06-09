@@ -60,7 +60,8 @@ public class Application {
         float dt = -1.0f;
 
         // Game loop
-        while (!glfwWindowShouldClose(windowPtr)) {
+        while (!glfwWindowShouldClose(windowPtr))
+        {
             startFrame();
             update(dt);
             endFrame();
@@ -140,7 +141,7 @@ public class Application {
         // Enable depth-buffer
         glEnable(GL_DEPTH_TEST);
 
-        // Enable culling
+        // Enable back culling
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
     }
