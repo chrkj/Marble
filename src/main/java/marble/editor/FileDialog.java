@@ -9,6 +9,8 @@ public class FileDialog {
 
     public Map<String, String> selection = null;
 
+    private String sceneFolder = "assets/scenes";
+
     public void onUpdate() {
         if (ImGuiFileDialog.display("browse-key", ImGuiFileDialogFlags.None, 200, 400, 800, 600))
         {
@@ -20,6 +22,6 @@ public class FileDialog {
 
     public void open()
     {
-        ImGuiFileDialog.openModal("browse-key", "Choose File", ".marble", ".", null, 250, 1, 42, ImGuiFileDialogFlags.None);
+        ImGuiFileDialog.openModal("browse-key", "Choose File", ".marble", sceneFolder, "",null, 250, 1, 42, ImGuiFileDialogFlags.None);
     }
 }
