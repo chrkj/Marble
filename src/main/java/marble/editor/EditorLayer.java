@@ -67,7 +67,7 @@ public class EditorLayer {
         consolePanel.onUpdate();
         contentBrowserPanel.onUpdate();
         sceneHierarchyPanel.onUpdate(currentScene);
-        entityInspectorPanel.onUpdate(sceneHierarchyPanel.selectedEntity);
+        entityInspectorPanel.onUpdate(sceneHierarchyPanel.getSelectedEntity());
 
         drawGameViewport();
         drawEditorViewport(dt);
@@ -147,16 +147,13 @@ public class EditorLayer {
             // TODO: Shortcuts not handled
             if (ImGui.menuItem("Save scene", "ctrl-s")) sceneSerializer.serialize(currentScene);
             if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialog.open();
-            if (ImGui.menuItem("Exit"))       glfwSetWindowShouldClose(Application.windowPtr, true);
+            if (ImGui.menuItem("Exit"))                             glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
         }
 
-        // Deserialize file dialog selection
-        if (fileDialog.selection != null && !fileDialog.selection.isEmpty())
-        {
-            openScene(fileDialog.selection.values().stream().findFirst().get());
-            fileDialog.selection = null;
-        }
+        if (fileDialog.isFileSelected())
+            openScene(fileDialog.getSelectedFilePath());
+
         ImGui.endMenuBar();
     }
 

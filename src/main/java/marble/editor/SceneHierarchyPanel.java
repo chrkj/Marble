@@ -23,6 +23,11 @@ public class SceneHierarchyPanel {
         ImGui.end();
     }
 
+    public Entity getSelectedEntity()
+    {
+        return selectedEntity;
+    }
+
     private void recursiveDrawCall(Entity entity, int nodeFlags)
     {
         int currentFlags = nodeFlags;

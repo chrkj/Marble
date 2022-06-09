@@ -7,8 +7,7 @@ import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
 
 public class FileDialog {
 
-    public Map<String, String> selection = null;
-
+    private Map<String, String> selection = null;
     private String sceneFolder = "assets/scenes";
 
     public void onUpdate() {
@@ -18,6 +17,18 @@ public class FileDialog {
                 selection = ImGuiFileDialog.getSelection();
             ImGuiFileDialog.close();
         }
+    }
+
+    public String getSelectedFilePath()
+    {
+        var filePath = selection.values().stream().findFirst().get();
+        selection = null;
+        return filePath;
+    }
+
+    public boolean isFileSelected()
+    {
+        return selection != null && !selection.isEmpty();
     }
 
     public void open()
