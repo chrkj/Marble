@@ -12,8 +12,9 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.*;
 
 import marble.entity.Material;
-import marble.renderer.Buffer;
 import marble.gui.MarbleGui;
+import marble.renderer.IndexBuffer;
+import marble.renderer.VertexBuffer;
 
 public class Mesh extends Component {
 
@@ -23,7 +24,8 @@ public class Mesh extends Component {
     private transient final int vaoId;
     private transient final int vertexCount;
     private transient final int indicesCount;
-    private transient final List<Integer> vertexBufferObjectIds = new ArrayList<>();
+    private transient IndexBuffer indexBuffer;
+    private transient final List<VertexBuffer> vertexBufferObjectIds = new ArrayList<>();
 
     public Mesh()
     {
@@ -45,10 +47,10 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         // Create VBO's
-        vertexBufferObjectIds.add(Buffer.createVertexBuffer(verticesArray, 0, 3));
-        vertexBufferObjectIds.add(Buffer.createVertexBuffer(textureArray, 1, 2));
-        vertexBufferObjectIds.add(Buffer.createVertexBuffer(normalsArray, 2, 3));
-        vertexBufferObjectIds.add(Buffer.createIndexBuffer(indicesArray));
+        vertexBufferObjectIds.add(VertexBuffer.create(verticesArray, 0, 3));
+        vertexBufferObjectIds.add(VertexBuffer.create(textureArray, 1, 2));
+        vertexBufferObjectIds.add(VertexBuffer.create(normalsArray, 2, 3));
+        indexBuffer = IndexBuffer.create(indicesArray);
 
         // Unbind VAO
         glBindVertexArray(0);
@@ -85,8 +87,9 @@ public class Mesh extends Component {
 
         // Delete VBOs
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        for (int vboId : vertexBufferObjectIds)
-            glDeleteBuffers(vboId);
+        for (VertexBuffer vbo : vertexBufferObjectIds)
+            vbo.delete();
+        indexBuffer.delete();
 
         // Delete VAO
         glBindVertexArray(0);

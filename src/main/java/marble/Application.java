@@ -9,6 +9,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.renderer.RenderingAPI;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -144,6 +145,9 @@ public class Application {
         // Enable back culling
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+
+        // Setting rendering API
+        RenderingAPI.setAPI(RenderingAPI.APIType.OPENGL);
     }
 
     public void destroy()
