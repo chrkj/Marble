@@ -3,29 +3,27 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.scene.Scene;
 import marble.entity.Entity;
 
-public class SceneHierarchyPanel {
+public class SceneHierarchyPanel implements Panel {
 
-    public Entity selectedEntity;
+    private static Entity selectedEntity;
 
-    public SceneHierarchyPanel()
+    public SceneHierarchyPanel() { }
+
+    public static Entity getSelectedEntity()
     {
+        return selectedEntity;
     }
 
-    public void onUpdate(Scene currentScene)
+    @Override
+    public void onImGuiRender()
     {
         ImGui.begin("Hierarchy");
         int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        for (Entity entity : currentScene.getEntities())
+        for (Entity entity : EditorLayer.currentScene.getEntities())
             recursiveDrawCall(entity, nodeFlags);
         ImGui.end();
-    }
-
-    public Entity getSelectedEntity()
-    {
-        return selectedEntity;
     }
 
     private void recursiveDrawCall(Entity entity, int nodeFlags)

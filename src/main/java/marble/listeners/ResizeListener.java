@@ -8,7 +8,6 @@ public class ResizeListener {
     {
         Application.setWidth(width);
         Application.setHeight(height);
-        Application.setResized(true);
     }
 
 }

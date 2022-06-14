@@ -10,7 +10,7 @@ import imgui.flag.ImGuiMouseButton;
 import marble.util.Loader;
 import marble.entity.components.Texture;
 
-public class ContentBrowserPanel {
+public class ContentBrowserPanel implements Panel {
 
     private String currentDir;
     private final String assetsDir = "assets";
@@ -26,7 +26,8 @@ public class ContentBrowserPanel {
         fileIcon = Loader.loadTexture("assets/textures/FileIcon.png");
     }
 
-    public void onUpdate()
+    @Override
+    public void onImGuiRender()
     {
         ImGui.begin("Content Browser");
 

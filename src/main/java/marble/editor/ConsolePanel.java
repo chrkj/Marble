@@ -6,18 +6,25 @@ import java.text.SimpleDateFormat;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 
-public final class ConsolePanel {
+public final class ConsolePanel implements Panel {
 
     private static final int MAX_LENGTH = 2500;
     private static final StringBuffer BUFFER = new StringBuffer();
     private static final ImBoolean SHOULD_SCROLL_TO_BOTTOM = new ImBoolean(false);
     private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
 
-    public ConsolePanel()
+    public ConsolePanel() { }
+
+    public static void log(String text)
     {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(text).append("\n");
+        if(BUFFER.length() > MAX_LENGTH)
+            BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
 
-    public void onUpdate()
+    @Override
+    public void onImGuiRender()
     {
         ImGui.setNextWindowSize(500, 400);
         ImGui.begin("Console");
@@ -31,14 +38,6 @@ public final class ConsolePanel {
         SHOULD_SCROLL_TO_BOTTOM.set(true);
         ImGui.endChild();
         ImGui.end();
-    }
-
-    public static void log(String text)
-    {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(text).append("\n");
-        if(BUFFER.length() > MAX_LENGTH)
-            BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
 
     private static void clear()

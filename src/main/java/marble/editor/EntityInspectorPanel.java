@@ -3,19 +3,21 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.gui.MarbleGui;
 import marble.entity.Entity;
+import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
-public class EntityInspectorPanel {
+public class EntityInspectorPanel implements Panel {
     
     public EntityInspectorPanel()
     {
     }
 
-    public void onUpdate(Entity selectedEntity)
+    @Override
+    public void onImGuiRender()
     {
         ImGui.begin("Inspector");
+        Entity selectedEntity = SceneHierarchyPanel.getSelectedEntity();
         if (selectedEntity != null)
         {
             // Entity name field
@@ -52,5 +54,4 @@ public class EntityInspectorPanel {
         }
         ImGui.end();
     }
-
 }

@@ -4,12 +4,10 @@ import static java.sql.Types.*;
 
 import imgui.ImGui;
 import imgui.ImGuiIO;
-import imgui.extension.imguizmo.ImGuizmo;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
-import marble.renderer.RenderingAPI;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -17,6 +15,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
+import marble.renderer.RenderingAPI;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
@@ -35,13 +34,11 @@ public class Application {
 
     private static int width;
     private static int height;
-    private static boolean resized;
 
     public Application(String title)
     {
        width = 1920;
        height = 1080;
-       resized = false;
        this.title = title;
     }
 
@@ -64,7 +61,9 @@ public class Application {
         while (!glfwWindowShouldClose(windowPtr))
         {
             startFrame();
-            update(dt);
+            editorLayer.onImGuiRender();
+            editorLayer.onSceneUpdate(dt);
+            editorLayer.onSceneRender();
             endFrame();
 
             endTime = Time.getTime();
@@ -73,18 +72,11 @@ public class Application {
         }
     }
 
-    private void update(float dt)
-    {
-        if (dt >= 0)
-            editorLayer.onUpdate(dt);
-    }
-
     private void startFrame()
     {
         glfwPollEvents();
         imGuiGlfw.newFrame();
         ImGui.newFrame();
-        ImGuizmo.beginFrame();
         MouseListener.calcDelta();
     }
 
@@ -186,11 +178,6 @@ public class Application {
     public static void setHeight(int h)
     {
         height = h;
-    }
-
-    public static void setResized(boolean r)
-    {
-        resized = r;
     }
 
 }

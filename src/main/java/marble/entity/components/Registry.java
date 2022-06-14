@@ -15,9 +15,7 @@ public class Registry {
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
 
-    public Registry()
-    {
-    }
+    public Registry() { }
 
     public void register(Component component)
     {

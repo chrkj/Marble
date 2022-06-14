@@ -57,14 +57,14 @@ public class Scene {
         isRunning = true;
     }
 
-    public void onUpdate(float dt)
+    public void onSceneUpdate(float dt)
     {
         for (Entity entity : entities)
             entity.update(dt);
         update(dt);
     }
 
-    public void onRender()
+    public void onSceneRender()
     {
         renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.GAME);

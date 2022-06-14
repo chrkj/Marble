@@ -30,25 +30,27 @@ public class EditorLayer {
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
     public static final FrameBuffer editorViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
 
+    public static Scene currentScene, runtimeScene;
+
     private boolean inputFlag;
-    private Scene currentScene, runtimeScene;
-
-    private final FileDialog fileDialog;
-    private final ConsolePanel consolePanel;
     private final SceneSerializer sceneSerializer;
-    private final SceneHierarchyPanel sceneHierarchyPanel;
-    private final ContentBrowserPanel contentBrowserPanel;
-    private final EntityInspectorPanel entityInspectorPanel;
 
+    private final PanelManager panelManager = new PanelManager();
+    private final String consolePanelID = "ConsolePanel";
+    private final String fileDialogPanelID = "FileDialogPanel";
+    private final String sceneHierarchyPanelID = "SceneHierarchyPanel";
+    private final String contentBrowserPanelID = "ContentBrowserPanel";
+    private final String entityInspectorPanelID = "EntityInspectorPanel";
 
     public EditorLayer()
     {
-        fileDialog = new FileDialog();
-        consolePanel = new ConsolePanel();
         sceneSerializer = new SceneSerializer();
-        sceneHierarchyPanel = new SceneHierarchyPanel();
-        contentBrowserPanel = new ContentBrowserPanel();
-        entityInspectorPanel = new EntityInspectorPanel();
+
+        panelManager.addPanel(new SceneHierarchyPanel(), sceneHierarchyPanelID);
+        panelManager.addPanel(new ContentBrowserPanel(), contentBrowserPanelID);
+        panelManager.addPanel(new ConsolePanel(), consolePanelID);
+        panelManager.addPanel(new EntityInspectorPanel(), entityInspectorPanelID);
+        panelManager.addPanel(new FileDialogPanel(), fileDialogPanelID);
 
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();
@@ -60,22 +62,23 @@ public class EditorLayer {
         ConsolePanel.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
-    public void onUpdate(float dt)
+    public void onImGuiRender()
     {
         setupDockspace();
-        fileDialog.onUpdate();
-        consolePanel.onUpdate();
-        contentBrowserPanel.onUpdate();
-        sceneHierarchyPanel.onUpdate(currentScene);
-        entityInspectorPanel.onUpdate(sceneHierarchyPanel.getSelectedEntity());
-
+        panelManager.onImGuiRender();
         drawGameViewport();
+    }
+
+    public void onSceneUpdate(float dt)
+    {
         drawEditorViewport(dt);
+        MarbleGui.onImGuiRender(dt);
+        currentScene.onSceneUpdate(dt);
+    }
 
-        MarbleGui.drawDiagnostics(dt);
-
-        currentScene.onUpdate(dt);
-        currentScene.onRender();
+    public void onSceneRender()
+    {
+        currentScene.onSceneRender();
     }
 
     private void drawEditorViewport(float dt)
@@ -141,18 +144,19 @@ public class EditorLayer {
 
     private void createMenuBar()
     {
+        var fileDialogPanel = ((FileDialogPanel)panelManager.getPanel(fileDialogPanelID));
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
             // TODO: Shortcuts not handled
             if (ImGui.menuItem("Save scene", "ctrl-s")) sceneSerializer.serialize(currentScene);
-            if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialog.open();
+            if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialogPanel.open();
             if (ImGui.menuItem("Exit"))                             glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
         }
 
-        if (fileDialog.isFileSelected())
-            openScene(fileDialog.getSelectedFilePath());
+        if (fileDialogPanel.isFileSelected())
+            openScene(fileDialogPanel.getSelectedFilePath());
 
         ImGui.endMenuBar();
     }
