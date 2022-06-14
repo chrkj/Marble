@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import de.javagl.obj.*;
 
 import marble.editor.ConsolePanel;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
@@ -64,6 +65,30 @@ public final class Loader {
         stbi_image_free(buf);
 
         return new Texture(textureId);
+    }
+
+    public static GLFWImage.Buffer loadIcon(String filePath)
+    {
+        ByteBuffer buf = null;
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            IntBuffer h = stack.mallocInt(1);
+            IntBuffer w = stack.mallocInt(1);
+            IntBuffer channels = stack.mallocInt(1);
+
+            buf = stbi_load(filePath, w, h, channels, 4);
+            if (buf == null)
+                throw new Exception("Image file [" + filePath + "] not loaded: " + stbi_failure_reason());
+
+            GLFWImage image = GLFWImage.malloc();
+            GLFWImage.Buffer imageBuffer = GLFWImage.malloc(1);
+            image.set(w.get(), h.get(), buf);
+            imageBuffer.put(0, image);
+            return imageBuffer;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

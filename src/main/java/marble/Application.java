@@ -8,11 +8,15 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.util.Loader;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBImage.stbi_failure_reason;
+import static org.lwjgl.stb.STBImage.stbi_load;
 
 import marble.util.Time;
 import marble.renderer.RenderingAPI;
@@ -21,6 +25,10 @@ import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
 import marble.editor.EditorLayer;
 import marble.gui.MarbleGui;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 public class Application {
 
@@ -137,6 +145,9 @@ public class Application {
         // Enable back culling
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
+
+        // Set window icon
+        glfwSetWindowIcon(windowPtr, Loader.loadIcon("assets/textures/icon.jpg"));
 
         // Setting rendering API
         RenderingAPI.setAPI(RenderingAPI.APIType.OPENGL);

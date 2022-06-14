@@ -53,9 +53,8 @@ public class Texture extends Component {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
             ImGui.treePop();
-        }
     }
 
 }
