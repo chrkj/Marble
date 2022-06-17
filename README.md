@@ -67,7 +67,7 @@ Frameworks/libraries used for the project:
 - ✅ Game / editor viewport
 - ⬜ Scene serialization / deserialization
 - ⬜ 2D/3D physics
-- ⬜ Entity gizmos
+- ✅ Entity gizmos
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

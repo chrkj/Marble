@@ -80,7 +80,7 @@ public class EditorCamera extends Camera {
     }
 
     @Override
-    public void setupInspector()
+    public void renderEntityInspector()
     {
     }
 }

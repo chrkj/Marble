@@ -6,7 +6,7 @@ import imgui.flag.ImGuiTreeNodeFlags;
 public class SpotLight extends Light {
 
     @Override
-    public void setupInspector()
+    public void renderEntityInspector()
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Spot Light", nodeFlags);

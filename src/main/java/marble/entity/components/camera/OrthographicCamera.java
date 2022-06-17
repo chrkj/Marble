@@ -11,7 +11,7 @@ public class OrthographicCamera extends Camera {
     }
 
     @Override
-    public void setupInspector()
+    public void renderEntityInspector()
     {
 
     }

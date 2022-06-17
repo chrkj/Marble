@@ -2,10 +2,12 @@ package marble.entity.components.camera;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.editor.EditorLayer;
-import marble.gui.MarbleGui;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import marble.gui.MarbleGui;
+import marble.editor.EditorLayer;
 
 public class PerspectiveCamera extends Camera {
 
@@ -51,7 +53,7 @@ public class PerspectiveCamera extends Camera {
     }
 
     @Override
-    public void setupInspector()
+    public void renderEntityInspector()
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Camera", nodeFlags);

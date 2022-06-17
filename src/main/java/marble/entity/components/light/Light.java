@@ -46,7 +46,7 @@ public abstract class Light extends Component {
     }
 
     @Override
-    public void setupInspector()
+    public void renderEntityInspector()
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Directional Light", nodeFlags);

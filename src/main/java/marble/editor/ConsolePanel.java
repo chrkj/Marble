@@ -23,6 +23,14 @@ public final class ConsolePanel implements Panel {
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
 
+    public static void log(boolean bool)
+    {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(bool).append("\n");
+        if(BUFFER.length() > MAX_LENGTH)
+            BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
+    }
+
     @Override
     public void onImGuiRender()
     {

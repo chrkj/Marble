@@ -17,7 +17,7 @@ public class ContentBrowserPanel implements Panel {
     private final Texture dirIcon;
     private final Texture fileIcon;
     private final float padding = 15f;
-    private final float thumbnailSize = 128f;
+    private final float thumbnailSize = 64;
 
     public ContentBrowserPanel()
     {

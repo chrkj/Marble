@@ -8,7 +8,7 @@ import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
 public class EntityInspectorPanel implements Panel {
-    
+
     public EntityInspectorPanel()
     {
     }
@@ -37,7 +37,7 @@ public class EntityInspectorPanel implements Panel {
 
             // Entity components fields
             for (Component component : selectedEntity.components.values())
-                component.setupInspector();
+                component.renderEntityInspector();
 
             // Entity add components fields
             ImGui.separator();
@@ -45,10 +45,11 @@ public class EntityInspectorPanel implements Panel {
                 ImGui.openPopup("add_component_popup");
             if (ImGui.beginPopup("add_component_popup"))
             {
-                if (ImGui.selectable("Example component"))
-                {
-                    // TODO: Add component functionality
-                }
+                if (ImGui.selectable("Mesh")) {}
+                if (ImGui.selectable("Camera")) {}
+                if (ImGui.selectable("Directional light")) {}
+                if (ImGui.selectable("Spot light")) {}
+                if (ImGui.selectable("Point light")) {}
                 ImGui.endPopup();
             }
         }

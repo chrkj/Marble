@@ -91,6 +91,7 @@ public class EditorLayer {
         ImGui.setCursorPos(windowPos.x, windowPos.y);
         int textureId = editorViewportFramebuffer.getTextureId();
         ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
+        Guizmo.onImGuiRender();
         ImGui.setCursorPos(windowPos.x, windowPos.y);
 
         // DragDrop open scene
@@ -100,6 +101,7 @@ public class EditorLayer {
             if (payload != null)
                 openScene(payload.toString());
         }
+
         ImGui.end();
     }
 
@@ -144,7 +146,7 @@ public class EditorLayer {
 
     private void createMenuBar()
     {
-        var fileDialogPanel = ((FileDialogPanel)panelManager.getPanel(fileDialogPanelID));
+        var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(fileDialogPanelID);
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
@@ -159,6 +161,7 @@ public class EditorLayer {
             openScene(fileDialogPanel.getSelectedFilePath());
 
         ImGui.endMenuBar();
+
     }
 
     private void openScene(String filePath)
