@@ -20,6 +20,19 @@ public class SceneHierarchyPanel implements Panel {
     public void onImGuiRender()
     {
         ImGui.begin("Hierarchy");
+
+
+        if (ImGui.beginPopupContextWindow())
+        {
+            if (ImGui.menuItem("Create Empty Entity"))
+            {
+                EditorLayer.currentScene.addEntityToScene(new Entity());
+            }
+            ImGui.endPopup();
+        }
+
+
+
         int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         for (Entity entity : EditorLayer.currentScene.getEntities())
             recursiveDrawCall(entity, nodeFlags);

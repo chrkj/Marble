@@ -2,9 +2,6 @@ package marble.entity;
 
 import java.util.*;
 
-import imgui.ImGui;
-
-import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
 public class Entity {
@@ -18,7 +15,7 @@ public class Entity {
 
     public Entity()
     {
-        init("Entity", new Transform());
+        init("Empty Entity", new Transform());
     }
 
     public Entity(String name)

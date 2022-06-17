@@ -4,23 +4,23 @@ import java.util.HashMap;
 
 public class PanelManager {
 
-    private final HashMap<String, Panel> panels = new HashMap<>();
+    private final HashMap<Class<? extends Panel>, Panel> panels = new HashMap<>();
 
     public PanelManager() { }
 
-    public void addPanel(Panel panel, String panelID)
+    public void addPanel(Panel panel)
     {
-        panels.put(panelID, panel);
+        panels.put(panel.getClass(), panel);
     }
 
-    public void removePanel(String panelID)
+    public void removePanel(Class<? extends Panel> panelClass)
     {
-        panels.remove(panelID);
+        panels.remove(panelClass);
     }
 
-    public Panel getPanel(String panelID)
+    public Panel getPanel(Class<? extends Panel> panelClass)
     {
-        return panels.get(panelID);
+        return panels.get(panelClass);
     }
 
     public void onImGuiRender()

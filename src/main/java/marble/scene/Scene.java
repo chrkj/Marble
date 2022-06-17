@@ -70,17 +70,12 @@ public class Scene {
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.GAME);
     }
 
-    protected Entity createEntity()
-    {
-        return new Entity();
-    }
-
     protected Entity createEntity(String tag)
     {
         return new Entity(tag);
     }
 
-    protected void addEntityToScene(Entity entity)
+    public void addEntityToScene(Entity entity)
     {
         if (!isRunning)
         {
@@ -92,7 +87,8 @@ public class Scene {
             entity.start();
         }
 
-        for (Component component : entity.getAllComponents()) {
+        for (Component component : entity.getAllComponents())
+        {
             if (component instanceof Camera)
                 mainCamera = (Camera) component;
             registry.register(component);

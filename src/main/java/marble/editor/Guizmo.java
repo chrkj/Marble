@@ -25,6 +25,8 @@ public class Guizmo {
         float windowHeight = ImGui.getWindowHeight();
         float viewManipulateRight = ImGui.getWindowPosX() + windowWidth;
         float viewManipulateTop = ImGui.getWindowPosY();
+
+        // TODO: Fix view manipulation
         ImGuizmo.viewManipulate(view, CAM_DISTANCE, new float[]{viewManipulateRight - 128, viewManipulateTop}, VIEW_MANIPULATE_SIZE, 0x10101010);
 
         var selectedEntity = SceneHierarchyPanel.getSelectedEntity();

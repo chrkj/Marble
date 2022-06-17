@@ -46,11 +46,11 @@ public class EditorLayer {
     {
         sceneSerializer = new SceneSerializer();
 
-        panelManager.addPanel(new SceneHierarchyPanel(), sceneHierarchyPanelID);
-        panelManager.addPanel(new ContentBrowserPanel(), contentBrowserPanelID);
-        panelManager.addPanel(new ConsolePanel(), consolePanelID);
-        panelManager.addPanel(new EntityInspectorPanel(), entityInspectorPanelID);
-        panelManager.addPanel(new FileDialogPanel(), fileDialogPanelID);
+        panelManager.addPanel(new SceneHierarchyPanel());
+        panelManager.addPanel(new ContentBrowserPanel());
+        panelManager.addPanel(new ConsolePanel());
+        panelManager.addPanel(new EntityInspectorPanel());
+        panelManager.addPanel(new FileDialogPanel());
 
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();
@@ -146,7 +146,7 @@ public class EditorLayer {
 
     private void createMenuBar()
     {
-        var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(fileDialogPanelID);
+        var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(FileDialogPanel.class);
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
@@ -161,7 +161,6 @@ public class EditorLayer {
             openScene(fileDialogPanel.getSelectedFilePath());
 
         ImGui.endMenuBar();
-
     }
 
     private void openScene(String filePath)
