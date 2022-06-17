@@ -5,6 +5,8 @@ import imgui.flag.*;
 import imgui.type.ImString;
 import imgui.type.ImBoolean;
 
+import marble.entity.components.Texture;
+import marble.util.Loader;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -190,6 +192,33 @@ public final class MarbleGui {
     public static void text(String text)
     {
         ImGui.text(text);
+    }
+
+    public static boolean ButtonCenteredOnLine(String label, float alignment)
+    {
+        ImGuiStyle style = ImGui.getStyle();
+        ImGui im = new ImGui();
+        float size = im.calcTextSize(label).x + style.getFramePaddingX() * 2.0f;
+        float avail = ImGui.getContentRegionAvail().x;
+
+        float off = (avail - size) * alignment;
+        if (off > 0.0f)
+            ImGui.setCursorPosX(ImGui.getCursorPosX() + off);
+        return ImGui.button(label);
+    }
+
+    public static boolean ImageButtonCenteredOnLine(float alignment, String filePath, int thumbnailSize)
+    {
+        Texture fileIcon = Loader.loadTexture(filePath);
+        ImGuiStyle style = ImGui.getStyle();
+
+        float size = ImGui.getItemRectSizeX() + style.getFramePaddingX() * 2.0f;
+        float avail = ImGui.getContentRegionAvail().x;
+
+        float off = (avail - size) * alignment;
+        if (off > 0.0f)
+            ImGui.setCursorPosX(ImGui.getCursorPosX() + off);
+        return ImGui.imageButton(fileIcon.getId(), thumbnailSize, thumbnailSize);
     }
 
 }

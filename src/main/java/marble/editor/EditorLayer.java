@@ -30,27 +30,24 @@ public class EditorLayer {
     public static final FrameBuffer gameViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
     public static final FrameBuffer editorViewportFramebuffer = new FrameBuffer(Application.getWidth(), Application.getHeight());
 
+    public static boolean sceneRunning = false;
     public static Scene currentScene, runtimeScene;
 
     private boolean inputFlag;
+    private final PanelManager panelManager;
     private final SceneSerializer sceneSerializer;
-
-    private final PanelManager panelManager = new PanelManager();
-    private final String consolePanelID = "ConsolePanel";
-    private final String fileDialogPanelID = "FileDialogPanel";
-    private final String sceneHierarchyPanelID = "SceneHierarchyPanel";
-    private final String contentBrowserPanelID = "ContentBrowserPanel";
-    private final String entityInspectorPanelID = "EntityInspectorPanel";
 
     public EditorLayer()
     {
         sceneSerializer = new SceneSerializer();
 
+        panelManager = new PanelManager();
+        panelManager.addPanel(new ToolPanel());
+        panelManager.addPanel(new ConsolePanel());
+        panelManager.addPanel(new FileDialogPanel());
         panelManager.addPanel(new SceneHierarchyPanel());
         panelManager.addPanel(new ContentBrowserPanel());
-        panelManager.addPanel(new ConsolePanel());
         panelManager.addPanel(new EntityInspectorPanel());
-        panelManager.addPanel(new FileDialogPanel());
 
         currentScene = new emptyScene("Empty Scene");
         currentScene.init();

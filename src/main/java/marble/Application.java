@@ -142,7 +142,7 @@ public class Application {
         glCullFace(GL_BACK);
 
         // Set window icon
-        glfwSetWindowIcon(windowPtr, Loader.loadIcon("assets/textures/icon.jpg"));
+        glfwSetWindowIcon(windowPtr, Loader.loadIcon("assets/textures/WindowIcon.jpg"));
 
         // Setting rendering API
         RenderingAPI.setAPI(RenderingAPI.APIType.OPENGL);
