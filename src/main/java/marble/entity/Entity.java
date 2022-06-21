@@ -11,8 +11,8 @@ public class Entity {
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private transient Entity parent = null;
-    private final int uuid = Math.abs(UUID.randomUUID().hashCode());
     private final List<Entity> children = new ArrayList<>();
+    private final int uuid = Math.abs(UUID.randomUUID().hashCode());
 
     public Entity()
     {

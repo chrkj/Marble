@@ -1,18 +1,15 @@
 package marble.renderer;
 
-import java.awt.*;
+import marble.editor.FramebufferSpecification;
 
 public abstract class Framebuffer {
 
     public int textureId = 0;
-    public int redIntTextureId = 0;
-    public int frameBufferId = 0;
+    public int framebufferId = 0;
     public int depthbufferId = 0;
+    public int redIntTextureId = 0;
 
-    public static class FramebufferSpecification {
-        public int width = 0;
-        public int height = 0;
-    }
+    protected FramebufferSpecification specification;
 
     public static Framebuffer create(FramebufferSpecification specification)
     {
@@ -28,6 +25,7 @@ public abstract class Framebuffer {
         return null;
     }
 
+    public abstract void recreate();
     public abstract FramebufferSpecification getSpecification();
     public abstract int readPixel(float x, float y);
     public abstract void bind();
