@@ -12,6 +12,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 
 public class EditorCamera extends Camera {
+
     public final Vector3f position = new Vector3f(2.5f, 15, 70);
     public final Vector3f rotation = new Vector3f(22, 0, 0);
 

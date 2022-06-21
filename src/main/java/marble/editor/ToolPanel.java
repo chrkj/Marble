@@ -10,6 +10,7 @@ import marble.entity.components.Texture;
 
 public class ToolPanel implements Panel {
 
+    private final int buttonSize = 17;
     private final int ImGuiDockNodeFlags_NoTabBar = 1 << 12;
     private final Texture playButtonIcon = Loader.loadTexture("assets/textures/PlayButtonIcon.png");
     private final Texture stopButtonIcon = Loader.loadTexture("assets/textures/StopButtonIcon.png");
@@ -35,7 +36,7 @@ public class ToolPanel implements Panel {
             ImGui.setCursorPosX(ImGui.getCursorPosX() + off);
         ImGui.setCursorPosY(1);
         Texture icon = EditorLayer.sceneRunning ? stopButtonIcon : playButtonIcon;
-        if(ImGui.imageButton(icon.getId(), 34, 34))
+        if(ImGui.imageButton(icon.getId(), buttonSize, buttonSize))
         {
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
         }

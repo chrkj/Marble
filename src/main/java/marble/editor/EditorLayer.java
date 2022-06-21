@@ -107,7 +107,7 @@ public class EditorLayer {
             viewportSize.x = view.x;
             viewportSize.y = view.y;
 
-            // RecreateFramebuffer
+            // Recreate framebuffer
             framebuffer.getSpecification().width = (int) viewportSize.x;
             framebuffer.getSpecification().height = (int) viewportSize.y;
             framebuffer.recreate();
@@ -128,7 +128,6 @@ public class EditorLayer {
 
         int textureId = editorViewportFb.textureId;
         ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
-
         Gizmo.onImGuiRender();
 
         // DragDrop open scene
@@ -165,6 +164,7 @@ public class EditorLayer {
             // Within viewport
             if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
             {
+                ConsolePanel.log(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
                 if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
                 {
                     var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));

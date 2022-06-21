@@ -1,23 +1,20 @@
 package marble.renderer;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_2;
+import java.util.List;
+
+import org.joml.Vector3f;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.GL_RED_INTEGER;
 import static org.lwjgl.opengl.GL44.glClearTexImage;
 
-import imgui.ImGui;
-import marble.editor.ConsolePanel;
-import marble.editor.EditorLayer;
 import marble.util.Time;
+import marble.editor.EditorLayer;
 import marble.entity.Material;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.light.Light;
 import marble.entity.components.camera.Camera;
-import org.joml.Vector3f;
-
-import java.util.List;
 
 public class Renderer {
 
@@ -25,8 +22,9 @@ public class Renderer {
 
     public void clear()
     {
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glClearTexImage(EditorLayer.EDITOR_FRAMEBUFFER.redIntTextureId, 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 });
+        //glClearTexImage(EditorLayer.editorViewportFb.redIntTextureId, 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 }); // TODO: FIX clear tex image not working properly
     }
 
     public void render(Camera camera, Registry registry, Framebuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)
@@ -61,7 +59,6 @@ public class Renderer {
 
             mesh.render();
             shader.unbind();
-
         }
         frameBuffer.unbind();
     }

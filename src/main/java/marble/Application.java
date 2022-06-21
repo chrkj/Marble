@@ -85,7 +85,6 @@ public class Application {
 
     private void endFrame()
     {
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
         glfwSwapBuffers(windowPtr);

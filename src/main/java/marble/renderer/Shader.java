@@ -44,7 +44,8 @@ public class Shader {
                 {
                 }
                 """;
-        try {
+        try
+        {
             String source = new String(Files.readAllBytes(Paths.get(filepath)));
             String[] splitString = source.split("(#type)( )+([a-zA-Z]+)");
 
@@ -58,27 +59,29 @@ public class Shader {
             eol = source.indexOf("\r\n", index);
             String secondPattern = source.substring(index, eol).trim();
 
-            if (firstPattern.equals("vertex")) {
+            if (firstPattern.equals("vertex"))
                 vertexSource = splitString[1];
-            } else if (firstPattern.equals("fragment")) {
+            else if (firstPattern.equals("fragment"))
                 fragmentSource = splitString[1];
-            } else {
+            else
                 throw new IOException("Unexpected token '" + firstPattern + "'");
-            }
 
-            if (secondPattern.equals("vertex")) {
+            if (secondPattern.equals("vertex"))
                 vertexSource = splitString[2];
-            } else if (secondPattern.equals("fragment")) {
+            else if (secondPattern.equals("fragment"))
                 fragmentSource = splitString[2];
-            } else {
+            else
                 throw new IOException("Unexpected token '" + secondPattern + "'");
-            }
 
-        } catch (NoSuchFileException e) {
+        }
+        catch (NoSuchFileException e)
+        {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
             ConsolePanel.log("NoSuchFileException: " + filepath);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
             ConsolePanel.log("IOException: '" + filepath + "' " + e.getMessage());
@@ -98,7 +101,8 @@ public class Shader {
 
         // Check for errors in compilation
         int success = glGetShaderi(vertexID, GL_COMPILE_STATUS);
-        if (success == GL_FALSE) {
+        if (success == GL_FALSE)
+        {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
             ConsolePanel.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
@@ -112,7 +116,8 @@ public class Shader {
 
         // Check for errors in compilation
         success = glGetShaderi(fragmentID, GL_COMPILE_STATUS);
-        if (success == GL_FALSE) {
+        if (success == GL_FALSE)
+        {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
             ConsolePanel.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
@@ -125,7 +130,8 @@ public class Shader {
 
         // Check for errors
         success = glGetProgrami(shaderProgramID, GL_LINK_STATUS);
-        if (success == GL_FALSE) {
+        if (success == GL_FALSE)
+        {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
             ConsolePanel.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
@@ -134,7 +140,8 @@ public class Shader {
 
     public void bind()
     {
-        if (!inUse) {
+        if (!inUse)
+        {
             inUse = true;
             glUseProgram(shaderProgramID);
         }
