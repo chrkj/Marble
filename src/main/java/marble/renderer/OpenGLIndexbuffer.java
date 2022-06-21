@@ -7,11 +7,11 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
-public class OpenGLIndexBuffer extends IndexBuffer {
+public class OpenGLIndexbuffer extends Indexbuffer {
 
     private int ID = -1;
 
-    public OpenGLIndexBuffer(int[] data)
+    public OpenGLIndexbuffer(int[] data)
     {
         ID = glGenBuffers();
         IntBuffer buffer = MemoryUtil.memAllocInt(data.length);

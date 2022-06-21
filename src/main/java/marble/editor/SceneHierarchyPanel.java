@@ -11,6 +11,11 @@ public class SceneHierarchyPanel implements Panel {
 
     public SceneHierarchyPanel() { }
 
+    public static void setSelectedEntity(Entity entity)
+    {
+        selectedEntity = entity;
+    }
+
     public static Entity getSelectedEntity()
     {
         return selectedEntity;

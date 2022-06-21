@@ -12,6 +12,7 @@ public class Entity {
 
     private transient Entity parent = null;
     private final List<Entity> children = new ArrayList<>();
+    private final int uuid = Math.abs(UUID.randomUUID().hashCode());
 
     public Entity()
     {
@@ -108,6 +109,11 @@ public class Entity {
         this.children.add(entity);
         entity.parent = this;
         return this;
+    }
+
+    public int getUuid()
+    {
+        return uuid;
     }
 
 }

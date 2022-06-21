@@ -4,12 +4,12 @@ import static org.lwjgl.opengl.GL30.*;
 
 import marble.entity.components.Texture;
 
-public class FrameBuffer {
+public class FrameBufferTmp {
 
     private int fboId = 0;
     private Texture texture = null;
 
-    public FrameBuffer(int width, int height)
+    public FrameBufferTmp(int width, int height)
     {
         fboId = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER, fboId);
