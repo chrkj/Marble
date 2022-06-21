@@ -12,7 +12,6 @@ import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
 
@@ -21,13 +20,11 @@ import marble.gui.MarbleGui;
 import marble.scene.Scene;
 import marble.scene.emptyScene;
 import marble.scene.SceneSerializer;
-import marble.listeners.KeyListener;
-import marble.listeners.MouseListener;
 
 public class EditorLayer {
 
-    public static Framebuffer GAME_FRAMEBUFFER;
-    public static Framebuffer EDITOR_FRAMEBUFFER;
+    public static Framebuffer gameViewportFb;
+    public static Framebuffer editorViewportFb;
 
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 editorViewportSize = new ImVec2();
@@ -35,7 +32,7 @@ public class EditorLayer {
     public static boolean sceneRunning = false;
     public static Scene currentScene, runtimeScene;
 
-    private boolean inputFlag;
+    public static boolean inputFlag;
     private final PanelManager panelManager;
     private final SceneSerializer sceneSerializer;
 
@@ -51,8 +48,8 @@ public class EditorLayer {
         editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
 
-        GAME_FRAMEBUFFER = Framebuffer.create(gameFbSpec);
-        EDITOR_FRAMEBUFFER = Framebuffer.create(editorFbSpec);
+        gameViewportFb = Framebuffer.create(gameFbSpec);
+        editorViewportFb = Framebuffer.create(editorFbSpec);
 
         sceneSerializer = new SceneSerializer();
 
@@ -79,12 +76,12 @@ public class EditorLayer {
         setupDockspace();
         panelManager.onImGuiRender();
         drawGameViewport();
+        drawEditorViewport();
     }
 
     public void onSceneUpdate(float dt)
     {
-        drawEditorViewport(dt);
-        MarbleGui.onImGuiRender(dt);
+        MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender
         currentScene.onSceneUpdate(dt);
     }
 
@@ -93,7 +90,12 @@ public class EditorLayer {
         currentScene.onSceneRender();
     }
 
-    private void HandleWindowResize(ImVec2 viewportSize, Framebuffer framebuffer)
+    public void cleanUp()
+    {
+        currentScene.cleanUp();
+    }
+
+    private void handleWindowResize(ImVec2 viewportSize, Framebuffer framebuffer)
     {
         ImVec2 view = ImGui.getContentRegionAvail();
         if ( view.x != viewportSize.x || view.y != viewportSize.y )
@@ -109,27 +111,25 @@ public class EditorLayer {
             framebuffer.getSpecification().width = (int) viewportSize.x;
             framebuffer.getSpecification().height = (int) viewportSize.y;
             framebuffer.recreate();
-            ConsolePanel.log("Window resized!");
         }
     }
 
-    private void drawEditorViewport(float dt)
+    private void drawEditorViewport()
     {
         ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
         ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
 
         ImVec2 viewportOffset = ImGui.getCursorPos();
-        HandleWindowResize(editorViewportSize, EDITOR_FRAMEBUFFER);
+        handleWindowResize(editorViewportSize, editorViewportFb);
 
         editorViewportSize = ImGui.getContentRegionAvail();
 
         setEditorViewportInputFlag();
-        handleEditorViewportInput(dt);
 
-        int textureId = EDITOR_FRAMEBUFFER.textureId;
+        int textureId = editorViewportFb.textureId;
         ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
 
-        Guizmo.onImGuiRender();
+        Gizmo.onImGuiRender();
 
         // DragDrop open scene
         if (ImGui.beginDragDropTarget())
@@ -163,12 +163,12 @@ public class EditorLayer {
             int mouseY = (int) my;
 
             // Within viewport
-            if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y) {
-                if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1))
+            if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
+            {
+                if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
                 {
-                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.EDITOR_FRAMEBUFFER.readPixel(mouseX, mouseY));
-                    if (selectedEntity != null)
-                        SceneHierarchyPanel.setSelectedEntity(selectedEntity);
+                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
+                    SceneHierarchyPanel.setSelectedEntity(selectedEntity);
                 }
             }
         }
@@ -181,9 +181,9 @@ public class EditorLayer {
     {
         ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
-        HandleWindowResize(gameViewportSize, GAME_FRAMEBUFFER);
+        handleWindowResize(gameViewportSize, gameViewportFb);
         gameViewportSize = ImGui.getContentRegionAvail();
-        int textureId = GAME_FRAMEBUFFER.textureId;
+        int textureId = gameViewportFb.textureId;
         ImGui.image(textureId, gameViewportSize.x, gameViewportSize.y, 0, 1, 1, 0);
         ImGui.end();
         ImGui.popStyleVar(1);
@@ -245,64 +245,6 @@ public class EditorLayer {
         currentScene = loadedScene;
         currentScene.init();
         currentScene.start();
-    }
-
-    private ImVec2 getViewportSize()
-    {
-        ImVec2 viewportSize = ImGui.getWindowSize();
-        float aspectRatio = viewportSize.x / viewportSize.y;
-        float aspectWidth = viewportSize.x;
-        float aspectHeight = aspectWidth / aspectRatio;
-        if (aspectHeight > viewportSize.y)
-        {
-            aspectHeight = viewportSize.y;
-            aspectWidth = aspectHeight * aspectRatio;
-        }
-        return new ImVec2(aspectWidth, aspectHeight);
-    }
-
-    private ImVec2 getRenderingPos(ImVec2 viewportSize)
-    {
-        ImVec2 windowSize = new ImVec2();
-        ImGui.getContentRegionAvail(windowSize);
-        float viewportX = (windowSize.x / 2.0f) - (viewportSize.x / 2.0f);
-        float viewportY = (windowSize.y / 2.0f) - (viewportSize.y / 2.0f);
-        return new ImVec2(viewportX + ImGui.getCursorPosX(), viewportY + ImGui.getCursorPosY());
-    }
-
-    private void handleEditorViewportInput(float dt)
-    {
-        if (inputFlag)
-        {
-            var editorCam = currentScene.editorCamera;
-            float camSpeed = 10 * dt;
-            float camRotSpeed = 15 * dt;
-
-            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            editorCam.rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
-
-            if (KeyListener.isKeyPressed(GLFW_KEY_W))
-                editorCam.move(0, 0, -camSpeed);
-            if (KeyListener.isKeyPressed(GLFW_KEY_S))
-                editorCam.move(0, 0, camSpeed);
-            if (KeyListener.isKeyPressed(GLFW_KEY_A))
-                editorCam.move(-camSpeed, 0, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_D))
-                editorCam.move(camSpeed, 0, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_E))
-                editorCam.move(0, -camSpeed, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_Q))
-                editorCam.move(0, camSpeed, 0);
-        }
-        else
-        {
-            glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-        }
-    }
-
-    public void cleanUp()
-    {
-        currentScene.cleanUp();
     }
 
 }

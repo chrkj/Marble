@@ -55,6 +55,7 @@ public class Entity {
     {
         components.put(component.getClass(), component);
         component.setEntity(this);
+
         return this;
     }
 

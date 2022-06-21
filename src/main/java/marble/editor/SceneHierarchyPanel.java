@@ -26,7 +26,6 @@ public class SceneHierarchyPanel implements Panel {
     {
         ImGui.begin("Hierarchy");
 
-
         if (ImGui.beginPopupContextWindow())
         {
             if (ImGui.menuItem("Create Empty Entity"))
@@ -35,8 +34,6 @@ public class SceneHierarchyPanel implements Panel {
             }
             ImGui.endPopup();
         }
-
-
 
         int nodeFlags = ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         for (Entity entity : EditorLayer.currentScene.getEntities())

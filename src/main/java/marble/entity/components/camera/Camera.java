@@ -11,9 +11,7 @@ public abstract class Camera extends Component {
     protected final transient Matrix4f worldMatrix = new Matrix4f();
     protected final transient Matrix4f projectionMatrix = new Matrix4f();
 
-    public Camera()
-    {
-    }
+    public Camera() { }
 
     public abstract Matrix4f getViewMatrix();
     public abstract Matrix4f getProjectionMatrixGame();

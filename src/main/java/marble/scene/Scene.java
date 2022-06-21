@@ -61,12 +61,13 @@ public class Scene {
         for (Entity entity : entities.values())
             entity.update(dt);
         update(dt);
+        editorCamera.onUpdate(dt);
     }
 
     public void onSceneRender()
     {
-        renderer.render(editorCamera, registry, EditorLayer.EDITOR_FRAMEBUFFER, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
-        renderer.render(mainCamera, registry, EditorLayer.GAME_FRAMEBUFFER, ambientLight, specularPower, Renderer.ViewportId.GAME);
+        renderer.render(editorCamera, registry, EditorLayer.editorViewportFb, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
+        renderer.render(mainCamera, registry, EditorLayer.gameViewportFb, ambientLight, specularPower, Renderer.ViewportId.GAME);
     }
 
     protected Entity createEntity(String tag)

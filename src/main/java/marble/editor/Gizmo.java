@@ -8,7 +8,7 @@ import imgui.extension.imguizmo.flag.Operation;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Guizmo {
+public class Gizmo {
 
     private static final int CAM_DISTANCE = 8;
     private static int currentGizmoOperation = Operation.TRANSLATE;
@@ -56,5 +56,12 @@ public class Guizmo {
         selectedEntity.transform.position = new Vector3f(pos[0], pos[1], pos[2]);
         selectedEntity.transform.rotation = new Vector3f(rot[0], rot[1], rot[2]);
         selectedEntity.transform.scale = new Vector3f(scale[0], scale[1], scale[2]);
+    }
+
+    public static boolean inUse()
+    {
+        if (SceneHierarchyPanel.getSelectedEntity() == null)
+            return false;
+        return ImGuizmo.isUsing();
     }
 }
