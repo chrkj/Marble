@@ -131,7 +131,7 @@ public class EditorLayer {
             //}
             int x = (int)((1920 / viewportPanelSize.x) * (mousePos.x - cursorPos.x));
             int y = (int)((1080 / viewportPanelSize.y) * (mousePos.y - cursorPos.y));
-            ConsolePanel.log(x + " " + y + " " + EditorLayer.EDITOR_FRAMEBUFFER.readPixel(x, y));
+            ConsolePanel.log(x + " " + y + " " + currentScene.getEntityFromUUID(EditorLayer.EDITOR_FRAMEBUFFER.readPixel(x, y)));
 
         }
 

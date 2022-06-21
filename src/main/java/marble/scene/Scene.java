@@ -1,13 +1,12 @@
 package marble.scene;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.joml.Vector3f;
 
-import marble.editor.EditorLayer;
 import marble.util.Time;
 import marble.renderer.Renderer;
+import marble.editor.EditorLayer;
 import marble.entity.Entity;
 import marble.entity.components.Registry;
 import marble.entity.components.Component;
@@ -27,7 +26,7 @@ public class Scene {
     protected transient Camera mainCamera;
     protected transient final Registry registry = new Registry();
     protected Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
-    protected final List<Entity> entities = new ArrayList<>();
+    protected final Map<Integer, Entity> entities = new HashMap<>();
 
     public void init()
     {
@@ -52,14 +51,14 @@ public class Scene {
     public void start()
     {
         sceneStartedTime = Time.getTime();
-        for (Entity entity : entities)
+        for (Entity entity : entities.values())
             entity.start();
         isRunning = true;
     }
 
     public void onSceneUpdate(float dt)
     {
-        for (Entity entity : entities)
+        for (Entity entity : entities.values())
             entity.update(dt);
         update(dt);
     }
@@ -79,11 +78,11 @@ public class Scene {
     {
         if (!isRunning)
         {
-            entities.add(entity);
+            entities.put(entity.getUuid(), entity);
         }
         else
         {
-            entities.add(entity);
+            entities.put(entity.getUuid(), entity);
             entity.start();
         }
 
@@ -105,9 +104,9 @@ public class Scene {
         return editorCamera;
     }
 
-    public List<Entity> getEntities()
+    public Collection<Entity> getEntities()
     {
-        return entities;
+        return entities.values();
     }
 
     public String getSaveName()
@@ -117,8 +116,13 @@ public class Scene {
 
     public void cleanUp()
     {
-        for (Entity entity : entities)
+        for (Entity entity : entities.values())
             entity.cleanUp();
+    }
+
+    public Entity getEntityFromUUID(int uuid)
+    {
+        return entities.get(uuid);
     }
 
 }
