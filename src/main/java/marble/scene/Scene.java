@@ -66,8 +66,8 @@ public class Scene {
 
     public void onSceneRender()
     {
-        renderer.render(editorCamera, registry, EditorLayer.editorViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
-        renderer.render(mainCamera, registry, EditorLayer.gameViewportFramebuffer, ambientLight, specularPower, Renderer.ViewportId.GAME);
+        renderer.render(editorCamera, registry, EditorLayer.EDITOR_FRAMEBUFFER, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
+        renderer.render(mainCamera, registry, EditorLayer.GAME_FRAMEBUFFER, ambientLight, specularPower, Renderer.ViewportId.GAME);
     }
 
     protected Entity createEntity(String tag)

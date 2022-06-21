@@ -1,8 +1,8 @@
 package marble.renderer;
 
-public abstract class IndexBuffer {
+public abstract class Indexbuffer {
 
-    public static IndexBuffer create(int[] data)
+    public static Indexbuffer create(int[] data)
     {
         switch (RenderingAPI.getCurrent())
         {
@@ -10,7 +10,7 @@ public abstract class IndexBuffer {
                 return null;
             }
             case OPENGL -> {
-                return new OpenGLIndexBuffer(data);
+                return new OpenGLIndexbuffer(data);
             }
         }
         return null;

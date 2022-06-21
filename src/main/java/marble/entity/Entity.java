@@ -11,6 +11,7 @@ public class Entity {
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private transient Entity parent = null;
+    private final int uuid = Math.abs(UUID.randomUUID().hashCode());
     private final List<Entity> children = new ArrayList<>();
 
     public Entity()
@@ -108,6 +109,11 @@ public class Entity {
         this.children.add(entity);
         entity.parent = this;
         return this;
+    }
+
+    public int getUuid()
+    {
+        return uuid;
     }
 
 }

@@ -29,7 +29,9 @@ in vec2 fTexCoord;
 in vec3 fVertexPos;
 in vec3 fVertexNormal;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
+layout(location = 1) out int redColor;
+layout(location = 2) out vec4 depthColor;
 
 struct DirectionalLight
 {
@@ -56,6 +58,7 @@ uniform DirectionalLight uDirectionalLight;
 uniform vec3 uAmbientLight;
 uniform float uSpecularPower;
 uniform sampler2D uTextureSampler;
+uniform int uEntityID;
 
 void setupColors(Material uMaterial, vec2 textCoord)
 {
@@ -106,4 +109,6 @@ void main()
     vec4 diffuseSpecularComp = calcDirectionalLight(uDirectionalLight, fVertexPos, fVertexNormal);;
 
     fragColor = ambientC * vec4(uAmbientLight, 1) + diffuseSpecularComp;
+
+    redColor = uEntityID;
 }
