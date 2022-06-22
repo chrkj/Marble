@@ -68,6 +68,7 @@ Frameworks/libraries used for the project:
 - ⬜ Scene serialization / deserialization
 - ⬜ 2D/3D physics
 - ✅ Entity gizmos
+- ✅ Mouse picking
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

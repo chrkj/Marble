@@ -164,7 +164,7 @@ public class EditorLayer {
             // Within viewport
             if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
             {
-                ConsolePanel.log(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
+                //ConsolePanel.log(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
                 if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
                 {
                     var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
