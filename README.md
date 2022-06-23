@@ -13,7 +13,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/chrkj/MarbleEngine">
-    <img src="docs/Example.png" width="525" height="250">
+    <img src="docs/Example.png" width="731" height="400">
   </a>
 
 <h3 align="center">Marble Engine</h3>
@@ -37,8 +37,6 @@ I created this project to learn about 2D/3D rendering by programming a simple ga
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 ### Built With
 
 Frameworks/libraries used for the project:
@@ -54,19 +52,18 @@ Frameworks/libraries used for the project:
 <!-- ROADMAP -->
 ## Roadmap
 
-
-- ✅ Directional light
+- ⬜ 2D/3D physics
+- ⬜ Multiple lights in scenes
 - ⬜ Spot light
 - ⬜ Point light
-- ⬜ Multiple lights in scenes
 - ⬜ Frustum culling
 - ⬜ Deferred rendering
 - ⬜ Custom title bar
+- ✅ Directional light
 - ✅ Custom layout theme
 - ✅ Console panel
 - ✅ Game / editor viewport
-- ⬜ Scene serialization / deserialization
-- ⬜ 2D/3D physics
+- ✅ Scene serialization / deserialization
 - ✅ Entity gizmos
 - ✅ Mouse picking
 
