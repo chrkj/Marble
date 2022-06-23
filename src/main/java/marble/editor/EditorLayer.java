@@ -239,6 +239,7 @@ public class EditorLayer {
         Scene loadedScene = sceneSerializer.deSerialize(filePath);
         if (loadedScene == null)
             return;
+        SceneHierarchyPanel.setSelectedEntity(null);
         currentScene.cleanUp();
         currentScene = loadedScene;
         currentScene.init();

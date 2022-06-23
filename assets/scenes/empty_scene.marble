@@ -5,57 +5,72 @@ ambientLight:
   "y": 0.1
   z: 0.1
 entities:
-- name: "Main Camera"
-  transform:
-    scale:
-      x: 1.0
-      "y": 1.0
-      z: 1.0
-    position:
-      x: 3.0
-      "y": -2.5
-      z: 35.0
-    rotation:
-      x: 0.0
-      "y": 0.0
-      z: 0.0
-  children: []
-  components:
-    marble.entity.components.camera.PerspectiveCamera:
-      near: 0.3
-      far: 1000.0
-      fov: 60.0
-- name: "Helmet"
-  transform:
-    scale:
-      x: 1.0
-      "y": 1.0
-      z: 1.0
-    position:
-      x: 3.0
-      "y": -2.0
-      z: 3.0
-    rotation:
-      x: 0.0
-      "y": 0.0
-      z: 0.0
-  children:
-  - name: "ChildEntity1"
+  825026969:
+    name: "Directional light"
+    transform:
+      scale:
+        x: 0.9999998
+        "y": 0.9999999
+        z: 0.9999988
+      position:
+        x: -1.0
+        "y": 2.0
+        z: 4.0
+      rotation:
+        x: 67.288864
+        "y": 52.999992
+        z: -4.5839074E-6
+    components:
+      marble.entity.components.light.DirectionalLight:
+        color:
+          x: 1.0
+          "y": 1.0
+          z: 1.0
+          w: 1.0
+        intensity: 1.0
+    uuid: 825026969
+    children: []
+  728375392:
+    name: "Helmet"
     transform:
       scale:
         x: 1.0
         "y": 1.0
         z: 1.0
       position:
-        x: 0.0
-        "y": 0.0
-        z: 0.0
+        x: -10.102897
+        "y": -4.823822
+        z: 3.0
       rotation:
         x: 0.0
-        "y": 0.0
+        "y": -0.0
         z: 0.0
+    components:
+      marble.entity.components.Mesh:
+        material:
+          texture: null
+          reflectance: 0.0
+          ambient:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+            w: 1.0
+          diffuse:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+          specular:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+          shader:
+            filepath: "assets/shaders/default.glsl"
+        filePath: "assets/obj/helm.obj"
+    uuid: 728375392
     children:
-    - name: "ChildEntity2"
+    - name: "ChildEntity1"
       transform:
         scale:
           x: 1.0
@@ -69,68 +84,62 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-      children: []
       components: {}
-    components: {}
-  - name: "ChildEntity3"
+      uuid: 197896219
+      children:
+      - name: "ChildEntity2"
+        transform:
+          scale:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+          position:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+          rotation:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+        components: {}
+        uuid: 1883229299
+        children: []
+    - name: "ChildEntity3"
+      transform:
+        scale:
+          x: 1.0
+          "y": 1.0
+          z: 1.0
+        position:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+        rotation:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+      components: {}
+      uuid: 162541996
+      children: []
+  581560518:
+    name: "Main Camera"
     transform:
       scale:
         x: 1.0
         "y": 1.0
         z: 1.0
       position:
-        x: 0.0
-        "y": 0.0
-        z: 0.0
+        x: 3.0
+        "y": -2.5
+        z: 35.0
       rotation:
         x: 0.0
-        "y": 0.0
+        "y": -0.0
         z: 0.0
+    components:
+      marble.entity.components.camera.PerspectiveCamera:
+        near: 0.3
+        far: 1000.0
+        fov: 60.0
+    uuid: 581560518
     children: []
-    components: {}
-  components:
-    marble.entity.components.Mesh:
-      material:
-        texture: null
-        reflectance: 0.0
-        ambient:
-          x: 0.0
-          "y": 0.0
-          z: 0.0
-          w: 1.0
-        diffuse:
-          x: 1.0
-          "y": 1.0
-          z: 1.0
-          w: 1.0
-        specular:
-          x: 1.0
-          "y": 1.0
-          z: 1.0
-          w: 1.0
-        shader:
-          filepath: "assets/shaders/default.glsl"
-      filePath: "assets/obj/helm.obj"
-- name: "Directional light"
-  transform:
-    scale:
-      x: 1.0
-      "y": 1.0
-      z: 1.0
-    position:
-      x: -1.0
-      "y": 2.0
-      z: 4.0
-    rotation:
-      x: 333.0
-      "y": 53.0
-      z: 0.0
-  children: []
-  components:
-    marble.entity.components.light.DirectionalLight:
-      color:
-        x: 1.0
-        "y": 1.0
-        z: 1.0
-        w: 1.0
-      intensity: 1.0

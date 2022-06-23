@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +14,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
+import marble.entity.components.Mesh;
+import marble.entity.components.camera.Camera;
+import marble.entity.components.light.Light;
+import marble.entity.components.light.LightFactory;
+import marble.entity.components.light.LightType;
+import marble.util.Loader;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.yaml.snakeyaml.Yaml;
 
+import marble.editor.ConsolePanel;
 import marble.entity.Entity;
 import marble.entity.Transform;
-import marble.editor.ConsolePanel;
 import marble.entity.components.camera.PerspectiveCamera;
 
 public class SceneSerializer {
@@ -59,29 +67,29 @@ public class SceneSerializer {
             Yaml yaml = new Yaml();
             Map<String, Object> data = yaml.load(io);
 
-            String sceneName = (String)data.get("name");
-            double specularPower = (double)data.get("specularPower");
-            Map<String, Object> al = (Map<String, Object>)data.get("ambientLight");
-            double x = (double)al.get("x");
-            double y = (double)al.get("y");
-            double z = (double)al.get("z");
-            Vector3f ambientLight = new Vector3f((float)x, (float)y, (float)z);
+            String sceneName = extractString(data, "name");
+            float specularPower = extractFloat(data, "specularPower");
+            Vector3f ambientLight = extractVec3f(data, "ambientLight");
 
-            deserializedScene = new Scene(sceneName, (float)specularPower, ambientLight);
+            deserializedScene = new Scene(sceneName, specularPower, ambientLight);
 
-            List<Map> entities = (List<Map>) data.get("entities");
-            for (Map entity : entities)
+            LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
+            for (Map entity : entities.values())
             {
-                String entityName = (String)entity.get("name");
-                Entity newEntity = new Entity(entityName);
-                newEntity.transform = loadTransform((Map)entity.get("transform"));
+                Entity newEntity = new Entity(extractInt(entity, "uuid"));
 
-                var components = (Map)entity.get("components");
+                newEntity.name = extractString(entity,"name");
+                newEntity.transform = loadTransform(extractMap(entity,"transform"));
+
+                var components = extractMap(entity, "components");
                 loadComponents(newEntity, components);
+
+                List children = extractList(entity, "children");
+                if (children.size() > 0)
+                    recursiveChildCall(children, newEntity);
 
                 deserializedScene.addEntityToScene(newEntity);
             }
-
             ConsolePanel.log("Loading scene: " + filePath);
         }
         catch (IOException e)
@@ -91,40 +99,120 @@ public class SceneSerializer {
         return deserializedScene;
     }
 
+    private void recursiveChildCall(List<Map> childEntities, Entity parent)
+    {
+        for (Map entity : childEntities)
+        {
+            Entity newEntity = new Entity(extractInt(entity, "uuid"));
+            newEntity.setParent(parent);
+
+            newEntity.name = extractString(entity,"name");
+            newEntity.transform = loadTransform(extractMap(entity,"transform"));
+
+            var components = extractMap(entity, "components");
+            loadComponents(newEntity, components);
+
+            List children = extractList(entity, "children");
+            if (children.size() > 0)
+                recursiveChildCall(children, newEntity);
+        }
+    }
+
     private void loadComponents(Entity newEntity, Map components)
     {
         for (Object key : components.keySet())
         {
-            String componentName = (String)key;
-            Map componentsData = (Map)components.get(key);
+            String componentName = (String) key;
+            Map componentData = (Map) components.get(key);
             switch (componentName)
             {
-                //TODO: Load rest of components
-                case "marble.entity.components.camera.PerspectiveCamera":
-                    PerspectiveCamera camera = new PerspectiveCamera();
-                    double near = (double)componentsData.get("near");
-                    double far = (double)componentsData.get("far");
-                    double fov = (double)componentsData.get("fov");
-                    camera.near = (float) near;
-                    camera.far = (float) far;
-                    camera.fov = (float) fov;
-                    newEntity.addComponent(camera);
+                case "marble.entity.components.Mesh"                     -> newEntity.addComponent(loadMesh(componentData));
+                case "marble.entity.components.camera.PerspectiveCamera" -> newEntity.addComponent(loadPerspectiveCamera(componentData));
+                case "marble.entity.components.light.DirectionalLight"   -> newEntity.addComponent(loadDirectionalLight(componentData));
             }
         }
     }
 
+    private Light loadDirectionalLight(Map componentData)
+    {
+        Light light = LightFactory.getLight(LightType.DIRECTIONAL);
+        light.setIntensity(extractFloat(componentData, "intensity"));
+        light.setColor(extractVec4f(componentData, "color"));
+        return LightFactory.getLight(LightType.DIRECTIONAL);
+    }
+
+    private Mesh loadMesh(Map componentData)
+    {
+        String filePath = (String) componentData.get("filePath");
+        return Loader.loadMeshObj(filePath);
+    }
+
+    private Camera loadPerspectiveCamera(Map componentsData)
+    {
+        PerspectiveCamera camera = new PerspectiveCamera();
+        camera.near = extractFloat(componentsData, "near");
+        camera.far =  extractFloat(componentsData, "far");;
+        camera.fov =  extractFloat(componentsData, "fov");;
+        return camera;
+    }
+
     private Transform loadTransform(Map transformData)
     {
-        Map posMap = (Map)transformData.get("position");
-        double[] position = {(double)posMap.get("x"), (double)posMap.get("y"), (double)posMap.get("z")};
-        Map rotMap = (Map)transformData.get("rotation");
-        double[] rotation = {(double)posMap.get("x"), (double)rotMap.get("y"), (double)rotMap.get("z")};
-        Map scaleMap = (Map)transformData.get("scale");
-        double[] scale = {(double)scaleMap.get("x"), (double)scaleMap.get("y"), (double)scaleMap.get("z")};
+        Map posMap = (Map) transformData.get("position");
+        double[] position = { (double) posMap.get("x"), (double) posMap.get("y"), (double) posMap.get("z") };
+        Map rotMap = (Map) transformData.get("rotation");
+        double[] rotation = { (double) rotMap.get("x"), (double) rotMap.get("y"), (double) rotMap.get("z") };
+        Map scaleMap = (Map) transformData.get("scale");
+        double[] scale = { (double) scaleMap.get("x"), (double) scaleMap.get("y"), (double) scaleMap.get("z") };
         return new Transform(
                 new Vector3f((float) position[0], (float) position[1], (float) position[2]),
                 new Vector3f((float) rotation[0], (float) rotation[1], (float) rotation[2]),
                 new Vector3f((float) scale[0], (float) scale[1], (float) scale[2]));
+    }
+
+    private Vector3f extractVec3f(Map data, String key)
+    {
+        Map<String, Object> comp = (Map<String, Object>) data.get(key);
+        double x = (double) comp.get("x");
+        double y = (double) comp.get("y");
+        double z = (double) comp.get("z");
+        return new Vector3f((float) x, (float) y, (float) z);
+    }
+
+    private Vector4f extractVec4f(Map data, String key)
+    {
+        Map<String, Object> comp = (Map<String, Object>) data.get(key);
+        double x = (double) comp.get("x");
+        double y = (double) comp.get("y");
+        double z = (double) comp.get("z");
+        double w = (double) comp.get("w");
+        return new Vector4f((float) x, (float) y, (float) z, (float) w);
+    }
+
+    private String extractString(Map data, String key)
+    {
+        return (String) data.get(key);
+    }
+
+    private float extractFloat(Map data, String key)
+    {
+        double dValue = (double) data.get(key);
+        return (float) dValue;
+    }
+
+    private int extractInt(Map data, String key)
+    {
+        return (int) data.get(key);
+    }
+
+    private List extractList(Map data, String key)
+    {
+        return (List) data.get(key);
+    }
+
+    private LinkedHashMap extractMap(Map data, String key)
+    {
+        return (LinkedHashMap) data.get(key);
     }
 
 }

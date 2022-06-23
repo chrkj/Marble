@@ -39,7 +39,7 @@ public class emptyScene extends Scene {
         {
             Entity entity = createEntity("Directional light")
                     .setPosition(-1,2,4)
-                    .setRotation(333,53,0)
+                    .setRotation(8,53,0)
                     .addComponent(LightFactory.getLight(LightType.DIRECTIONAL));
             addEntityToScene(entity);
         }

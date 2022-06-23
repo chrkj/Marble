@@ -10,22 +10,28 @@ public class Entity {
     public Transform transform;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
+    private int uuid;
     private transient Entity parent = null;
     private final List<Entity> children = new ArrayList<>();
-    private final int uuid = Math.abs(UUID.randomUUID().hashCode());
 
     public Entity()
     {
-        init("Empty Entity", new Transform());
+        init("Empty Entity", new Transform(), Math.abs(UUID.randomUUID().hashCode()));
+    }
+
+    public Entity(int uuid)
+    {
+        init("Empty Entity", new Transform(), uuid);
     }
 
     public Entity(String name)
     {
-        init(name, new Transform());
+        init(name, new Transform(), Math.abs(UUID.randomUUID().hashCode()));
     }
 
-    private void init(String name, Transform transform)
+    private void init(String name, Transform transform, int uuid)
     {
+        this.uuid = uuid;
         this.name = name;
         this.transform = transform;
     }
