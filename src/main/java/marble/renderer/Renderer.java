@@ -34,7 +34,7 @@ public class Renderer {
 
         for (Mesh mesh : registry.getMeshes())
         {
-            Material material = mesh.material;
+            Material material = mesh.getMaterial();
             Shader shader = material.getShader();
             shader.bind();
 

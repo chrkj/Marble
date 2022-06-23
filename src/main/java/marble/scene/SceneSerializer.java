@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
+import marble.entity.Material;
 import marble.entity.components.Mesh;
 import marble.entity.components.camera.Camera;
 import marble.entity.components.light.Light;
@@ -70,7 +71,6 @@ public class SceneSerializer {
             String sceneName = extractString(data, "name");
             float specularPower = extractFloat(data, "specularPower");
             Vector3f ambientLight = extractVec3f(data, "ambientLight");
-
             deserializedScene = new Scene(sceneName, specularPower, ambientLight);
 
             LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
@@ -144,7 +144,15 @@ public class SceneSerializer {
     private Mesh loadMesh(Map componentData)
     {
         String filePath = (String) componentData.get("filePath");
-        return Loader.loadMeshObj(filePath);
+        Mesh mesh = Loader.loadMeshObj(filePath);
+        Material material = new Material();
+        Map materialData = extractMap(componentData, "material");
+        material.setAmbient(extractVec4f(materialData, "ambient"));
+        material.setSpecular(extractVec4f(materialData, "specular"));
+        material.setDiffuse(extractVec4f(materialData, "diffuse"));
+        material.setReflectance(extractFloat(materialData, "reflectance"));
+        mesh.setMaterial(material);
+        return mesh;
     }
 
     private Camera loadPerspectiveCamera(Map componentsData)

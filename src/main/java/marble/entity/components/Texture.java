@@ -2,12 +2,10 @@ package marble.entity.components;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import org.lwjgl.opengl.GL32;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL30C.GL_FRAMEBUFFER;
 
 public class Texture extends Component {
 

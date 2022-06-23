@@ -18,7 +18,7 @@ import marble.renderer.Vertexbuffer;
 
 public class Mesh extends Component {
 
-    public Material material;
+    private Material material;
 
     private String filePath = "";
     private transient final int vaoId;
@@ -138,6 +138,16 @@ public class Mesh extends Component {
     public void addTexture(Texture texture)
     {
         material.setTexture(texture);
+    }
+
+    public Material getMaterial()
+    {
+        return material;
+    }
+
+    public void setMaterial(Material material)
+    {
+        this.material = material;
     }
 
 }
