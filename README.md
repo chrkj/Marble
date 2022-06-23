@@ -53,12 +53,12 @@ Frameworks/libraries used for the project:
 ## Roadmap
 
 - ⬜ 2D/3D physics
-- ⬜ Multiple lights in scenes
-- ⬜ Spot light
-- ⬜ Point light
 - ⬜ Frustum culling
-- ⬜ Deferred rendering
+- ⬜ Forward+ rendering
 - ⬜ Custom title bar
+- ⬜ Spot light
+- ✅ Multiple lights in scenes
+- ✅ Point light
 - ✅ Directional light
 - ✅ Custom layout theme
 - ✅ Console panel
