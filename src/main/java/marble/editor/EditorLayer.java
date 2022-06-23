@@ -7,7 +7,6 @@ import imgui.flag.ImGuiStyleVar;
 import imgui.type.ImBoolean;
 import imgui.flag.ImGuiWindowFlags;
 
-import marble.renderer.Framebuffer;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 
@@ -20,6 +19,7 @@ import marble.gui.MarbleGui;
 import marble.scene.Scene;
 import marble.scene.emptyScene;
 import marble.scene.SceneSerializer;
+import marble.renderer.Framebuffer;
 
 public class EditorLayer {
 
@@ -40,15 +40,14 @@ public class EditorLayer {
 
     public EditorLayer()
     {
-        var gameFbSpec = new FramebufferSpecification();
+        var gameFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
         gameFbSpec.width = 1280;
         gameFbSpec.height = 720;
+        gameViewportFb = Framebuffer.create(gameFbSpec);
 
-        var editorFbSpec = new FramebufferSpecification();
+        var editorFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.RED_INTEGER, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
         editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
-
-        gameViewportFb = Framebuffer.create(gameFbSpec);
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
         sceneSerializer = new SceneSerializer();
@@ -126,7 +125,7 @@ public class EditorLayer {
 
         setEditorViewportInputFlag();
 
-        int textureId = editorViewportFb.textureId;
+        int textureId = editorViewportFb.getColorAttachmentRendererID();
         ImGui.image(textureId, editorViewportSize.x, editorViewportSize.y, 0, 1, 1, 0);
         Gizmo.onImGuiRender();
 
@@ -150,24 +149,23 @@ public class EditorLayer {
             editorViewportBounds[1] = new ImVec2(maxBound.x, maxBound.y);
 
             var mousePos = ImGui.getMousePos();
-            float mx = mousePos.x;
-            float my = mousePos.y;
-            mx -= editorViewportBounds[0].x;
-            my -= editorViewportBounds[0].y;
+            float x = mousePos.x;
+            float y = mousePos.y;
+            x -= editorViewportBounds[0].x;
+            y -= editorViewportBounds[0].y;
 
             var viewportSize = new ImVec2(editorViewportBounds[1].x - editorViewportBounds[0].x, editorViewportBounds[1].y - editorViewportBounds[0].y);
-            my = viewportSize.y - my;
+            y = viewportSize.y - y;
 
-            int mouseX = (int) mx;
-            int mouseY = (int) my;
+            int mouseX = (int) x;
+            int mouseY = (int) y;
 
             // Within viewport
             if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
             {
-                //ConsolePanel.log(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
                 if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
                 {
-                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY));
+                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
                     SceneHierarchyPanel.setSelectedEntity(selectedEntity);
                 }
             }
@@ -183,7 +181,7 @@ public class EditorLayer {
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
         handleWindowResize(gameViewportSize, gameViewportFb);
         gameViewportSize = ImGui.getContentRegionAvail();
-        int textureId = gameViewportFb.textureId;
+        int textureId = gameViewportFb.getColorAttachmentRendererID();
         ImGui.image(textureId, gameViewportSize.x, gameViewportSize.y, 0, 1, 1, 0);
         ImGui.end();
         ImGui.popStyleVar(1);

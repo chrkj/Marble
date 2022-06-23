@@ -24,7 +24,7 @@ public class Renderer {
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glClearTexImage(EditorLayer.editorViewportFb.redIntTextureId, 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 }); // TODO: FIX clear tex image not working properly
+        //glClearTexImage(EditorLayer.editorViewportFb.getColorAttachmentRendererID(1), 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 }); // TODO: FIX clear tex image not working properly
     }
 
     public void render(Camera camera, Registry registry, Framebuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)

@@ -2,9 +2,10 @@ package marble.entity.components.light;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
-import marble.gui.MarbleGui;
+
 import org.joml.Vector4f;
 
+import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
 public abstract class Light extends Component {
