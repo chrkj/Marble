@@ -151,7 +151,6 @@ public class SceneSerializer {
         sp.setIntensity(extractFloat(componentData, "intensity"));
         sp.setColor(extractVec4f(componentData, "color"));
         sp.setCutOff(extractFloat(componentData, "cutOff"));
-        sp.setConeDirection(extractVec3f(componentData, "coneDirection"));
         var pointLightData = extractMap(componentData, "pointLight");
         sp.setPointLight(loadPointLight(pointLightData));
         return sp;

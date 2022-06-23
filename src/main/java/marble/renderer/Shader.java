@@ -242,15 +242,17 @@ public class Shader {
         setUniform1f("uPointLight[" + i + "].att.exponent", light.exponent);
     }
 
-    public void SetUniformSpotLight(SpotLight light, Matrix4f viewMatrix, int i)
+    public void setUniformSpotLight(SpotLight light, Matrix4f viewMatrix, int i)
     {
+        var position = new Vector4f(light.getEntity().transform.position, 1).mul(viewMatrix);
+        var coneDir = new Vector4f(light.getEntity().transform.rotation, 0).mul(viewMatrix).normalize();
         setUniform4f("uSpotLight[" + i + "].pl.color", light.getColor());
-        setUniform3f("uSpotLight[" + i + "].pl.position", light.getEntity().transform.position);
+        setUniform3f("uSpotLight[" + i + "].pl.position", new Vector3f(position.x, position.y, position.z));
         setUniform1f("uSpotLight[" + i + "].pl.intensity", light.getIntensity());
         setUniform1f("uSpotLight[" + i + "].pl.att.constant", light.getPointLight().constant);
         setUniform1f("uSpotLight[" + i + "].pl.att.linear", light.getPointLight().linear);
         setUniform1f("uSpotLight[" + i + "].pl.att.exponent", light.getPointLight().exponent);
-        setUniform3f("uSpotLight[" + i + "].conedir", light.getConeDirection());
+        setUniform3f("uSpotLight[" + i + "].conedir", new Vector3f(coneDir.x, coneDir.y, coneDir.z));
         setUniform1f("uSpotLight[" + i + "].cutoff", light.getCutOff());
     }
 

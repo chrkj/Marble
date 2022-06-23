@@ -36,9 +36,17 @@ public class Renderer {
             Shader shader = material.getShader();
             shader.bind();
 
-            var lights = registry.getLights();
-            for (int i = 0; i < registry.getLights().size(); i++)
-                addLightUniforms(shader, lights.get(i), camera, i);
+            var dirLights = registry.getDirectionalLights();
+            for (int i = 0; i < registry.getDirectionalLights().size(); i++)
+                shader.setUniformDirLight(dirLights.get(i), camera.getViewMatrix(), i);
+
+            var pointLights = registry.getPointLights();
+            for (int i = 0; i < registry.getPointLights().size(); i++)
+                shader.setUniformPointLight(pointLights.get(i), camera.getViewMatrix(), i);
+
+            var spotLights = registry.getSpotLights();
+            for (int i = 0; i < registry.getSpotLights().size(); i++)
+                shader.setUniformSpotLight(spotLights.get(i), camera.getViewMatrix(), i);
 
             shader.setUniformMaterial(material);
             shader.setUniform1f("uTime", Time.getTime());
@@ -59,16 +67,6 @@ public class Renderer {
             shader.unbind();
         }
         frameBuffer.unbind();
-    }
-
-    private void addLightUniforms(Shader shader, Light light, Camera camera, int i)
-    {
-        if (light.getClass() == DirectionalLight.class)
-            shader.setUniformDirLight(light, camera.getViewMatrix(), i);
-        else if (light.getClass() == PointLight.class)
-            shader.setUniformPointLight((PointLight) light, camera.getViewMatrix(), i);
-        else if (light.getClass() == SpotLight.class)
-            shader.SetUniformSpotLight((SpotLight) light, camera.getViewMatrix(), i);
     }
 
 }

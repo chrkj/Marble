@@ -4,20 +4,13 @@ import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
 import marble.gui.MarbleGui;
-import org.joml.Vector3f;
 
 public class SpotLight extends Light {
 
-    // TODO: Fix spotlight not working
+    // TODO: Fix rotation to match entity direction properly
 
     private float cutOff = 140;
-    private Vector3f coneDirection = new Vector3f(0, 0, -1);
     private PointLight pointLight = new PointLight();
-
-    public final void setCutOffAngle(float cutOffAngle)
-    {
-        this.setCutOff((float) Math.cos(Math.toRadians(cutOffAngle)));
-    }
 
     public float getCutOff()
     {
@@ -26,12 +19,7 @@ public class SpotLight extends Light {
 
     public void setCutOff(float cutOff)
     {
-        this.cutOff = (float) Math.cos(Math.toRadians(cutOff));
-    }
-
-    public Vector3f getConeDirection()
-    {
-        return coneDirection;
+        this.cutOff = cutOff;
     }
 
     public PointLight getPointLight()
@@ -44,20 +32,18 @@ public class SpotLight extends Light {
         this.pointLight = pointLight;
     }
 
-    public void setConeDirection(Vector3f coneDirection)
-    {
-        this.coneDirection = coneDirection;
-    }
-
     @Override
     public void renderEntityInspector()
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Spot Light", nodeFlags);
         if (nodeOpen) {
-            MarbleGui.vec3Controller("Cone direction", coneDirection);
             cutOff = MarbleGui.dragFloat("CutOff", cutOff);
-            pointLight.renderEntityInspector();
+            MarbleGui.colorEdit4("Color", color);
+            intensity = MarbleGui.dragFloat("Intensity", intensity);
+            pointLight.linear = MarbleGui.dragFloat("Linear", pointLight.linear);
+            pointLight.constant = MarbleGui.dragFloat("Constant", pointLight.constant);
+            pointLight.exponent = MarbleGui.dragFloat("Exponent", pointLight.exponent);
             ImGui.treePop();
         }
     }

@@ -104,9 +104,9 @@ entities:
         "y": 0.9999999
         z: 0.9999999
       position:
-        x: 2.5782113
-        "y": -9.75047
-        z: 22.413475
+        x: 22.396135
+        "y": -20.249393
+        z: 30.632065
       rotation:
         x: -38.05398
         "y": -0.0
@@ -114,14 +114,14 @@ entities:
     components:
       marble.entity.components.light.PointLight:
         color:
-          x: 0.72906065
-          "y": 0.8088235
-          z: 0.5074971
+          x: 0.16013072
+          "y": 0.185025
+          z: 0.5833334
           w: 1.0
-        intensity: 34.0
-        linear: 1.0
-        constant: 3.0
-        exponent: 0.2
+        intensity: 8.2
+        linear: 0.2
+        constant: 8.2
+        exponent: 0.0
     uuid: 603228053
     children: []
   4445915:
@@ -168,17 +168,17 @@ entities:
     name: "Directional light"
     transform:
       scale:
-        x: 0.99999785
-        "y": 0.9999999
+        x: 0.999996
+        "y": 0.99999946
         z: 1.0
       position:
         x: -1.0
         "y": 2.0
         z: 4.0
       rotation:
-        x: -14.110207
-        "y": 52.9997
-        z: -0.002601327
+        x: -19.4327
+        "y": 52.99908
+        z: -0.0034083456
     components:
       marble.entity.components.light.DirectionalLight:
         color:
@@ -186,47 +186,43 @@ entities:
           "y": 1.0
           z: 1.0
           w: 1.0
-        intensity: 0.0
+        intensity: 0.1
     uuid: 455960423
     children: []
   666182862:
     name: "Spot Light"
     transform:
       scale:
-        x: 1.0
-        "y": 1.0
-        z: 1.0
+        x: 0.9997188
+        "y": 0.9998424
+        z: 1.0000002
       position:
-        x: 0.0
-        "y": -14.8274765
-        z: 0.0
+        x: -44.603413
+        "y": -19.395222
+        z: 37.43671
       rotation:
-        x: 0.0
-        "y": -0.0
-        z: 0.0
+        x: 108.52991
+        "y": 10.05277
+        z: -96.52437
     components:
       marble.entity.components.light.SpotLight:
         color:
-          x: 1.0
-          "y": 1.0
-          z: 1.0
+          x: 0.7009804
+          "y": 0.2989475
+          z: 0.2989475
           w: 1.0
-        intensity: 0.0
-        cutOff: 140.0
-        coneDirection:
-          x: 0.0
-          "y": 0.0
-          z: -1.0
+        intensity: 23.9
+        cutOff: 30.0
         pointLight:
           color:
             x: 1.0
-            "y": 0.0
-            z: 0.0
+            "y": 1.0
+            z: 1.0
             w: 1.0
-          intensity: 34.0
-          linear: 1.0
-          constant: 3.0
-          exponent: 0.2
+          intensity: 1.0
+          linear: 0.3
+          constant: 0.0
+          exponent: 0.0
     uuid: 666182862
     children: []
   1586110567:

@@ -56,7 +56,7 @@ Frameworks/libraries used for the project:
 - ⬜ Frustum culling
 - ⬜ Forward+ rendering
 - ⬜ Custom title bar
-- ⬜ Spot light
+- ✅ Spot light
 - ✅ Multiple lights in scenes
 - ✅ Point light
 - ✅ Directional light
