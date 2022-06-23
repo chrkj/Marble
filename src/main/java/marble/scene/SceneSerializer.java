@@ -15,11 +15,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import marble.entity.Material;
+import marble.entity.components.Component;
 import marble.entity.components.Mesh;
 import marble.entity.components.camera.Camera;
-import marble.entity.components.light.Light;
-import marble.entity.components.light.LightFactory;
-import marble.entity.components.light.LightType;
+import marble.entity.components.light.*;
 import marble.util.Loader;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -129,16 +128,41 @@ public class SceneSerializer {
                 case "marble.entity.components.Mesh"                     -> newEntity.addComponent(loadMesh(componentData));
                 case "marble.entity.components.camera.PerspectiveCamera" -> newEntity.addComponent(loadPerspectiveCamera(componentData));
                 case "marble.entity.components.light.DirectionalLight"   -> newEntity.addComponent(loadDirectionalLight(componentData));
+                case "marble.entity.components.light.PointLight"         -> newEntity.addComponent(loadPointLight(componentData));
+                case "marble.entity.components.light.SpotLight"          -> newEntity.addComponent(loadSpotLight(componentData));
             }
         }
     }
 
-    private Light loadDirectionalLight(Map componentData)
+    private PointLight loadPointLight(Map componentData)
     {
-        Light light = LightFactory.getLight(LightType.DIRECTIONAL);
-        light.setIntensity(extractFloat(componentData, "intensity"));
-        light.setColor(extractVec4f(componentData, "color"));
-        return LightFactory.getLight(LightType.DIRECTIONAL);
+        PointLight pl = (PointLight) LightFactory.getLight(LightType.POINT);
+        pl.setIntensity(extractFloat(componentData, "intensity"));
+        pl.setColor(extractVec4f(componentData, "color"));
+        pl.linear = extractFloat(componentData, "linear");
+        pl.constant = extractFloat(componentData, "constant");
+        pl.exponent = extractFloat(componentData, "exponent");
+        return pl;
+    }
+
+    private SpotLight loadSpotLight(Map componentData)
+    {
+        SpotLight sp = (SpotLight) LightFactory.getLight(LightType.SPOT);
+        sp.setIntensity(extractFloat(componentData, "intensity"));
+        sp.setColor(extractVec4f(componentData, "color"));
+        sp.setCutOff(extractFloat(componentData, "cutOff"));
+        sp.setConeDirection(extractVec3f(componentData, "coneDirection"));
+        var pointLightData = extractMap(componentData, "pointLight");
+        sp.setPointLight(loadPointLight(pointLightData));
+        return sp;
+    }
+
+    private DirectionalLight loadDirectionalLight(Map componentData)
+    {
+        DirectionalLight dl = (DirectionalLight) LightFactory.getLight(LightType.DIRECTIONAL);
+        dl.setIntensity(extractFloat(componentData, "intensity"));
+        dl.setColor(extractVec4f(componentData, "color"));
+        return dl;
     }
 
     private Mesh loadMesh(Map componentData)

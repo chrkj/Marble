@@ -1,33 +1,11 @@
 name: "Empty Scene"
 specularPower: 10.0
 ambientLight:
-  x: 0.1
-  "y": 0.1
-  z: 0.1
+  x: 0.0
+  "y": 0.0
+  z: 0.0
 entities:
-  905075015:
-    name: "Main Camera"
-    transform:
-      scale:
-        x: 1.0
-        "y": 1.0
-        z: 1.0
-      position:
-        x: 3.0
-        "y": -2.5
-        z: 35.0
-      rotation:
-        x: 0.0
-        "y": 0.0
-        z: 0.0
-    components:
-      marble.entity.components.camera.PerspectiveCamera:
-        near: 0.3
-        far: 1000.0
-        fov: 60.0
-    uuid: 905075015
-    children: []
-  1063117588:
+  1874338040:
     name: "Helmet"
     transform:
       scale:
@@ -48,24 +26,24 @@ entities:
           shader:
             filepath: "assets/shaders/default.glsl"
           texture: null
-          reflectance: 1.5
+          reflectance: 0.0
           ambient:
-            x: 0.7058823
-            "y": 0.49134943
-            z: 0.49134943
+            x: 0.0
+            "y": 0.0
+            z: 0.0
             w: 1.0
           diffuse:
-            x: 0.62745094
-            "y": 0.5010742
-            z: 0.236832
-            w: 0.6
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
           specular:
-            x: 0.5490196
-            "y": 0.5490196
-            z: 0.53556323
-            w: 0.6666667
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
         filePath: "assets/obj/helm.obj"
-    uuid: 1063117588
+    uuid: 1874338040
     children:
     - name: "ChildEntity1"
       transform:
@@ -82,7 +60,7 @@ entities:
           "y": 0.0
           z: 0.0
       components: {}
-      uuid: 934192999
+      uuid: 2126454244
       children:
       - name: "ChildEntity2"
         transform:
@@ -99,7 +77,7 @@ entities:
             "y": 0.0
             z: 0.0
         components: {}
-        uuid: 1719833180
+        uuid: 1149871611
         children: []
     - name: "ChildEntity3"
       transform:
@@ -116,23 +94,91 @@ entities:
           "y": 0.0
           z: 0.0
       components: {}
-      uuid: 1152210488
+      uuid: 1395577415
       children: []
-  292668477:
+  603228053:
+    name: "Point light"
+    transform:
+      scale:
+        x: 0.9999956
+        "y": 0.9999999
+        z: 0.9999999
+      position:
+        x: 2.5782113
+        "y": -9.75047
+        z: 22.413475
+      rotation:
+        x: -38.05398
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.light.PointLight:
+        color:
+          x: 0.72906065
+          "y": 0.8088235
+          z: 0.5074971
+          w: 1.0
+        intensity: 34.0
+        linear: 1.0
+        constant: 3.0
+        exponent: 0.2
+    uuid: 603228053
+    children: []
+  4445915:
+    name: "Plane"
+    transform:
+      scale:
+        x: 64.48792
+        "y": 0.001
+        z: 81.62534
+      position:
+        x: 2.4479988
+        "y": -22.08662
+        z: 31.497757
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.Mesh:
+        material:
+          shader:
+            filepath: "assets/shaders/default.glsl"
+          texture: null
+          reflectance: 0.0
+          ambient:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+            w: 1.0
+          diffuse:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+          specular:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+        filePath: "assets/obj/cube.obj"
+    uuid: 4445915
+    children: []
+  455960423:
     name: "Directional light"
     transform:
       scale:
-        x: 0.9999998
-        "y": 1.0
+        x: 0.99999785
+        "y": 0.9999999
         z: 1.0
       position:
         x: -1.0
         "y": 2.0
         z: 4.0
       rotation:
-        x: 7.9999986
-        "y": 52.999992
-        z: 0.0
+        x: -14.110207
+        "y": 52.9997
+        z: -0.002601327
     components:
       marble.entity.components.light.DirectionalLight:
         color:
@@ -140,6 +186,68 @@ entities:
           "y": 1.0
           z: 1.0
           w: 1.0
-        intensity: 1.0
-    uuid: 292668477
+        intensity: 0.0
+    uuid: 455960423
+    children: []
+  666182862:
+    name: "Spot Light"
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": -14.8274765
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.light.SpotLight:
+        color:
+          x: 1.0
+          "y": 1.0
+          z: 1.0
+          w: 1.0
+        intensity: 0.0
+        cutOff: 140.0
+        coneDirection:
+          x: 0.0
+          "y": 0.0
+          z: -1.0
+        pointLight:
+          color:
+            x: 1.0
+            "y": 0.0
+            z: 0.0
+            w: 1.0
+          intensity: 34.0
+          linear: 1.0
+          constant: 3.0
+          exponent: 0.2
+    uuid: 666182862
+    children: []
+  1586110567:
+    name: "Main Camera"
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 3.0
+        "y": -2.5
+        z: 35.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.camera.PerspectiveCamera:
+        near: 0.3
+        far: 1000.0
+        fov: 60.0
+    uuid: 1586110567
     children: []

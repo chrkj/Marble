@@ -1,20 +1,18 @@
 package marble.renderer;
 
-import java.util.List;
-
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.GL_RED_INTEGER;
-import static org.lwjgl.opengl.GL44.glClearTexImage;
 
 import marble.util.Time;
-import marble.editor.EditorLayer;
 import marble.entity.Material;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.light.Light;
 import marble.entity.components.camera.Camera;
+import marble.entity.components.light.DirectionalLight;
+import marble.entity.components.light.PointLight;
+import marble.entity.components.light.SpotLight;
 
 public class Renderer {
 
@@ -38,9 +36,9 @@ public class Renderer {
             Shader shader = material.getShader();
             shader.bind();
 
-            List<Light> lights = registry.getLights();
+            var lights = registry.getLights();
             for (int i = 0; i < registry.getLights().size(); i++)
-                shader.setUniformDirLight(lights.get(i), camera.getViewMatrix(), i);
+                addLightUniforms(shader, lights.get(i), camera, i);
 
             shader.setUniformMaterial(material);
             shader.setUniform1f("uTime", Time.getTime());
@@ -61,6 +59,16 @@ public class Renderer {
             shader.unbind();
         }
         frameBuffer.unbind();
+    }
+
+    private void addLightUniforms(Shader shader, Light light, Camera camera, int i)
+    {
+        if (light.getClass() == DirectionalLight.class)
+            shader.setUniformDirLight(light, camera.getViewMatrix(), i);
+        else if (light.getClass() == PointLight.class)
+            shader.setUniformPointLight((PointLight) light, camera.getViewMatrix(), i);
+        else if (light.getClass() == SpotLight.class)
+            shader.SetUniformSpotLight((SpotLight) light, camera.getViewMatrix(), i);
     }
 
 }

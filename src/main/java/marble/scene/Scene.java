@@ -126,4 +126,9 @@ public class Scene {
         return entities.get(uuid);
     }
 
+    public Registry getRegistry()
+    {
+        return registry;
+    }
+
 }

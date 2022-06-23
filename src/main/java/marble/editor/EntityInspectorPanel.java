@@ -4,6 +4,8 @@ import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
 import marble.entity.Entity;
+import marble.entity.components.light.LightFactory;
+import marble.entity.components.light.LightType;
 import marble.gui.MarbleGui;
 import marble.entity.components.Component;
 
@@ -47,12 +49,33 @@ public class EntityInspectorPanel implements Panel {
             {
                 if (ImGui.selectable("Mesh")) {}
                 if (ImGui.selectable("Camera")) {}
-                if (ImGui.selectable("Directional light")) {}
-                if (ImGui.selectable("Spot light")) {}
-                if (ImGui.selectable("Point light")) {}
+                if (ImGui.selectable("Directional light")) addDirLight();
+                if (ImGui.selectable("Spot light"))        addSpotLight();
+                if (ImGui.selectable("Point light"))       addPointLight();
                 ImGui.endPopup();
             }
         }
         ImGui.end();
+    }
+
+    private void addSpotLight()
+    {
+        var sl = LightFactory.getLight(LightType.SPOT);
+        SceneHierarchyPanel.getSelectedEntity().addComponent(sl);
+        EditorLayer.currentScene.getRegistry().register(sl);
+    }
+
+    private void addPointLight()
+    {
+        var pl = LightFactory.getLight(LightType.POINT);
+        SceneHierarchyPanel.getSelectedEntity().addComponent(pl);
+        EditorLayer.currentScene.getRegistry().register(pl);
+    }
+
+    private void addDirLight()
+    {
+        var dl = LightFactory.getLight(LightType.DIRECTIONAL);
+        SceneHierarchyPanel.getSelectedEntity().addComponent(dl);
+        EditorLayer.currentScene.getRegistry().register(dl);
     }
 }

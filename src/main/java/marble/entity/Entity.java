@@ -2,6 +2,7 @@ package marble.entity;
 
 import java.util.*;
 
+import marble.editor.EditorLayer;
 import marble.entity.components.Component;
 
 public class Entity {
@@ -11,7 +12,7 @@ public class Entity {
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private int uuid;
-    private transient Entity parent = null;
+    private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
 
     public Entity()
@@ -54,7 +55,15 @@ public class Entity {
 
     public <T extends Component> T removeComponent(Class<T> componentClass)
     {
-        return componentClass.cast(components.remove(componentClass));
+        var comp = componentClass.cast(components.remove(componentClass));
+        EditorLayer.currentScene.getRegistry().remove(comp);
+        return comp;
+    }
+
+    public <T extends Component> void removeComponent(T component)
+    {
+        components.remove(component.getClass());
+        EditorLayer.currentScene.getRegistry().remove(component);
     }
 
     public Entity addComponent(Component component)

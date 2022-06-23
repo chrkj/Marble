@@ -17,7 +17,6 @@ import static org.lwjgl.opengl.GL11.GL_RENDERER;
 import marble.Application;
 import marble.gui.MarbleGui;
 import marble.scene.Scene;
-import marble.scene.emptyScene;
 import marble.scene.SceneSerializer;
 import marble.renderer.Framebuffer;
 
@@ -60,7 +59,7 @@ public class EditorLayer {
         panelManager.addPanel(new ContentBrowserPanel());
         panelManager.addPanel(new EntityInspectorPanel());
 
-        currentScene = new emptyScene("Empty Scene");
+        currentScene = sceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
         currentScene.init();
         currentScene.start();
 

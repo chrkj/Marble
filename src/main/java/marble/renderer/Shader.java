@@ -9,6 +9,8 @@ import java.nio.FloatBuffer;
 import java.nio.file.NoSuchFileException;
 
 import marble.editor.ConsolePanel;
+import marble.entity.components.light.PointLight;
+import marble.entity.components.light.SpotLight;
 import org.joml.*;
 
 import org.lwjgl.BufferUtils;
@@ -224,9 +226,32 @@ public class Shader {
                 (float) -(Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.sin(Math.toRadians(light.getEntity().transform.rotation.x))),
                 (float) (Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.cos(Math.toRadians(light.getEntity().transform.rotation.x))),
                 0).mul(viewMatrix);
-        setUniform4f("uDirectionalLight.color", light.getColor());
-        setUniform3f("uDirectionalLight.direction", dir.x, dir.y, dir.z);
-        setUniform1f("uDirectionalLight.intensity", light.getIntensity());
+        setUniform4f("uDirectionalLight[" + i + "].color", light.getColor());
+        setUniform3f("uDirectionalLight[" + i + "].direction", dir.x, dir.y, dir.z);
+        setUniform1f("uDirectionalLight[" + i + "].intensity", light.getIntensity());
+    }
+
+    public void setUniformPointLight(PointLight light, Matrix4f viewMatrix, int i)
+    {
+        var position = new Vector4f(light.getEntity().transform.position, 1).mul(viewMatrix);
+        setUniform4f("uPointLight[" + i + "].color", light.getColor());
+        setUniform3f("uPointLight[" + i + "].position", new Vector3f(position.x, position.y, position.z));
+        setUniform1f("uPointLight[" + i + "].intensity", light.getIntensity());
+        setUniform1f("uPointLight[" + i + "].att.constant", light.constant);
+        setUniform1f("uPointLight[" + i + "].att.linear", light.linear);
+        setUniform1f("uPointLight[" + i + "].att.exponent", light.exponent);
+    }
+
+    public void SetUniformSpotLight(SpotLight light, Matrix4f viewMatrix, int i)
+    {
+        setUniform4f("uSpotLight[" + i + "].pl.color", light.getColor());
+        setUniform3f("uSpotLight[" + i + "].pl.position", light.getEntity().transform.position);
+        setUniform1f("uSpotLight[" + i + "].pl.intensity", light.getIntensity());
+        setUniform1f("uSpotLight[" + i + "].pl.att.constant", light.getPointLight().constant);
+        setUniform1f("uSpotLight[" + i + "].pl.att.linear", light.getPointLight().linear);
+        setUniform1f("uSpotLight[" + i + "].pl.att.exponent", light.getPointLight().exponent);
+        setUniform3f("uSpotLight[" + i + "].conedir", light.getConeDirection());
+        setUniform1f("uSpotLight[" + i + "].cutoff", light.getCutOff());
     }
 
     public void setUniformMaterial(Material material)
