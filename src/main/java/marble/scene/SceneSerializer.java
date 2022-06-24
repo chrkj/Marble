@@ -14,12 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
-import marble.entity.Material;
-import marble.entity.components.Component;
-import marble.entity.components.Mesh;
-import marble.entity.components.camera.Camera;
-import marble.entity.components.light.*;
-import marble.util.Loader;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.yaml.snakeyaml.Yaml;
@@ -28,24 +22,50 @@ import marble.editor.ConsolePanel;
 import marble.entity.Entity;
 import marble.entity.Transform;
 import marble.entity.components.camera.PerspectiveCamera;
+import marble.entity.Material;
+import marble.entity.components.Mesh;
+import marble.entity.components.camera.Camera;
+import marble.entity.components.light.*;
+import marble.util.Loader;
 
 public class SceneSerializer {
 
-    private final ObjectMapper mapper;
+    private SceneSerializer() { }
 
-    public SceneSerializer()
+    public static Scene copyScene(Scene scene)
     {
-        mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
                 .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
         mapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+
+        Scene newScene = null;
+        var File = new File("assets/scenes/temp/tmp.marble");
+        try
+        {
+            mapper.writeValue(File, scene);
+            newScene = deSerialize(File);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return newScene;
     }
 
-    public void serialize(Scene scene)
+    public static void serialize(Scene scene)
     {
+        var mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+        mapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
+
         try
         {
             mapper.writeValue(new File("assets/scenes/" + scene.getSaveName() + ".marble"), scene);
@@ -58,7 +78,7 @@ public class SceneSerializer {
         }
     }
 
-    public Scene deSerialize(String filePath)
+    public static Scene deSerialize(String filePath)
     {
         Scene deserializedScene = null;
         try
@@ -98,7 +118,45 @@ public class SceneSerializer {
         return deserializedScene;
     }
 
-    private void recursiveChildCall(List<Map> childEntities, Entity parent)
+    public static Scene deSerialize(File file)
+    {
+        Scene deserializedScene = null;
+        try
+        {
+            InputStream io = new FileInputStream(file);
+            Yaml yaml = new Yaml();
+            Map<String, Object> data = yaml.load(io);
+
+            String sceneName = extractString(data, "name");
+            float specularPower = extractFloat(data, "specularPower");
+            Vector3f ambientLight = extractVec3f(data, "ambientLight");
+            deserializedScene = new Scene(sceneName, specularPower, ambientLight);
+
+            LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
+            for (Map entity : entities.values())
+            {
+                Entity newEntity = new Entity(extractInt(entity, "uuid"));
+
+                newEntity.name = extractString(entity,"name");
+                newEntity.transform = loadTransform(extractMap(entity,"transform"));
+
+                var components = extractMap(entity, "components");
+                loadComponents(newEntity, components);
+
+                List children = extractList(entity, "children");
+                if (children.size() > 0)
+                    recursiveChildCall(children, newEntity);
+
+                deserializedScene.addEntityToScene(newEntity);
+            }
+        }
+        catch (IOException e)
+        {
+        }
+        return deserializedScene;
+    }
+
+    private static void recursiveChildCall(List<Map> childEntities, Entity parent)
     {
         for (Map entity : childEntities)
         {
@@ -117,7 +175,7 @@ public class SceneSerializer {
         }
     }
 
-    private void loadComponents(Entity newEntity, Map components)
+    private static void loadComponents(Entity newEntity, Map components)
     {
         for (Object key : components.keySet())
         {
@@ -134,7 +192,7 @@ public class SceneSerializer {
         }
     }
 
-    private PointLight loadPointLight(Map componentData)
+    private static PointLight loadPointLight(Map componentData)
     {
         PointLight pl = (PointLight) LightFactory.getLight(LightType.POINT);
         pl.setIntensity(extractFloat(componentData, "intensity"));
@@ -145,7 +203,7 @@ public class SceneSerializer {
         return pl;
     }
 
-    private SpotLight loadSpotLight(Map componentData)
+    private static SpotLight loadSpotLight(Map componentData)
     {
         SpotLight sp = (SpotLight) LightFactory.getLight(LightType.SPOT);
         sp.setIntensity(extractFloat(componentData, "intensity"));
@@ -156,7 +214,7 @@ public class SceneSerializer {
         return sp;
     }
 
-    private DirectionalLight loadDirectionalLight(Map componentData)
+    private static DirectionalLight loadDirectionalLight(Map componentData)
     {
         DirectionalLight dl = (DirectionalLight) LightFactory.getLight(LightType.DIRECTIONAL);
         dl.setIntensity(extractFloat(componentData, "intensity"));
@@ -164,7 +222,7 @@ public class SceneSerializer {
         return dl;
     }
 
-    private Mesh loadMesh(Map componentData)
+    private static Mesh loadMesh(Map componentData)
     {
         String filePath = (String) componentData.get("filePath");
         Mesh mesh = Loader.loadMeshObj(filePath);
@@ -178,7 +236,7 @@ public class SceneSerializer {
         return mesh;
     }
 
-    private Camera loadPerspectiveCamera(Map componentsData)
+    private static Camera loadPerspectiveCamera(Map componentsData)
     {
         PerspectiveCamera camera = new PerspectiveCamera();
         camera.near = extractFloat(componentsData, "near");
@@ -187,7 +245,7 @@ public class SceneSerializer {
         return camera;
     }
 
-    private Transform loadTransform(Map transformData)
+    private static Transform loadTransform(Map transformData)
     {
         Map posMap = (Map) transformData.get("position");
         double[] position = { (double) posMap.get("x"), (double) posMap.get("y"), (double) posMap.get("z") };
@@ -201,7 +259,7 @@ public class SceneSerializer {
                 new Vector3f((float) scale[0], (float) scale[1], (float) scale[2]));
     }
 
-    private Vector3f extractVec3f(Map data, String key)
+    private static Vector3f extractVec3f(Map data, String key)
     {
         Map<String, Object> comp = (Map<String, Object>) data.get(key);
         double x = (double) comp.get("x");
@@ -210,7 +268,7 @@ public class SceneSerializer {
         return new Vector3f((float) x, (float) y, (float) z);
     }
 
-    private Vector4f extractVec4f(Map data, String key)
+    private static Vector4f extractVec4f(Map data, String key)
     {
         Map<String, Object> comp = (Map<String, Object>) data.get(key);
         double x = (double) comp.get("x");
@@ -220,28 +278,28 @@ public class SceneSerializer {
         return new Vector4f((float) x, (float) y, (float) z, (float) w);
     }
 
-    private String extractString(Map data, String key)
+    private static String extractString(Map data, String key)
     {
         return (String) data.get(key);
     }
 
-    private float extractFloat(Map data, String key)
+    private static float extractFloat(Map data, String key)
     {
         double dValue = (double) data.get(key);
         return (float) dValue;
     }
 
-    private int extractInt(Map data, String key)
+    private static int extractInt(Map data, String key)
     {
         return (int) data.get(key);
     }
 
-    private List extractList(Map data, String key)
+    private static List extractList(Map data, String key)
     {
         return (List) data.get(key);
     }
 
-    private LinkedHashMap extractMap(Map data, String key)
+    private static LinkedHashMap extractMap(Map data, String key)
     {
         return (LinkedHashMap) data.get(key);
     }

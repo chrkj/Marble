@@ -5,6 +5,7 @@ import imgui.ImGuiStyle;
 import imgui.ImGuiWindowClass;
 import imgui.flag.ImGuiWindowFlags;
 
+import marble.scene.SceneSerializer;
 import marble.util.Loader;
 import marble.entity.components.Texture;
 
@@ -39,6 +40,20 @@ public class ToolPanel implements Panel {
         if(ImGui.imageButton(icon.getId(), buttonSize, buttonSize))
         {
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
+            if (EditorLayer.sceneRunning)
+            {
+                ConsolePanel.log("OnSceneRun");
+                SceneHierarchyPanel.setSelectedEntity(null);
+                EditorLayer.editorScene = EditorLayer.currentScene;
+                EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
+                EditorLayer.currentScene = EditorLayer.runtimeScene;
+            }
+            else
+            {
+                ConsolePanel.log("OnSceneStop");
+                SceneHierarchyPanel.setSelectedEntity(null);
+                EditorLayer.currentScene = EditorLayer.editorScene;
+            }
         }
 
         ImGui.end();

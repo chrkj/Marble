@@ -8,9 +8,9 @@ import marble.gui.MarbleGui;
 
 public class Transform {
 
-    public Vector3f scale;
-    public Vector3f position;
-    public Vector3f rotation;
+    private Vector3f scale;
+    private Vector3f position;
+    private Vector3f rotation;
 
     public Transform()
     {
@@ -71,4 +71,35 @@ public class Transform {
             ImGui.treePop();
         }
     }
+
+    public Vector3f getScale()
+    {
+        return scale;
+    }
+
+    public void setScale(Vector3f scale)
+    {
+        this.scale = scale;
+    }
+
+    public Vector3f getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(Vector3f position)
+    {
+        this.position = position;
+    }
+
+    public Vector3f getRotation()
+    {
+        return rotation;
+    }
+
+    public void setRotation(Vector3f rotation)
+    {
+        this.rotation = rotation;
+    }
+
 }

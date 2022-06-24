@@ -28,8 +28,8 @@ public class PerspectiveCamera extends Camera {
     @Override
     public Matrix4f getViewMatrix()
     {
-        Vector3f pos = entity.transform.position;
-        Vector3f rot = entity.transform.rotation;
+        Vector3f pos = entity.transform.getPosition();
+        Vector3f rot = entity.transform.getRotation();
 
         viewMatrix.identity();
         viewMatrix.rotate((float)Math.toRadians(rot.x), new Vector3f(1, 0, 0))

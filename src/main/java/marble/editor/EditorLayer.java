@@ -29,11 +29,10 @@ public class EditorLayer {
     public static ImVec2 editorViewportSize = new ImVec2();
 
     public static boolean sceneRunning = false;
-    public static Scene currentScene, runtimeScene;
+    public static Scene currentScene, runtimeScene, editorScene;
 
     public static boolean inputFlag;
     private final PanelManager panelManager;
-    private final SceneSerializer sceneSerializer;
 
     private final ImVec2[] editorViewportBounds = { new ImVec2(), new ImVec2() };
 
@@ -49,8 +48,6 @@ public class EditorLayer {
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
-        sceneSerializer = new SceneSerializer();
-
         panelManager = new PanelManager();
         panelManager.addPanel(new ToolPanel());
         panelManager.addPanel(new ConsolePanel());
@@ -59,7 +56,7 @@ public class EditorLayer {
         panelManager.addPanel(new ContentBrowserPanel());
         panelManager.addPanel(new EntityInspectorPanel());
 
-        currentScene = sceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
+        currentScene = SceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
         currentScene.init();
         currentScene.start();
 
@@ -80,7 +77,8 @@ public class EditorLayer {
     public void onSceneUpdate(float dt)
     {
         MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender
-        currentScene.onSceneUpdate(dt);
+        if (sceneRunning)
+            currentScene.onSceneUpdate(dt);
     }
 
     public void onSceneRender()
@@ -221,7 +219,7 @@ public class EditorLayer {
         if (ImGui.beginMenu("File"))
         {
             // TODO: Shortcuts not handled
-            if (ImGui.menuItem("Save scene", "ctrl-s")) sceneSerializer.serialize(currentScene);
+            if (ImGui.menuItem("Save scene", "ctrl-s")) SceneSerializer.serialize(currentScene);
             if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialogPanel.open();
             if (ImGui.menuItem("Exit"))                             glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
@@ -235,7 +233,7 @@ public class EditorLayer {
 
     private void openScene(String filePath)
     {
-        Scene loadedScene = sceneSerializer.deSerialize(filePath);
+        Scene loadedScene = SceneSerializer.deSerialize(filePath);
         if (loadedScene == null)
             return;
         SceneHierarchyPanel.setSelectedEntity(null);

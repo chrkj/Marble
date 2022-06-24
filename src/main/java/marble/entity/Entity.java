@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -21,11 +20,11 @@ public class Entity {
 
     public String name;
     public Transform transform;
+    public ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private int uuid;
     private transient Entity parent;
-    public ScriptableComponent script;
     private final List<Entity> children = new ArrayList<>();
 
     public Entity()

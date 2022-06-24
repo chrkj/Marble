@@ -18,6 +18,7 @@ public class MyScript extends ScriptableComponent {
         {
             ConsolePanel.log(entity.name);
             entity.setScale(2,2,2);
+            entity.transform.setPosition(10,1,10);
             oneShot = false;
         }
     }

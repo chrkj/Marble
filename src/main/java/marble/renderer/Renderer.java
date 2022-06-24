@@ -61,7 +61,7 @@ public class Renderer {
             else
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixEditor());
 
-            shader.setUniformMat4("uWorld", camera.getWorldMatrix(mesh.getEntity().transform.position, mesh.getEntity().transform.rotation, mesh.getEntity().transform.scale));
+            shader.setUniformMat4("uWorld", camera.getWorldMatrix(mesh.getEntity().transform.getPosition(), mesh.getEntity().transform.getRotation(), mesh.getEntity().transform.getScale()));
 
             mesh.render();
             shader.unbind();

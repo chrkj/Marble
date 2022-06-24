@@ -81,9 +81,9 @@ public class EntityInspectorPanel implements Panel {
         boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
         if (nodeOpen)
         {
-            MarbleGui.vec3Controller("Position", tc.position);
-            MarbleGui.vec3Controller("Rotation", tc.rotation);
-            MarbleGui.vec3Controller("Scale", tc.scale);
+            MarbleGui.vec3Controller("Position", tc.getPosition());
+            MarbleGui.vec3Controller("Rotation", tc.getRotation());
+            MarbleGui.vec3Controller("Scale", tc.getScale());
             ImGui.treePop();
         }
     }
