@@ -1,5 +1,6 @@
-package marble.renderer;
+package marble.renderer.opengl;
 
+import marble.renderer.Indexbuffer;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;

@@ -1,7 +1,9 @@
 package marble.renderer;
 
-import java.util.ArrayList;
+import marble.renderer.opengl.OpenGLFramebuffer;
+
 import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Framebuffer {
 
@@ -46,8 +48,8 @@ public abstract class Framebuffer {
         public int width = 0;
         public int height = 0;
 
-        protected TextureFormat depthFormat = TextureFormat.NONE;
-        protected List<TextureFormat> textureFormats = new ArrayList<>();
+        private TextureFormat depthFormat = TextureFormat.NONE;
+        private List<TextureFormat> textureFormats = new ArrayList<>();
 
         public FramebufferSpecification(TextureFormat... formats)
         {
@@ -59,6 +61,17 @@ public abstract class Framebuffer {
                     textureFormats.add(textureFormat);
             }
         }
+
+        public TextureFormat getDepthFormat()
+        {
+            return depthFormat;
+        }
+
+        public List<TextureFormat> getTextureFormats()
+        {
+            return textureFormats;
+        }
+
     }
 
 }

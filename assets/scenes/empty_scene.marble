@@ -26,7 +26,7 @@ entities:
           shader:
             filepath: "assets/shaders/default.glsl"
           texture: null
-          reflectance: 0.0
+          reflectance: 1.0
           ambient:
             x: 0.0
             "y": 0.0
@@ -193,17 +193,17 @@ entities:
     name: "Spot Light"
     transform:
       scale:
-        x: 0.9997188
-        "y": 0.9998424
-        z: 1.0000002
+        x: 0.99968815
+        "y": 0.999814
+        z: 0.99999434
       position:
         x: -44.603413
         "y": -19.395222
         z: 37.43671
       rotation:
-        x: 108.52991
-        "y": 10.05277
-        z: -96.52437
+        x: 107.312965
+        "y": -6.9812803
+        z: -101.830414
     components:
       marble.entity.components.light.SpotLight:
         color:

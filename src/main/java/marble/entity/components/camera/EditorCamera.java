@@ -1,15 +1,15 @@
 package marble.entity.components.camera;
 
-import marble.Application;
-import marble.listeners.KeyListener;
-import marble.listeners.MouseListener;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import marble.editor.EditorLayer;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+
+import marble.Application;
+import marble.listeners.KeyListener;
+import marble.listeners.MouseListener;
+import marble.editor.EditorLayer;
 
 public class EditorCamera extends Camera {
 

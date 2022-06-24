@@ -1,4 +1,4 @@
-package marble.renderer;
+package marble.renderer.opengl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL42.glTexStorage2D;
 import static org.lwjgl.opengl.GL45.glCreateFramebuffers;
 
 import marble.editor.ConsolePanel;
+import marble.renderer.Framebuffer;
 
 public class OpenGLFramebuffer extends Framebuffer {
 
@@ -75,18 +76,18 @@ public class OpenGLFramebuffer extends Framebuffer {
         framebufferID = glCreateFramebuffers();
         bind();
 
-        createColorTextures(specification.textureFormats.size(), colorAttachmentIDs);
-        for (int i = 0; i < specification.textureFormats.size(); i++)
+        createColorTextures(specification.getTextureFormats().size(), colorAttachmentIDs);
+        for (int i = 0; i < specification.getTextureFormats().size(); i++)
         {
             glBindTexture(GL_TEXTURE_2D, colorAttachmentIDs.get(i));
-            switch (specification.textureFormats.get(i))
+            switch (specification.getTextureFormats().get(i))
             {
                 case RGB8 ->        attachColorTexture(colorAttachmentIDs.get(i), GL_RGB, GL_RGB, i);
                 case RED_INTEGER -> attachColorTexture(colorAttachmentIDs.get(i), GL_R32I, GL_RED_INTEGER, i);
             }
         }
 
-        if (specification.depthFormat != TextureFormat.NONE)
+        if (specification.getDepthFormat() != TextureFormat.NONE)
             attachDepthTexture(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
 
         int[] drawBuffers = new int[colorAttachmentIDs.size()];

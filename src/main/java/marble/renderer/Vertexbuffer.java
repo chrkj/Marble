@@ -1,5 +1,7 @@
 package marble.renderer;
 
+import marble.renderer.opengl.OpenGLVertexbuffer;
+
 public abstract class Vertexbuffer {
 
     public static Vertexbuffer create(float[] data, int index, int size, int type)
