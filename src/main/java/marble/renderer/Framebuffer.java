@@ -12,7 +12,10 @@ public abstract class Framebuffer {
     protected FramebufferSpecification specification;
     protected List<Integer> colorAttachmentIDs = new ArrayList<>();
 
-    public enum TextureFormat { NONE, RGB8, RED_INTEGER, DEPTH24_STENCIL8 }
+    public enum TextureFormat
+    {
+        NONE, RGB8, RED_INTEGER, DEPTH_COMPONENT32F, DEPTH_COMPONENT24, DEPTH_COMPONENT16, DEPTH32F_STENCIL8, DEPTH24_STENCIL8, STENCIL_INDEX8
+    }
 
     public static Framebuffer create(FramebufferSpecification specification)
     {
@@ -28,8 +31,12 @@ public abstract class Framebuffer {
     {
         switch (format)
         {
-            case DEPTH24_STENCIL8:
-                return true;
+            case DEPTH_COMPONENT32F -> { return true; }
+            case DEPTH_COMPONENT24  -> { return true; }
+            case DEPTH_COMPONENT16  -> { return true; }
+            case DEPTH32F_STENCIL8  -> { return true; }
+            case DEPTH24_STENCIL8   -> { return true; }
+            case STENCIL_INDEX8     -> { return true; }
         }
         return false;
     }

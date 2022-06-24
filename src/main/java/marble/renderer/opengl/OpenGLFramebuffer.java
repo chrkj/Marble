@@ -88,7 +88,18 @@ public class OpenGLFramebuffer extends Framebuffer {
         }
 
         if (specification.getDepthFormat() != TextureFormat.NONE)
-            attachDepthTexture(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
+        {
+            switch (specification.getDepthFormat())
+            {
+                case DEPTH_COMPONENT32F -> attachDepthTexture(GL_DEPTH_COMPONENT32F, GL_DEPTH_STENCIL_ATTACHMENT);
+                case DEPTH_COMPONENT24 -> attachDepthTexture(GL_DEPTH_COMPONENT24, GL_DEPTH_STENCIL_ATTACHMENT);
+                case DEPTH_COMPONENT16 -> attachDepthTexture(GL_DEPTH_COMPONENT16, GL_DEPTH_STENCIL_ATTACHMENT);
+                case DEPTH32F_STENCIL8 -> attachDepthTexture(GL_DEPTH32F_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
+                case DEPTH24_STENCIL8 -> attachDepthTexture(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
+                case STENCIL_INDEX8 -> attachDepthTexture(GL_STENCIL_INDEX8, GL_DEPTH_STENCIL_ATTACHMENT);
+            }
+
+        }
 
         int[] drawBuffers = new int[colorAttachmentIDs.size()];
         for (int i = 0; i < colorAttachmentIDs.size(); i++)

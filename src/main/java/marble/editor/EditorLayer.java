@@ -45,7 +45,7 @@ public class EditorLayer {
         gameViewportFb = Framebuffer.create(gameFbSpec);
 
         var editorFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.RED_INTEGER, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
-        editorFbSpec.width = 1280;
+
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
