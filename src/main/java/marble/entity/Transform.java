@@ -46,6 +46,13 @@ public class Transform {
         rotation.z = z;
     }
 
+    public void incrementRotation(float x, float y, float z)
+    {
+        rotation.x += x;
+        rotation.y += y;
+        rotation.z += z;
+    }
+
     public void setPosition(float x, float y, float z)
     {
         position.x = x;

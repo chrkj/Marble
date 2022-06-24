@@ -3,7 +3,7 @@ import marble.entity.components.ScriptableComponent;
 
 public class MyScript extends ScriptableComponent {
 
-    private boolean oneShot = true;
+    private int speed = 50;
 
     @Override
     public void onInit()
@@ -14,18 +14,12 @@ public class MyScript extends ScriptableComponent {
     @Override
     public void onUpdate(float dt)
     {
-        if (oneShot)
-        {
-            ConsolePanel.log(entity.name);
-            entity.setScale(2,2,2);
-            entity.transform.setPosition(10,1,10);
-            oneShot = false;
-        }
+        entity.transform.incrementRotation(dt * speed, dt * speed, dt * speed);
     }
 
     @Override
     public void onFixedUpdate(float dt)
     {
-
+        // NOT IMPLEMENTED
     }
 }
