@@ -4,7 +4,7 @@ import marble.entity.Entity;
 
 public abstract class ScriptableComponent {
 
-    public transient Entity entity;
+    public Entity entity;
 
     public abstract void onInit();
     public abstract void onUpdate(float dt);

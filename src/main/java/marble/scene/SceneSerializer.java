@@ -140,6 +140,9 @@ public class SceneSerializer {
                 newEntity.name = extractString(entity,"name");
                 newEntity.transform = loadTransform(extractMap(entity,"transform"));
 
+                if (loadScript(entity) != null)
+                    newEntity.setScript(loadScript(entity));
+
                 var components = extractMap(entity, "components");
                 loadComponents(newEntity, components);
 
@@ -166,6 +169,9 @@ public class SceneSerializer {
             newEntity.name = extractString(entity,"name");
             newEntity.transform = loadTransform(extractMap(entity,"transform"));
 
+            if (loadScript(entity) != null)
+                newEntity.setScript(loadScript(entity));
+
             var components = extractMap(entity, "components");
             loadComponents(newEntity, components);
 
@@ -190,6 +196,11 @@ public class SceneSerializer {
                 case "marble.entity.components.light.SpotLight"          -> newEntity.addComponent(loadSpotLight(componentData));
             }
         }
+    }
+
+    private static String loadScript(Map componentData)
+    {
+       return extractString(componentData, "scriptName");
     }
 
     private static PointLight loadPointLight(Map componentData)

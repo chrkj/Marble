@@ -20,7 +20,8 @@ public class Entity {
 
     public String name;
     public Transform transform;
-    public ScriptableComponent script;
+    private String scriptName;
+    public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private int uuid;
@@ -200,6 +201,7 @@ public class Entity {
 
             script = (ScriptableComponent) javaDemoClass.getDeclaredConstructor().newInstance();
             script.entity = this;
+            this.scriptName = name;
             ConsolePanel.log("Script added to: " + this.name);
 
         }

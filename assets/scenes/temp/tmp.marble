@@ -20,8 +20,7 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    script:
-      oneShot: true
+    scriptName: "MyScript"
     components:
       marble.entity.components.Mesh:
         material:
@@ -61,7 +60,7 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-      script: null
+      scriptName: null
       components: {}
       uuid: 2126454244
       children:
@@ -79,7 +78,7 @@ entities:
             x: 0.0
             "y": 0.0
             z: 0.0
-        script: null
+        scriptName: null
         components: {}
         uuid: 1149871611
         children: []
@@ -97,7 +96,7 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-      script: null
+      scriptName: null
       components: {}
       uuid: 1395577415
       children: []
@@ -116,7 +115,7 @@ entities:
         x: -38.05398
         "y": -0.0
         z: 0.0
-    script: null
+    scriptName: null
     components:
       marble.entity.components.light.PointLight:
         color:
@@ -145,7 +144,7 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    script: null
+    scriptName: null
     components:
       marble.entity.components.Mesh:
         material:
@@ -186,7 +185,7 @@ entities:
         x: -19.4327
         "y": 52.99908
         z: -0.0034083456
-    script: null
+    scriptName: null
     components:
       marble.entity.components.light.DirectionalLight:
         color:
@@ -212,7 +211,7 @@ entities:
         x: 107.312965
         "y": -6.9812803
         z: -101.830414
-    script: null
+    scriptName: null
     components:
       marble.entity.components.light.SpotLight:
         color:
@@ -249,7 +248,7 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    script: null
+    scriptName: null
     components:
       marble.entity.components.camera.PerspectiveCamera:
         near: 0.3
