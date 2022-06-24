@@ -26,20 +26,14 @@ public class EntityInspectorPanel implements Panel {
             selectedEntity.name = MarbleGui.inputText("name", selectedEntity.name);
 
             // Entity transform field
-            var tc = selectedEntity.transform;
-            int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-            boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
-            if (nodeOpen)
-            {
-                MarbleGui.vec3Controller("Position", tc.position);
-                MarbleGui.vec3Controller("Rotation", tc.rotation);
-                MarbleGui.vec3Controller("Scale", tc.scale);
-                ImGui.treePop();
-            }
+            renderTransformInspector(selectedEntity);
 
             // Entity components fields
             for (Component component : selectedEntity.components.values())
                 component.renderEntityInspector();
+
+            // Script component fields
+            renderScriptInspector(selectedEntity);
 
             // Entity add components fields
             ImGui.separator();
@@ -47,8 +41,9 @@ public class EntityInspectorPanel implements Panel {
                 ImGui.openPopup("add_component_popup");
             if (ImGui.beginPopup("add_component_popup"))
             {
-                if (ImGui.selectable("Mesh")) {}
-                if (ImGui.selectable("Camera")) {}
+                if (ImGui.selectable("Mesh"))              ConsolePanel.log("NOT IMPLEMENTED");
+                if (ImGui.selectable("Script"))            selectedEntity.setScript("MyScript");
+                if (ImGui.selectable("Camera"))            ConsolePanel.log("NOT IMPLEMENTED");
                 if (ImGui.selectable("Directional light")) addDirLight();
                 if (ImGui.selectable("Spot light"))        addSpotLight();
                 if (ImGui.selectable("Point light"))       addPointLight();
@@ -77,5 +72,33 @@ public class EntityInspectorPanel implements Panel {
         var dl = LightFactory.getLight(LightType.DIRECTIONAL);
         SceneHierarchyPanel.getSelectedEntity().addComponent(dl);
         EditorLayer.currentScene.getRegistry().register(dl);
+    }
+
+    private void renderTransformInspector(Entity selectedEntity)
+    {
+        var tc = selectedEntity.transform;
+        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+        boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
+        if (nodeOpen)
+        {
+            MarbleGui.vec3Controller("Position", tc.position);
+            MarbleGui.vec3Controller("Rotation", tc.rotation);
+            MarbleGui.vec3Controller("Scale", tc.scale);
+            ImGui.treePop();
+        }
+    }
+
+    private void renderScriptInspector(Entity selectedEntity)
+    {
+        if (selectedEntity.script != null)
+        {
+            int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
+            boolean nodeOpen = ImGui.treeNodeEx("Script", nodeFlags);
+            if (nodeOpen) {
+                MarbleGui.inputText("Script", selectedEntity.script.getClass().getName() + ".java");
+                if (ImGui.button("Recompile")) selectedEntity.setScript(selectedEntity.script.getClass().toString());
+                ImGui.treePop();
+            }
+        }
     }
 }
