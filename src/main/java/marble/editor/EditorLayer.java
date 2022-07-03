@@ -9,7 +9,6 @@ import imgui.flag.ImGuiWindowFlags;
 
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
@@ -44,7 +43,7 @@ public class EditorLayer {
         gameViewportFb = Framebuffer.create(gameFbSpec);
 
         var editorFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.RED_INTEGER, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
-
+        editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
@@ -77,8 +76,7 @@ public class EditorLayer {
     public void onSceneUpdate(float dt)
     {
         MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender
-        if (sceneRunning)
-            currentScene.onSceneUpdate(dt);
+        currentScene.onSceneUpdate(dt);
     }
 
     public void onSceneRender()
@@ -94,7 +92,7 @@ public class EditorLayer {
     private void handleWindowResize(ImVec2 viewportSize, Framebuffer framebuffer)
     {
         ImVec2 view = ImGui.getContentRegionAvail();
-        if ( view.x != viewportSize.x || view.y != viewportSize.y )
+        if (view.x != viewportSize.x || view.y != viewportSize.y)
         {
             // Window too small or collapsed
             if (view.x == 0 || view.y == 0)

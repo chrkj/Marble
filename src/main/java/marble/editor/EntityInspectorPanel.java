@@ -3,11 +3,11 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.gui.MarbleGui;
 import marble.entity.Entity;
+import marble.entity.components.Component;
 import marble.entity.components.light.LightFactory;
 import marble.entity.components.light.LightType;
-import marble.gui.MarbleGui;
-import marble.entity.components.Component;
 
 public class EntityInspectorPanel implements Panel {
 

@@ -50,7 +50,6 @@ public class EditorCamera extends Camera {
 
     public void onUpdate(float dt)
     {
-
         if (EditorLayer.inputFlag)
         {
             float camSpeed = 10 * dt;

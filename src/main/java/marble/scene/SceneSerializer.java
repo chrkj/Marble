@@ -28,6 +28,7 @@ import marble.entity.components.camera.Camera;
 import marble.entity.components.light.*;
 import marble.util.Loader;
 
+@SuppressWarnings("rawtypes")
 public class SceneSerializer {
 
     private SceneSerializer() { }
@@ -155,6 +156,7 @@ public class SceneSerializer {
         }
         catch (IOException e)
         {
+            ConsolePanel.log("Failed to deserialize scene: " + file.getAbsolutePath());
         }
         return deserializedScene;
     }
@@ -251,8 +253,8 @@ public class SceneSerializer {
     {
         PerspectiveCamera camera = new PerspectiveCamera();
         camera.near = extractFloat(componentsData, "near");
-        camera.far =  extractFloat(componentsData, "far");;
-        camera.fov =  extractFloat(componentsData, "fov");;
+        camera.far =  extractFloat(componentsData, "far");
+        camera.fov =  extractFloat(componentsData, "fov");
         return camera;
     }
 

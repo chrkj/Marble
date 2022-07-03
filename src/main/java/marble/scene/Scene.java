@@ -58,10 +58,11 @@ public class Scene {
 
     public void onSceneUpdate(float dt)
     {
+        editorCamera.onUpdate(dt);
+        if (!EditorLayer.sceneRunning) return;
         for (Entity entity : entities.values())
             entity.update(dt);
         update(dt);
-        editorCamera.onUpdate(dt);
     }
 
     public void onSceneRender()

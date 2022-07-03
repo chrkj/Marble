@@ -1,20 +1,21 @@
 package marble.entity;
 
+import org.joml.Matrix4f;
+
+import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.*;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 
 import marble.editor.ConsolePanel;
 import marble.editor.EditorLayer;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
-
-import javax.tools.*;
 
 public class Entity {
 
@@ -87,7 +88,6 @@ public class Entity {
     {
         components.put(component.getClass(), component);
         component.setEntity(this);
-
         return this;
     }
 
@@ -149,6 +149,15 @@ public class Entity {
         return uuid;
     }
 
+    public Matrix4f getWorldMatrix()
+    {
+        return new Matrix4f().translation(transform.getPosition()).
+                rotateX((float)Math.toRadians(transform.getRotation().x)).
+                rotateY((float)Math.toRadians(transform.getRotation().y)).
+                rotateZ((float)Math.toRadians(transform.getRotation().z)).
+                scale(transform.getScale().x, transform.getScale().y, transform.getScale().z);
+    }
+
     public void setScript(String name)
     {
         try
@@ -161,7 +170,7 @@ public class Entity {
             Path javaSourceFile = Paths.get(temp.normalize().toAbsolutePath().toString(), filename + ".java");
 
             // Definition of the files to compile
-            File[] files1 = {javaSourceFile.toFile()};
+            File[] file = { javaSourceFile.toFile() };
 
             // Get the compiler
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -170,7 +179,7 @@ public class Entity {
             StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
 
             // Create a compilation unit (files)
-            Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(files1));
+            Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(file));
 
             // A feedback object (diagnostic) to get errors
             DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
@@ -190,7 +199,7 @@ public class Entity {
 
             // Printing of any compile problems
             for (Diagnostic diagnostic : diagnostics.getDiagnostics())
-                System.out.format("Error on line %d in %s%n", diagnostic.getLineNumber(), diagnostic.getSource());
+                ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
 
             // Close the compile resources
             fileManager.close();

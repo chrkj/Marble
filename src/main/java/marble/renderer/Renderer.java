@@ -8,15 +8,11 @@ import marble.util.Time;
 import marble.entity.Material;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
-import marble.entity.components.light.Light;
 import marble.entity.components.camera.Camera;
-import marble.entity.components.light.DirectionalLight;
-import marble.entity.components.light.PointLight;
-import marble.entity.components.light.SpotLight;
 
 public class Renderer {
 
-    public enum ViewportId { EDITOR, GAME };
+    public enum ViewportId { EDITOR, GAME }
 
     public void clear()
     {
@@ -61,7 +57,7 @@ public class Renderer {
             else
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixEditor());
 
-            shader.setUniformMat4("uWorld", camera.getWorldMatrix(mesh.getEntity().transform.getPosition(), mesh.getEntity().transform.getRotation(), mesh.getEntity().transform.getScale()));
+            shader.setUniformMat4("uWorld", mesh.getEntity().getWorldMatrix());
 
             mesh.render();
             shader.unbind();

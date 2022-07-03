@@ -1,10 +1,7 @@
 package marble.entity;
 
-import imgui.ImGui;
-import imgui.flag.ImGuiTreeNodeFlags;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
-import marble.gui.MarbleGui;
 
 public class Transform {
 
@@ -65,18 +62,6 @@ public class Transform {
         this.scale.x = x;
         this.scale.y = y;
         this.scale.z = z;
-    }
-
-    protected void setupInspector()
-    {
-        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
-        if (nodeOpen) {
-            MarbleGui.vec3Controller("Position", position);
-            MarbleGui.vec3Controller("Rotation", rotation);
-            MarbleGui.vec3Controller("Scale", scale);
-            ImGui.treePop();
-        }
     }
 
     public Vector3f getScale()
