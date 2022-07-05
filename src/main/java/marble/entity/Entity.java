@@ -21,11 +21,11 @@ public class Entity {
 
     public String name;
     public Transform transform;
-    private String scriptName;
     public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
-
+    
     private int uuid;
+    private String scriptName;
     private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
 
@@ -84,11 +84,10 @@ public class Entity {
         EditorLayer.currentScene.getRegistry().remove(component);
     }
 
-    public Entity addComponent(Component component)
+    public void addComponent(Component component)
     {
         components.put(component.getClass(), component);
         component.setEntity(this);
-        return this;
     }
 
     public boolean hasComponent(Class<? extends Component> componentClass)
@@ -130,18 +129,16 @@ public class Entity {
         return children;
     }
 
-    public Entity setParent(Entity entity)
+    public void setParent(Entity entity)
     {
         this.parent = entity;
         entity.children.add(this);
-        return this;
     }
 
-    public Entity setChild(Entity entity)
+    public void setChild(Entity entity)
     {
         this.children.add(entity);
         entity.parent = this;
-        return this;
     }
 
     public int getUuid()
@@ -162,29 +159,18 @@ public class Entity {
     {
         try
         {
-            final String targetDir = "Runtime/src";
             final String filename = "MyScript";
+            final String targetDir = "Runtime/src";
 
             Path temp = Paths.get(System.getProperty("user.dir"), targetDir);
-
             Path javaSourceFile = Paths.get(temp.normalize().toAbsolutePath().toString(), filename + ".java");
-
-            // Definition of the files to compile
             File[] file = { javaSourceFile.toFile() };
 
-            // Get the compiler
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
-            // Get the file system manager of the compiler
             StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
-
-            // Create a compilation unit (files)
             Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(file));
-
-            // A feedback object (diagnostic) to get errors
             DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
 
-            // Compilation unit can be created and called only once
             JavaCompiler.CompilationTask task = compiler.getTask(
                     null,
                     fileManager,
@@ -193,15 +179,10 @@ public class Entity {
                     null,
                     compilationUnits
             );
-
-            // The compile task is called
             task.call();
 
-            // Printing of any compile problems
             for (Diagnostic diagnostic : diagnostics.getDiagnostics())
                 ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
-
-            // Close the compile resources
             fileManager.close();
 
             ClassLoader classLoader = Entity.class.getClassLoader();
@@ -212,7 +193,6 @@ public class Entity {
             script.entity = this;
             this.scriptName = name;
             ConsolePanel.log("Script added to: " + this.name);
-
         }
         catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
         {
