@@ -16,16 +16,6 @@ public class PerspectiveCamera extends Camera {
     public float fov = 60.0f;
 
     @Override
-    public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, Vector3f scale)
-    {
-        return worldMatrix.translation(offset).
-                rotateX((float)Math.toRadians(rotation.x)).
-                rotateY((float)Math.toRadians(rotation.y)).
-                rotateZ((float)Math.toRadians(rotation.z)).
-                scale(scale.x, scale.y, scale.z);
-    }
-
-    @Override
     public Matrix4f getViewMatrix()
     {
         Vector3f pos = entity.transform.getPosition();

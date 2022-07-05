@@ -1,7 +1,6 @@
 package marble.entity.components.camera;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 public class OrthographicCamera extends Camera {
     @Override
@@ -14,12 +13,6 @@ public class OrthographicCamera extends Camera {
     public void renderEntityInspector()
     {
 
-    }
-
-    @Override
-    public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, Vector3f scale)
-    {
-        return null;
     }
 
     @Override
