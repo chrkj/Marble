@@ -7,9 +7,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 
 import marble.Application;
+import marble.editor.EditorLayer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
-import marble.editor.EditorLayer;
 
 public class EditorCamera extends Camera {
 

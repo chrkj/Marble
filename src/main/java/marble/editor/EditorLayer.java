@@ -56,7 +56,6 @@ public class EditorLayer {
         panelManager.addPanel(new EntityInspectorPanel());
 
         currentScene = SceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
-        currentScene.init();
         currentScene.start();
 
         ConsolePanel.log("LWJGL Version: " + Version.getVersion() + "!");
@@ -278,7 +277,6 @@ public class EditorLayer {
         SceneHierarchyPanel.setSelectedEntity(null);
         currentScene.cleanUp();
         currentScene = loadedScene;
-        currentScene.init();
         currentScene.start();
     }
 
