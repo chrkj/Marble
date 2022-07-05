@@ -67,15 +67,12 @@ public class EditorLayer {
 
     public void onImGuiRender()
     {
-        // TODO: Move global StyleVars
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
-        ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 4f, 1f);
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
+        MarbleGui.setGlobalStyleVars();
         setupDockspace();
         panelManager.onImGuiRender();
         drawGameViewport();
         drawEditorViewport();
-        ImGui.popStyleVar(3);
+        MarbleGui.popGlobalStyleVars();
     }
 
     public void onSceneUpdate(float dt)

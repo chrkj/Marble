@@ -221,4 +221,16 @@ public final class MarbleGui {
         return ImGui.imageButton(fileIcon.getId(), thumbnailSize, thumbnailSize);
     }
 
+    public static void setGlobalStyleVars()
+    {
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 4f, 1f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
+    }
+
+    public static void popGlobalStyleVars()
+    {
+        ImGui.popStyleVar(3);
+    }
+
 }
