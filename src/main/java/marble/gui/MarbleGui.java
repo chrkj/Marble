@@ -224,13 +224,15 @@ public final class MarbleGui {
     public static void setGlobalStyleVars()
     {
         ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
-        ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 4f, 1f);
+        ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 4f, 2f);
         ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.FramePadding, 4f, 7f);
+        ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 6f, 2f);
     }
 
     public static void popGlobalStyleVars()
     {
-        ImGui.popStyleVar(3);
+        ImGui.popStyleVar(5);
     }
 
 }

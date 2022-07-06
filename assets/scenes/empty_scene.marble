@@ -7,6 +7,7 @@ ambientLight:
 entities:
   1874338040:
     name: "Helmet"
+    scriptName: "MyScript.java"
     transform:
       scale:
         x: 1.0
@@ -20,7 +21,6 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    scriptName: "MyScript"
     components:
       marble.entity.components.Mesh:
         material:
@@ -47,6 +47,7 @@ entities:
     uuid: 1874338040
     children:
     - name: "ChildEntity1"
+      scriptName: null
       transform:
         scale:
           x: 1.0
@@ -60,11 +61,11 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-      scriptName: null
       components: {}
       uuid: 2126454244
       children:
       - name: "ChildEntity2"
+        scriptName: null
         transform:
           scale:
             x: 1.0
@@ -78,11 +79,11 @@ entities:
             x: 0.0
             "y": 0.0
             z: 0.0
-        scriptName: null
         components: {}
         uuid: 1149871611
         children: []
     - name: "ChildEntity3"
+      scriptName: null
       transform:
         scale:
           x: 1.0
@@ -96,12 +97,12 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-      scriptName: null
       components: {}
       uuid: 1395577415
       children: []
   603228053:
     name: "Point light"
+    scriptName: null
     transform:
       scale:
         x: 0.9999956
@@ -115,7 +116,6 @@ entities:
         x: -38.05398
         "y": -0.0
         z: 0.0
-    scriptName: null
     components:
       marble.entity.components.light.PointLight:
         color:
@@ -131,6 +131,7 @@ entities:
     children: []
   4445915:
     name: "Plane"
+    scriptName: null
     transform:
       scale:
         x: 64.48792
@@ -144,7 +145,6 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    scriptName: null
     components:
       marble.entity.components.Mesh:
         material:
@@ -172,6 +172,7 @@ entities:
     children: []
   455960423:
     name: "Directional light"
+    scriptName: null
     transform:
       scale:
         x: 0.999996
@@ -185,7 +186,6 @@ entities:
         x: -19.4327
         "y": 52.99908
         z: -0.0034083456
-    scriptName: null
     components:
       marble.entity.components.light.DirectionalLight:
         color:
@@ -198,6 +198,7 @@ entities:
     children: []
   666182862:
     name: "Spot Light"
+    scriptName: null
     transform:
       scale:
         x: 0.99968815
@@ -211,7 +212,6 @@ entities:
         x: 107.312965
         "y": -6.9812803
         z: -101.830414
-    scriptName: null
     components:
       marble.entity.components.light.SpotLight:
         color:
@@ -235,6 +235,7 @@ entities:
     children: []
   1586110567:
     name: "Main Camera"
+    scriptName: null
     transform:
       scale:
         x: 1.0
@@ -248,7 +249,6 @@ entities:
         x: 0.0
         "y": -0.0
         z: 0.0
-    scriptName: null
     components:
       marble.entity.components.camera.PerspectiveCamera:
         near: 0.3

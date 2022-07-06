@@ -79,8 +79,10 @@ public class SceneSerializer {
         }
     }
 
+    // TODO: Fix duplicate methods
     public static Scene deSerialize(String filePath)
     {
+        if (!filePath.endsWith(".marble")) return null;
         Scene deserializedScene = null;
         try
         {
@@ -100,6 +102,9 @@ public class SceneSerializer {
 
                 newEntity.name = extractString(entity,"name");
                 newEntity.transform = loadTransform(extractMap(entity,"transform"));
+
+                if (loadScript(entity) != null)
+                    newEntity.setScript(loadScript(entity));
 
                 var components = extractMap(entity, "components");
                 loadComponents(newEntity, components);

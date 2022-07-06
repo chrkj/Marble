@@ -233,7 +233,6 @@ public class EditorLayer {
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
             if (EditorLayer.sceneRunning)
             {
-                ConsolePanel.log("OnSceneRun");
                 SceneHierarchyPanel.setSelectedEntity(null);
                 EditorLayer.editorScene = EditorLayer.currentScene;
                 EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
@@ -241,7 +240,6 @@ public class EditorLayer {
             }
             else
             {
-                ConsolePanel.log("OnSceneStop");
                 SceneHierarchyPanel.setSelectedEntity(null);
                 EditorLayer.currentScene = EditorLayer.editorScene;
             }

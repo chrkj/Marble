@@ -20,12 +20,12 @@ import marble.entity.components.ScriptableComponent;
 public class Entity {
 
     public String name;
+    public String scriptName;
     public Transform transform;
     public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
-    
+
     private int uuid;
-    private String scriptName;
     private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
 
@@ -157,13 +157,15 @@ public class Entity {
 
     public void setScript(String name)
     {
+        final String targetDir = "Runtime/src";
+
+        if (name.endsWith(".java"))
+            name = name.substring(0, name.length() - 5);
+
         try
         {
-            final String filename = "MyScript";
-            final String targetDir = "Runtime/src";
-
             Path temp = Paths.get(System.getProperty("user.dir"), targetDir);
-            Path javaSourceFile = Paths.get(temp.normalize().toAbsolutePath().toString(), filename + ".java");
+            Path javaSourceFile = Paths.get(temp.normalize().toAbsolutePath().toString(), name + ".java");
             File[] file = { javaSourceFile.toFile() };
 
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -187,17 +189,21 @@ public class Entity {
 
             ClassLoader classLoader = Entity.class.getClassLoader();
             URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{temp.toUri().toURL()}, classLoader);
-            Class<?> javaDemoClass = urlClassLoader.loadClass(filename);
+            Class<?> javaDemoClass = urlClassLoader.loadClass(name);
 
             script = (ScriptableComponent) javaDemoClass.getDeclaredConstructor().newInstance();
             script.entity = this;
             this.scriptName = name;
-            ConsolePanel.log("Script added to: " + this.name);
         }
-        catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
+        catch (ClassNotFoundException e)
+        {
+            ConsolePanel.log("Could not find class: " + name);
+        }
+        catch (IOException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
         {
             e.printStackTrace();
         }
+
     }
 
 }
