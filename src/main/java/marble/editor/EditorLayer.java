@@ -9,33 +9,32 @@ import imgui.flag.ImGuiWindowFlags;
 
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
-
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_VERSION;
 import static org.lwjgl.opengl.GL11.GL_RENDERER;
 
+import marble.util.Loader;
 import marble.Application;
-import marble.gui.MarbleGui;
 import marble.scene.Scene;
 import marble.scene.SceneSerializer;
+import marble.gui.MarbleGui;
 import marble.renderer.Framebuffer;
+import marble.entity.components.Texture;
 
 public class EditorLayer {
 
+    public static boolean inputFlag;
+    public static boolean sceneRunning = false;
     public static Framebuffer gameViewportFb;
     public static Framebuffer editorViewportFb;
-
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 editorViewportSize = new ImVec2();
+    public static Scene currentScene, runtimeScene, editorScene;
 
-    public static boolean sceneRunning = false;
-    public static Scene currentScene, runtimeScene;
-
-    public static boolean inputFlag;
     private final PanelManager panelManager;
-    private final SceneSerializer sceneSerializer;
-
     private final ImVec2[] editorViewportBounds = { new ImVec2(), new ImVec2() };
+    private final Texture playButtonIcon = Loader.loadTexture("assets/textures/PlayButtonIcon.png");
+    private final Texture stopButtonIcon = Loader.loadTexture("assets/textures/StopButtonIcon.png");
 
     public EditorLayer()
     {
@@ -45,22 +44,18 @@ public class EditorLayer {
         gameViewportFb = Framebuffer.create(gameFbSpec);
 
         var editorFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.RED_INTEGER, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
-
+        editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
-        sceneSerializer = new SceneSerializer();
-
         panelManager = new PanelManager();
-        panelManager.addPanel(new ToolPanel());
         panelManager.addPanel(new ConsolePanel());
         panelManager.addPanel(new FileDialogPanel());
         panelManager.addPanel(new SceneHierarchyPanel());
         panelManager.addPanel(new ContentBrowserPanel());
         panelManager.addPanel(new EntityInspectorPanel());
 
-        currentScene = sceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
-        currentScene.init();
+        currentScene = SceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
         currentScene.start();
 
         ConsolePanel.log("LWJGL Version: " + Version.getVersion() + "!");
@@ -71,10 +66,12 @@ public class EditorLayer {
 
     public void onImGuiRender()
     {
+        MarbleGui.setGlobalStyleVars();
         setupDockspace();
         panelManager.onImGuiRender();
         drawGameViewport();
         drawEditorViewport();
+        MarbleGui.popGlobalStyleVars();
     }
 
     public void onSceneUpdate(float dt)
@@ -96,7 +93,7 @@ public class EditorLayer {
     private void handleWindowResize(ImVec2 viewportSize, Framebuffer framebuffer)
     {
         ImVec2 view = ImGui.getContentRegionAvail();
-        if ( view.x != viewportSize.x || view.y != viewportSize.y )
+        if (view.x != viewportSize.x || view.y != viewportSize.y)
         {
             // Window too small or collapsed
             if (view.x == 0 || view.y == 0)
@@ -114,14 +111,11 @@ public class EditorLayer {
 
     private void drawEditorViewport()
     {
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
         ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
 
         ImVec2 viewportOffset = ImGui.getCursorPos();
         handleWindowResize(editorViewportSize, editorViewportFb);
-
         editorViewportSize = ImGui.getContentRegionAvail();
-
         setEditorViewportInputFlag();
 
         int textureId = editorViewportFb.getColorAttachmentRendererID();
@@ -159,7 +153,6 @@ public class EditorLayer {
             int mouseX = (int) x;
             int mouseY = (int) y;
 
-            // Within viewport
             if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
             {
                 if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
@@ -171,19 +164,16 @@ public class EditorLayer {
         }
 
         ImGui.end();
-        ImGui.popStyleVar(1);
     }
 
     private void drawGameViewport()
     {
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
         ImGui.begin("Game", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
         handleWindowResize(gameViewportSize, gameViewportFb);
         gameViewportSize = ImGui.getContentRegionAvail();
         int textureId = gameViewportFb.getColorAttachmentRendererID();
         ImGui.image(textureId, gameViewportSize.x, gameViewportSize.y, 0, 1, 1, 0);
         ImGui.end();
-        ImGui.popStyleVar(1);
     }
 
     private void setEditorViewportInputFlag()
@@ -199,29 +189,73 @@ public class EditorLayer {
 
     private void setupDockspace()
     {
-        int windowFlags = ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.MenuBar;
-        ImGuiViewport mainViewport = ImGui.getMainViewport();
-        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
-        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY());
-        ImGui.setNextWindowViewport(mainViewport.getID());
-        ImGui.setNextWindowPos(0.0f, 0.0f);
-        ImGui.setNextWindowSize(Application.getWidth(), Application.getHeight());
+        float toolBarHeight = 55f;
+        int windowFlags = ImGuiWindowFlags.NoDocking;
         windowFlags |= ImGuiWindowFlags.NoCollapse |  ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar
                 | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
-        ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
-        ImGui.dockSpace(ImGui.getID("Dockspace"));
-        createMenuBar();
-        ImGui.end();
+
+        ImGuiViewport mainViewport = ImGui.getMainViewport();
+
+        // ToolBar
+        {
+            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
+            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), toolBarHeight);
+            ImGui.setNextWindowViewport(mainViewport.getID());
+
+            ImGui.begin("TitleBar", new ImBoolean(true), windowFlags | ImGuiWindowFlags.MenuBar);
+            drawMenuBar();
+            drawToolBar();
+            ImGui.end();
+        }
+
+        // DockSpace
+        {
+            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY() + toolBarHeight);
+            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY() - toolBarHeight);
+            ImGui.setNextWindowViewport(mainViewport.getID());
+
+            ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
+            ImGui.dockSpace(ImGui.getID("Dockspace"));
+            ImGui.end();
+        }
     }
 
-    private void createMenuBar()
+    private void drawToolBar()
+    {
+        ImGui.pushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
+        int buttonSize = 17;
+        ImGui.setCursorPosX(Application.getWidth() / 2f - buttonSize / 2f);
+        ImGui.setCursorPosY(ImGui.getContentRegionAvailY() / 2f + buttonSize / 2f);
+
+        Texture icon = EditorLayer.sceneRunning ? stopButtonIcon : playButtonIcon;
+        if (ImGui.imageButton(icon.getId(), buttonSize, buttonSize))
+        {
+            EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
+            if (EditorLayer.sceneRunning)
+            {
+                SceneHierarchyPanel.setSelectedEntity(null);
+                EditorLayer.editorScene = EditorLayer.currentScene;
+                EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
+                EditorLayer.currentScene = EditorLayer.runtimeScene;
+            }
+            else
+            {
+                SceneHierarchyPanel.setSelectedEntity(null);
+                EditorLayer.currentScene = EditorLayer.editorScene;
+            }
+        }
+        ImGui.popStyleVar(1);
+    }
+
+
+    private void drawMenuBar()
     {
         var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(FileDialogPanel.class);
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
             // TODO: Shortcuts not handled
-            if (ImGui.menuItem("Save scene", "ctrl-s")) sceneSerializer.serialize(currentScene);
+            if (ImGui.menuItem("Save scene", "ctrl-s")) SceneSerializer.serialize(currentScene);
             if (ImGui.menuItem("Open scene", "ctrl-o")) fileDialogPanel.open();
             if (ImGui.menuItem("Exit"))                             glfwSetWindowShouldClose(Application.windowPtr, true);
             ImGui.endMenu();
@@ -235,13 +269,12 @@ public class EditorLayer {
 
     private void openScene(String filePath)
     {
-        Scene loadedScene = sceneSerializer.deSerialize(filePath);
+        Scene loadedScene = SceneSerializer.deSerialize(filePath);
         if (loadedScene == null)
             return;
         SceneHierarchyPanel.setSelectedEntity(null);
         currentScene.cleanUp();
         currentScene = loadedScene;
-        currentScene.init();
         currentScene.start();
     }
 

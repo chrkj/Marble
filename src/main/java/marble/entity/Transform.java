@@ -1,16 +1,13 @@
 package marble.entity;
 
-import imgui.ImGui;
-import imgui.flag.ImGuiTreeNodeFlags;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
-import marble.gui.MarbleGui;
 
 public class Transform {
 
-    public Vector3f scale;
-    public Vector3f position;
-    public Vector3f rotation;
+    private Vector3f scale;
+    private Vector3f position;
+    private Vector3f rotation;
 
     public Transform()
     {
@@ -46,6 +43,13 @@ public class Transform {
         rotation.z = z;
     }
 
+    public void incrementRotation(float x, float y, float z)
+    {
+        rotation.x += x;
+        rotation.y += y;
+        rotation.z += z;
+    }
+
     public void setPosition(float x, float y, float z)
     {
         position.x = x;
@@ -60,15 +64,34 @@ public class Transform {
         this.scale.z = z;
     }
 
-    protected void setupInspector()
+    public Vector3f getScale()
     {
-        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        boolean nodeOpen = ImGui.treeNodeEx("Transform", nodeFlags);
-        if (nodeOpen) {
-            MarbleGui.vec3Controller("Position", position);
-            MarbleGui.vec3Controller("Rotation", rotation);
-            MarbleGui.vec3Controller("Scale", scale);
-            ImGui.treePop();
-        }
+        return scale;
     }
+
+    public void setScale(Vector3f scale)
+    {
+        this.scale = scale;
+    }
+
+    public Vector3f getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(Vector3f position)
+    {
+        this.position = position;
+    }
+
+    public Vector3f getRotation()
+    {
+        return rotation;
+    }
+
+    public void setRotation(Vector3f rotation)
+    {
+        this.rotation = rotation;
+    }
+
 }

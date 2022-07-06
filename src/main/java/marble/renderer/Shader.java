@@ -222,9 +222,9 @@ public class Shader {
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
         Vector4f dir = new Vector4f(
-                (float) Math.sin(Math.toRadians(light.getEntity().transform.rotation.y)),
-                (float) -(Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.sin(Math.toRadians(light.getEntity().transform.rotation.x))),
-                (float) (Math.cos(Math.toRadians(light.getEntity().transform.rotation.y)) * Math.cos(Math.toRadians(light.getEntity().transform.rotation.x))),
+                (float) Math.sin(Math.toRadians(light.getEntity().transform.getRotation().y)),
+                (float) -(Math.cos(Math.toRadians(light.getEntity().transform.getRotation().y)) * Math.sin(Math.toRadians(light.getEntity().transform.getRotation().x))),
+                (float) (Math.cos(Math.toRadians(light.getEntity().transform.getRotation().y)) * Math.cos(Math.toRadians(light.getEntity().transform.getRotation().x))),
                 0).mul(viewMatrix);
         setUniform4f("uDirectionalLight[" + i + "].color", light.getColor());
         setUniform3f("uDirectionalLight[" + i + "].direction", dir.x, dir.y, dir.z);
@@ -233,7 +233,7 @@ public class Shader {
 
     public void setUniformPointLight(PointLight light, Matrix4f viewMatrix, int i)
     {
-        var position = new Vector4f(light.getEntity().transform.position, 1).mul(viewMatrix);
+        var position = new Vector4f(light.getEntity().transform.getPosition(), 1).mul(viewMatrix);
         setUniform4f("uPointLight[" + i + "].color", light.getColor());
         setUniform3f("uPointLight[" + i + "].position", new Vector3f(position.x, position.y, position.z));
         setUniform1f("uPointLight[" + i + "].intensity", light.getIntensity());
@@ -244,8 +244,8 @@ public class Shader {
 
     public void setUniformSpotLight(SpotLight light, Matrix4f viewMatrix, int i)
     {
-        var position = new Vector4f(light.getEntity().transform.position, 1).mul(viewMatrix);
-        var coneDir = new Vector4f(light.getEntity().transform.rotation, 0).mul(viewMatrix).normalize();
+        var position = new Vector4f(light.getEntity().transform.getPosition(), 1).mul(viewMatrix);
+        var coneDir = new Vector4f(light.getEntity().transform.getRotation(), 0).mul(viewMatrix).normalize();
         setUniform4f("uSpotLight[" + i + "].pl.color", light.getColor());
         setUniform3f("uSpotLight[" + i + "].pl.position", new Vector3f(position.x, position.y, position.z));
         setUniform1f("uSpotLight[" + i + "].pl.intensity", light.getIntensity());

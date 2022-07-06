@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
 public class OpenGLIndexbuffer extends Indexbuffer {
 
-    private int ID = -1;
+    private final int ID;
 
     public OpenGLIndexbuffer(int[] data)
     {

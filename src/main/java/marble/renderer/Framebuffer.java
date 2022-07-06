@@ -10,7 +10,7 @@ public abstract class Framebuffer {
     protected int framebufferID;
     protected int depthAttachmentID;
     protected FramebufferSpecification specification;
-    protected List<Integer> colorAttachmentIDs = new ArrayList<>();
+    protected final List<Integer> colorAttachmentIDs = new ArrayList<>();
 
     public enum TextureFormat
     {
@@ -56,7 +56,7 @@ public abstract class Framebuffer {
         public int height = 0;
 
         private TextureFormat depthFormat = TextureFormat.NONE;
-        private List<TextureFormat> textureFormats = new ArrayList<>();
+        private final List<TextureFormat> textureFormats = new ArrayList<>();
 
         public FramebufferSpecification(TextureFormat... formats)
         {

@@ -1,18 +1,18 @@
 package marble.renderer.opengl;
 
-import marble.renderer.Vertexbuffer;
-import org.lwjgl.system.MemoryUtil;
-
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.FloatBuffer;
 
+import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL20.*;
 
+import marble.renderer.Vertexbuffer;
+
 public class OpenGLVertexbuffer extends Vertexbuffer {
 
-    private int ID = -1;
+    private final int ID;
 
     public OpenGLVertexbuffer(float[] data, int index, int size, int type)
     {

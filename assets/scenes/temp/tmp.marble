@@ -7,7 +7,7 @@ ambientLight:
 entities:
   1874338040:
     name: "Helmet"
-    scriptName: "MyScript.java"
+    scriptName: "MyScript"
     transform:
       scale:
         x: 1.0

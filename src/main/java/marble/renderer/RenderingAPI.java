@@ -2,7 +2,7 @@ package marble.renderer;
 
 public class RenderingAPI {
 
-    public enum APIType { None, OPENGL; }
+    public enum APIType { None, OPENGL }
 
     private static APIType currentRenderingAPI;
 

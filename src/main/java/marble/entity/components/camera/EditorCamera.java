@@ -7,9 +7,9 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 
 import marble.Application;
+import marble.editor.EditorLayer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
-import marble.editor.EditorLayer;
 
 public class EditorCamera extends Camera {
 
@@ -50,7 +50,6 @@ public class EditorCamera extends Camera {
 
     public void onUpdate(float dt)
     {
-
         if (EditorLayer.inputFlag)
         {
             float camSpeed = 10 * dt;
@@ -77,16 +76,6 @@ public class EditorCamera extends Camera {
             glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
 
-    }
-
-    @Override
-    public Matrix4f getWorldMatrix(Vector3f offset, Vector3f rotation, Vector3f scale)
-    {
-        return worldMatrix.translation(offset).
-                rotateX((float) Math.toRadians(rotation.x)).
-                rotateY((float) Math.toRadians(rotation.y)).
-                rotateZ((float) Math.toRadians(rotation.z)).
-                scale(scale.x, scale.y, scale.z);
     }
 
     @Override

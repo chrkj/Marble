@@ -1,14 +1,28 @@
 package marble.entity;
 
-import java.util.*;
+import org.joml.Matrix4f;
 
+import javax.tools.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.*;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import marble.editor.ConsolePanel;
 import marble.editor.EditorLayer;
 import marble.entity.components.Component;
+import marble.entity.components.ScriptableComponent;
 
 public class Entity {
 
     public String name;
+    public String scriptName;
     public Transform transform;
+    public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
     private int uuid;
@@ -39,10 +53,14 @@ public class Entity {
 
     public void start()
     {
+        if (script != null)
+            script.onInit();
     }
 
     public void update(float dt)
     {
+        if (script != null)
+            script.onUpdate(dt);
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass)
@@ -66,12 +84,10 @@ public class Entity {
         EditorLayer.currentScene.getRegistry().remove(component);
     }
 
-    public Entity addComponent(Component component)
+    public void addComponent(Component component)
     {
         components.put(component.getClass(), component);
         component.setEntity(this);
-
-        return this;
     }
 
     public boolean hasComponent(Class<? extends Component> componentClass)
@@ -113,23 +129,81 @@ public class Entity {
         return children;
     }
 
-    public Entity setParent(Entity entity)
+    public void setParent(Entity entity)
     {
         this.parent = entity;
         entity.children.add(this);
-        return this;
     }
 
-    public Entity setChild(Entity entity)
+    public void setChild(Entity entity)
     {
         this.children.add(entity);
         entity.parent = this;
-        return this;
     }
 
     public int getUuid()
     {
         return uuid;
+    }
+
+    public Matrix4f getWorldMatrix()
+    {
+        return new Matrix4f().translation(transform.getPosition()).
+                rotateX((float)Math.toRadians(transform.getRotation().x)).
+                rotateY((float)Math.toRadians(transform.getRotation().y)).
+                rotateZ((float)Math.toRadians(transform.getRotation().z)).
+                scale(transform.getScale().x, transform.getScale().y, transform.getScale().z);
+    }
+
+    public void setScript(String name)
+    {
+        final String targetDir = "Runtime/src";
+
+        if (name.endsWith(".java"))
+            name = name.substring(0, name.length() - 5);
+
+        try
+        {
+            Path temp = Paths.get(System.getProperty("user.dir"), targetDir);
+            Path javaSourceFile = Paths.get(temp.normalize().toAbsolutePath().toString(), name + ".java");
+            File[] file = { javaSourceFile.toFile() };
+
+            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+            StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+            Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(Arrays.asList(file));
+            DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+
+            JavaCompiler.CompilationTask task = compiler.getTask(
+                    null,
+                    fileManager,
+                    diagnostics,
+                    null,
+                    null,
+                    compilationUnits
+            );
+            task.call();
+
+            for (Diagnostic diagnostic : diagnostics.getDiagnostics())
+                ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
+            fileManager.close();
+
+            ClassLoader classLoader = Entity.class.getClassLoader();
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{temp.toUri().toURL()}, classLoader);
+            Class<?> javaDemoClass = urlClassLoader.loadClass(name);
+
+            script = (ScriptableComponent) javaDemoClass.getDeclaredConstructor().newInstance();
+            script.entity = this;
+            this.scriptName = name;
+        }
+        catch (ClassNotFoundException e)
+        {
+            ConsolePanel.log("Could not find class: " + name);
+        }
+        catch (IOException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
 }

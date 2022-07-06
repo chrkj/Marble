@@ -91,12 +91,12 @@ public class OpenGLFramebuffer extends Framebuffer {
         {
             switch (specification.getDepthFormat())
             {
-                case DEPTH_COMPONENT32F -> attachDepthTexture(GL_DEPTH_COMPONENT32F, GL_DEPTH_STENCIL_ATTACHMENT);
-                case DEPTH_COMPONENT24 -> attachDepthTexture(GL_DEPTH_COMPONENT24, GL_DEPTH_STENCIL_ATTACHMENT);
-                case DEPTH_COMPONENT16 -> attachDepthTexture(GL_DEPTH_COMPONENT16, GL_DEPTH_STENCIL_ATTACHMENT);
-                case DEPTH32F_STENCIL8 -> attachDepthTexture(GL_DEPTH32F_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
-                case DEPTH24_STENCIL8 -> attachDepthTexture(GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT);
-                case STENCIL_INDEX8 -> attachDepthTexture(GL_STENCIL_INDEX8, GL_DEPTH_STENCIL_ATTACHMENT);
+                case DEPTH_COMPONENT32F -> attachDepthTexture(GL_DEPTH_COMPONENT32F);
+                case DEPTH_COMPONENT24  -> attachDepthTexture(GL_DEPTH_COMPONENT24);
+                case DEPTH_COMPONENT16  -> attachDepthTexture(GL_DEPTH_COMPONENT16);
+                case DEPTH32F_STENCIL8  -> attachDepthTexture(GL_DEPTH32F_STENCIL8);
+                case DEPTH24_STENCIL8   -> attachDepthTexture(GL_DEPTH24_STENCIL8);
+                case STENCIL_INDEX8     -> attachDepthTexture(GL_STENCIL_INDEX8);
             }
 
         }
@@ -125,7 +125,7 @@ public class OpenGLFramebuffer extends Framebuffer {
         glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, id, 0);
     }
 
-    private void attachDepthTexture(int format, int attachmentType)
+    private void attachDepthTexture(int format)
     {
         depthAttachmentID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, depthAttachmentID);
@@ -137,7 +137,7 @@ public class OpenGLFramebuffer extends Framebuffer {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, depthAttachmentID, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, org.lwjgl.opengl.GL30.GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachmentID, 0);
     }
 
     private void createColorTextures(int size, List<Integer> data)
