@@ -62,6 +62,8 @@ public final class Loader {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        assert buf != null;
         stbi_image_free(buf);
 
         return new Texture(textureId);
@@ -69,7 +71,7 @@ public final class Loader {
 
     public static GLFWImage.Buffer loadIcon(String filePath)
     {
-        ByteBuffer buf = null;
+        ByteBuffer buf;
         try (MemoryStack stack = MemoryStack.stackPush()) {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer w = stack.mallocInt(1);

@@ -45,17 +45,17 @@ public class Gizmo {
         ImGuizmo.setDrawList();
 
         float[] modelMatrix = new float[16];
-        float[] pos = { selectedEntity.transform.position.x, selectedEntity.transform.position.y, selectedEntity.transform.position.z };
-        float[] rot = { selectedEntity.transform.rotation.x, selectedEntity.transform.rotation.y, selectedEntity.transform.rotation.z };
-        float[] scale = { selectedEntity.transform.scale.x, selectedEntity.transform.scale.y, selectedEntity.transform.scale.z };
+        float[] pos = { selectedEntity.transform.getPosition().x, selectedEntity.transform.getPosition().y, selectedEntity.transform.getPosition().z };
+        float[] rot = { selectedEntity.transform.getRotation().x, selectedEntity.transform.getRotation().y, selectedEntity.transform.getRotation().z };
+        float[] scale = { selectedEntity.transform.getScale().x, selectedEntity.transform.getScale().y, selectedEntity.transform.getScale().z };
         ImGuizmo.recomposeMatrixFromComponents(modelMatrix, pos, rot, scale);
 
         ImGuizmo.manipulate(view, proj, modelMatrix, currentGizmoOperation, Mode.LOCAL);
 
         ImGuizmo.decomposeMatrixToComponents(modelMatrix, pos, rot, scale);
-        selectedEntity.transform.position = new Vector3f(pos[0], pos[1], pos[2]);
-        selectedEntity.transform.rotation = new Vector3f(rot[0], rot[1], rot[2]);
-        selectedEntity.transform.scale = new Vector3f(scale[0], scale[1], scale[2]);
+        selectedEntity.transform.setPosition(new Vector3f(pos[0], pos[1], pos[2]));
+        selectedEntity.transform.setRotation( new Vector3f(rot[0], rot[1], rot[2]));
+        selectedEntity.transform.setScale(new Vector3f(scale[0], scale[1], scale[2]));
     }
 
     public static boolean inUse()

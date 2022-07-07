@@ -39,8 +39,8 @@ public class Application {
 
     public Application(String title)
     {
-       width = 1920;
-       height = 1080;
+       width = 1280;
+       height = 720;
        this.title = title;
     }
 
@@ -107,7 +107,7 @@ public class Application {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+        //glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
         //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
         // Create the window

@@ -1,5 +1,7 @@
 package marble.renderer;
 
+import marble.renderer.opengl.OpenGLIndexbuffer;
+
 public abstract class Indexbuffer {
 
     public static Indexbuffer create(int[] data)

@@ -18,28 +18,15 @@ public class Scene {
     public transient final EditorCamera editorCamera = new EditorCamera();
 
     private String name;
+    private float specularPower;
+    private Vector3f ambientLight;
+    private final Map<Integer, Entity> entities = new HashMap<>();
+
+    private transient Camera mainCamera;
     private transient float sceneStartedTime;
     private transient boolean isRunning = false;
     private transient final Renderer renderer = new Renderer();
-
-    protected float specularPower = 10;
-    protected transient Camera mainCamera;
-    protected transient final Registry registry = new Registry();
-    protected Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
-    protected final Map<Integer, Entity> entities = new HashMap<>();
-
-    public void init()
-    {
-    }
-
-    public void update(float dt)
-    {
-    }
-
-    public Scene(String name)
-    {
-        this.name = name;
-    }
+    private transient final Registry registry = new Registry();
 
     public Scene(String name, float specularPower, Vector3f ambientLight)
     {
@@ -58,21 +45,16 @@ public class Scene {
 
     public void onSceneUpdate(float dt)
     {
+        editorCamera.onUpdate(dt);
+        if (!EditorLayer.sceneRunning) return;
         for (Entity entity : entities.values())
             entity.update(dt);
-        update(dt);
-        editorCamera.onUpdate(dt);
     }
 
     public void onSceneRender()
     {
         renderer.render(editorCamera, registry, EditorLayer.editorViewportFb, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFb, ambientLight, specularPower, Renderer.ViewportId.GAME);
-    }
-
-    protected Entity createEntity(String tag)
-    {
-        return new Entity(tag);
     }
 
     public void addEntityToScene(Entity entity)
@@ -100,11 +82,6 @@ public class Scene {
         return Time.getTime() - sceneStartedTime;
     }
 
-    public Camera getEditorCamera()
-    {
-        return editorCamera;
-    }
-
     public Collection<Entity> getEntities()
     {
         return entities.values();
@@ -124,6 +101,11 @@ public class Scene {
     public Entity getEntityFromUUID(int uuid)
     {
         return entities.get(uuid);
+    }
+
+    public Registry getRegistry()
+    {
+        return registry;
     }
 
 }

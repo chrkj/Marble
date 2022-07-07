@@ -8,11 +8,12 @@ import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
 public class FileDialogPanel implements Panel {
 
     private Map<String, String> selection = null;
-    private String sceneFolder = "assets/scenes";
 
     public String getSelectedFilePath()
     {
-        var filePath = selection.values().stream().findFirst().get();
+        String filePath = null;
+        if (selection.values().stream().findFirst().isPresent())
+            filePath = selection.values().stream().findFirst().get();
         selection = null;
         return filePath;
     }
@@ -24,6 +25,7 @@ public class FileDialogPanel implements Panel {
 
     public void open()
     {
+        String sceneFolder = "assets/scenes";
         ImGuiFileDialog.openModal("browse-key", "Choose File", ".marble", sceneFolder, "",null, 250, 1, 42, ImGuiFileDialogFlags.None);
     }
 

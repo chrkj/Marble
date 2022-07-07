@@ -1,16 +1,13 @@
 package marble.entity.components.light;
 
-import imgui.ImGui;
-import imgui.flag.ImGuiTreeNodeFlags;
-import marble.gui.MarbleGui;
 import org.joml.Vector4f;
 
 import marble.entity.components.Component;
 
 public abstract class Light extends Component {
 
-    protected Vector4f color;
-    protected float intensity;
+    protected Vector4f color = new Vector4f(1,1,1,1);
+    protected float intensity = 1;
 
     @Override
     public void cleanUp()
@@ -46,15 +43,6 @@ public abstract class Light extends Component {
     }
 
     @Override
-    public void renderEntityInspector()
-    {
-        int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
-        boolean nodeOpen = ImGui.treeNodeEx("Directional Light", nodeFlags);
-        if (nodeOpen) {
-            MarbleGui.colorEdit4("Color", color);
-            intensity = MarbleGui.dragFloat("Intensity", intensity);
-            ImGui.treePop();
-        }
-    }
+    public abstract void renderEntityInspector();
 
 }

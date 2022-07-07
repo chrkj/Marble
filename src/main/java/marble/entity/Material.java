@@ -11,12 +11,12 @@ import marble.entity.components.Texture;
 
 public class Material {
 
+    private Shader shader;
     private Texture texture;
     private float reflectance;
     private final Vector4f ambient;
     private final Vector4f diffuse;
     private final Vector4f specular;
-    private Shader shader;
 
     public Material()
     {
@@ -50,6 +50,16 @@ public class Material {
         this.diffuse.w = a;
     }
 
+    public void setDiffuse(Vector4f diffuse)
+    {
+        this.diffuse.set(diffuse);
+    }
+
+    public void setAmbient(Vector4f ambient)
+    {
+        this.ambient.set(ambient);
+    }
+
     public Vector4f getSpecular()
     {
         return specular;
@@ -61,6 +71,11 @@ public class Material {
         this.specular.y = g;
         this.specular.z = b;
         this.specular.w = a;
+    }
+
+    public void setSpecular(Vector4f specular)
+    {
+        this.specular.set(specular);
     }
 
     public float getReflectance()
