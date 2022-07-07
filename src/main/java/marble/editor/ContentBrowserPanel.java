@@ -52,6 +52,7 @@ public class ContentBrowserPanel implements Panel {
             if (ImGui.beginDragDropSource())
             {
                 ImGui.setDragDropPayload("CONTENT_BROWSER_FILE", file, ImGuiCond.Once);
+                ImGui.button(file.getName());
                 ImGui.endDragDropSource();
             }
 
