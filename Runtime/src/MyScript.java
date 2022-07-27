@@ -12,7 +12,7 @@ public class MyScript extends ScriptableComponent {
     public void onUpdate(float dt)
     {
         float speed = 80 * dt;
-        entity.transform.incrementRotation(speed,speed,speed);
+        entity.transform.incrementRotation(speed, speed, speed);
     }
 
 }

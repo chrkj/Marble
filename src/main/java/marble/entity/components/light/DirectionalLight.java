@@ -26,4 +26,10 @@ public class DirectionalLight extends Light {
             ImGui.treePop();
         }
     }
+
+    @Override
+    public void renderGizmo()
+    {
+
+    }
 }

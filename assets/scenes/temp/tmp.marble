@@ -14,8 +14,8 @@ entities:
         "y": 1.0
         z: 1.0
       position:
-        x: 0.0
-        "y": 0.0
+        x: -5.566456
+        "y": -3.65904
         z: 0.0
       rotation:
         x: 0.0
@@ -59,7 +59,7 @@ entities:
           z: 0.0
         rotation:
           x: 0.0
-          "y": 0.0
+          "y": -0.0
           z: 0.0
       components: {}
       uuid: 2126454244
@@ -242,9 +242,9 @@ entities:
         "y": 1.0
         z: 1.0
       position:
-        x: 3.0
+        x: -0.7320701
         "y": -2.5
-        z: 35.0
+        z: 35.734936
       rotation:
         x: 0.0
         "y": -0.0

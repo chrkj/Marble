@@ -6,8 +6,8 @@ import marble.entity.components.Component;
 
 public abstract class Light extends Component {
 
-    protected Vector4f color = new Vector4f(1,1,1,1);
     protected float intensity = 1;
+    protected Vector4f color = new Vector4f(1,1,1,1);
 
     @Override
     public void cleanUp()
@@ -44,5 +44,7 @@ public abstract class Light extends Component {
 
     @Override
     public abstract void renderEntityInspector();
+
+    public abstract void renderGizmo();
 
 }

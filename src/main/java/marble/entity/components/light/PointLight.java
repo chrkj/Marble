@@ -24,4 +24,10 @@ public class PointLight extends Light {
             ImGui.treePop();
         }
     }
+
+    @Override
+    public void renderGizmo()
+    {
+
+    }
 }

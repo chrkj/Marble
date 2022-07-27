@@ -122,7 +122,8 @@ public class Material {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
+        {
             MarbleGui.colorEdit4("Ambient", ambient);
             MarbleGui.colorEdit4("Diffuse", diffuse);
             MarbleGui.colorEdit4("Specular", specular);
