@@ -8,10 +8,11 @@ import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
 import marble.entity.components.light.DirectionalLight;
 
-public class Registry {
-
+public class Registry
+{
     private final List<Mesh> meshes = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
+    private final List<RigidBody> rigidBodies = new ArrayList<>();
     private final List<PointLight> pointLights = new ArrayList<>();
     private final List<DirectionalLight> directionalLights = new ArrayList<>();
 
@@ -27,6 +28,8 @@ public class Registry {
             pointLights.add((PointLight) component);
         if (component instanceof DirectionalLight)
             directionalLights.add((DirectionalLight) component);
+        if (component instanceof RigidBody)
+            rigidBodies.add((RigidBody) component);
     }
 
     public List<Mesh> getMeshes()
@@ -62,12 +65,14 @@ public class Registry {
     {
         if (component instanceof Mesh)
             meshes.remove((Mesh) component);
-        else if (component instanceof SpotLight)
+        if (component instanceof SpotLight)
             spotLights.remove((SpotLight) component);
-        else if (component instanceof PointLight)
+        if (component instanceof PointLight)
             pointLights.remove((PointLight) component);
-        else if (component instanceof DirectionalLight)
+        if (component instanceof DirectionalLight)
             directionalLights.remove((DirectionalLight) component);
+        if (component instanceof RigidBody)
+            rigidBodies.remove((RigidBody) component);
     }
 
 }

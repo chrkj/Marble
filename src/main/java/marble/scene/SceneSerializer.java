@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
+import marble.entity.components.Component;
+import marble.entity.components.RigidBody;
+import marble.entity.components.camera.EditorCamera;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.yaml.snakeyaml.Yaml;
@@ -93,7 +96,10 @@ public class SceneSerializer {
             String sceneName = extractString(data, "name");
             float specularPower = extractFloat(data, "specularPower");
             Vector3f ambientLight = extractVec3f(data, "ambientLight");
+            EditorCamera editorCamera = extractEditorCamera(data);
+
             deserializedScene = new Scene(sceneName, specularPower, ambientLight);
+            deserializedScene.editorCamera = editorCamera;
 
             LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
             for (Map entity : entities.values())
@@ -136,7 +142,10 @@ public class SceneSerializer {
             String sceneName = extractString(data, "name");
             float specularPower = extractFloat(data, "specularPower");
             Vector3f ambientLight = extractVec3f(data, "ambientLight");
+            EditorCamera editorCamera = extractEditorCamera(data);
+
             deserializedScene = new Scene(sceneName, specularPower, ambientLight);
+            deserializedScene.editorCamera = editorCamera;
 
             LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
             for (Map entity : entities.values())
@@ -197,12 +206,35 @@ public class SceneSerializer {
             switch (componentName)
             {
                 case "marble.entity.components.Mesh"                     -> newEntity.addComponent(loadMesh(componentData));
+                case "marble.entity.components.RigidBody"                -> newEntity.addComponent(loadRigidBody(componentData));
                 case "marble.entity.components.camera.PerspectiveCamera" -> newEntity.addComponent(loadPerspectiveCamera(componentData));
-                case "marble.entity.components.light.DirectionalLight"   -> newEntity.addComponent(loadDirectionalLight(componentData));
-                case "marble.entity.components.light.PointLight"         -> newEntity.addComponent(loadPointLight(componentData));
                 case "marble.entity.components.light.SpotLight"          -> newEntity.addComponent(loadSpotLight(componentData));
+                case "marble.entity.components.light.PointLight"         -> newEntity.addComponent(loadPointLight(componentData));
+                case "marble.entity.components.light.DirectionalLight"   -> newEntity.addComponent(loadDirectionalLight(componentData));
             }
         }
+    }
+
+    private static EditorCamera extractEditorCamera(Map<String, Object> data)
+    {
+        Map<String, Object> camData = (Map<String, Object>) data.get("editorCamera");
+        EditorCamera camera = new EditorCamera();
+        var pos = extractVec3f(camData, "position");
+        var rot = extractVec3f(camData, "rotation");
+        var near = extractFloat(camData, "near");
+        var far = extractFloat(camData, "far");
+        var fov = extractFloat(camData, "fov");
+        camera.position = pos;
+        camera.rotation = rot;
+        camera.near = near;
+        camera.far = far;
+        camera.fov = fov;
+        return camera;
+    }
+
+    private static Component loadRigidBody(Map componentData)
+    {
+        return new RigidBody(); // TODO: Load data correctly
     }
 
     private static String loadScript(Map componentData)

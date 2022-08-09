@@ -1,3 +1,15 @@
+editorCamera:
+  position:
+    x: 2.5
+    "y": 15.0
+    z: 70.0
+  rotation:
+    x: 22.0
+    "y": 0.0
+    z: 0.0
+  near: 0.3
+  far: 1000.0
+  fov: 1.0471976
 name: "Empty Scene"
 specularPower: 10.0
 ambientLight:
@@ -7,7 +19,7 @@ ambientLight:
 entities:
   1874338040:
     name: "Helmet"
-    scriptName: "MyScript.java"
+    scriptName: "MyScript"
     transform:
       scale:
         x: 1.0
@@ -22,6 +34,31 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        rigidActor:
+          address: 1807337098320
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shape:
+          address: 1807337094192
+          isExternallyAllocated: false
+          exclusive: true
+          releasable: true
+        material:
+          address: 1807341069040
+          isExternallyAllocated: false
+          releasable: true
+        geometry:
+          address: 1807340220240
+          isExternallyAllocated: false
+        shapeFlags:
+          address: 1807332910160
+          isExternallyAllocated: false
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
       marble.entity.components.Mesh:
         material:
           shader:

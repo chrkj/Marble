@@ -3,6 +3,7 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.entity.components.RigidBody;
 import marble.gui.MarbleGui;
 import marble.entity.Entity;
 import marble.entity.components.Component;
@@ -47,11 +48,20 @@ public class EntityInspectorPanel implements Panel {
                 if (ImGui.selectable("Directional light")) addDirLight();
                 if (ImGui.selectable("Spot light"))        addSpotLight();
                 if (ImGui.selectable("Point light"))       addPointLight();
+                if (ImGui.selectable("RigidBody"))         addRigidBody();
                 ImGui.endPopup();
             }
 
         }
         ImGui.end();
+    }
+
+    private void addRigidBody()
+    {
+        var rb = new RigidBody();
+        SceneHierarchyPanel.getSelectedEntity().addComponent(rb);
+        EditorLayer.currentScene.getRegistry().register(rb);
+        EditorLayer.currentScene.getPhysicsScene().addActor(rb.rigidActor);
     }
 
     private void addSpotLight()

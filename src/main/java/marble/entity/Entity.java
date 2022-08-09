@@ -1,5 +1,6 @@
 package marble.entity;
 
+import marble.entity.components.RigidBody;
 import org.joml.Matrix4f;
 
 import javax.tools.*;
@@ -16,6 +17,7 @@ import marble.editor.ConsolePanel;
 import marble.editor.EditorLayer;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
+import org.joml.Vector3f;
 
 public class Entity {
 
@@ -59,6 +61,15 @@ public class Entity {
 
     public void update(float dt)
     {
+        if (components.containsKey(RigidBody.class))
+        {
+            var rb = (RigidBody)components.get(RigidBody.class);
+            var rbPos = new Vector3f(rb.rigidActor.getGlobalPose().getP().getX(),
+                    rb.rigidActor.getGlobalPose().getP().getY(),
+                    rb.rigidActor.getGlobalPose().getP().getZ());
+            transform.setPosition(transform.getPosition().add(rbPos));
+        }
+
         if (script != null)
             script.onUpdate(dt);
     }

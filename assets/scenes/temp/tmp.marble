@@ -1,3 +1,15 @@
+editorCamera:
+  position:
+    x: 2.5
+    "y": 15.0
+    z: 70.0
+  rotation:
+    x: 17.929443
+    "y": -3.2293081
+    z: 0.0
+  near: 0.3
+  far: 1000.0
+  fov: 1.0471976
 name: "Empty Scene"
 specularPower: 10.0
 ambientLight:
@@ -22,6 +34,31 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        rigidActor:
+          address: 1957466903008
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shape:
+          address: 1957465075568
+          isExternallyAllocated: false
+          exclusive: true
+          releasable: true
+        material:
+          address: 1957466418416
+          isExternallyAllocated: false
+          releasable: true
+        geometry:
+          address: 1957467798624
+          isExternallyAllocated: false
+        shapeFlags:
+          address: 1957464533216
+          isExternallyAllocated: false
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
       marble.entity.components.Mesh:
         material:
           shader:
@@ -59,7 +96,7 @@ entities:
           z: 0.0
         rotation:
           x: 0.0
-          "y": 0.0
+          "y": -0.0
           z: 0.0
       components: {}
       uuid: 2126454244
@@ -119,9 +156,9 @@ entities:
     components:
       marble.entity.components.light.PointLight:
         color:
-          x: 0.16013072
-          "y": 0.185025
-          z: 0.5833334
+          x: 0.34509805
+          "y": 0.18431373
+          z: 0.58431375
           w: 1.0
         intensity: 8.2
         linear: 0.2
@@ -146,6 +183,31 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        rigidActor:
+          address: 1957466903392
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shape:
+          address: 1957465075840
+          isExternallyAllocated: false
+          exclusive: true
+          releasable: true
+        material:
+          address: 1957466418496
+          isExternallyAllocated: false
+          releasable: true
+        geometry:
+          address: 1957468137024
+          isExternallyAllocated: false
+        shapeFlags:
+          address: 1957460789216
+          isExternallyAllocated: false
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
       marble.entity.components.Mesh:
         material:
           shader:

@@ -9,6 +9,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.physics.Physics;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -48,6 +49,7 @@ public class Application {
     {
         initWindow();
         initImGui();
+        Physics.Init();
         editorLayer = new EditorLayer();
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);

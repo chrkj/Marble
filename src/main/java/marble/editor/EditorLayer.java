@@ -7,6 +7,7 @@ import imgui.flag.ImGuiStyleVar;
 import imgui.type.ImBoolean;
 import imgui.flag.ImGuiWindowFlags;
 
+import marble.physics.Physics;
 import org.lwjgl.Version;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.glfw.GLFW.*;
