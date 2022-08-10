@@ -31,6 +31,10 @@ public class Entity {
     private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
 
+    private transient float lastX = 0;
+    private transient float lastY = 0;
+    private transient float lastZ = 0;
+
     public Entity()
     {
         init("Empty Entity", new Transform(), Math.abs(UUID.randomUUID().hashCode()));
@@ -64,11 +68,18 @@ public class Entity {
         if (components.containsKey(RigidBody.class))
         {
             var rb = (RigidBody) components.get(RigidBody.class);
-            var rbPos = new Vector3f(
-                    rb.rigidActor.getGlobalPose().getP().getX(),
-                    rb.rigidActor.getGlobalPose().getP().getY(),
-                    rb.rigidActor.getGlobalPose().getP().getZ());
-            transform.setPosition(transform.getPosition().add(rbPos));
+
+            var deltaX = rb.rigidActor.getGlobalPose().getP().getX() + Math.abs(lastX);
+            var deltaY = rb.rigidActor.getGlobalPose().getP().getY() + Math.abs(lastY);
+            var deltaZ = rb.rigidActor.getGlobalPose().getP().getZ() + Math.abs(lastZ);
+
+            var deltaPos = new Vector3f(deltaX, deltaY, deltaZ);
+            transform.setPosition(transform.getPosition().add(deltaPos));
+
+            lastX = rb.rigidActor.getGlobalPose().getP().getX();
+            lastY = rb.rigidActor.getGlobalPose().getP().getY();
+            lastZ = rb.rigidActor.getGlobalPose().getP().getZ();
+
         }
 
         if (script != null)

@@ -54,7 +54,7 @@ public class Scene
         editorCamera.onUpdate(dt);
         if (!EditorLayer.sceneRunning) return;
 
-        physicsScene.simulate(1/60f);
+        physicsScene.simulate(dt);
         physicsScene.fetchResults(true);
         for (Entity entity : entities.values())
             entity.update(dt);

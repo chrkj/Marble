@@ -39,7 +39,7 @@ public class RigidBody extends Component
         geometry = new PxBoxGeometry(1f, 1f, 1f);
         material = physics.createMaterial(0.5f, 0.5f, 0.5f);
         shape = physics.createShape(geometry, material, true, shapeFlags);
-        rigidActor = physics.createRigidDynamic(test);
+        rigidActor = physics.createRigidDynamic(tmpPose);
         shape.setSimulationFilterData(tmpFilterData);
         rigidActor.attachShape(shape);
 
