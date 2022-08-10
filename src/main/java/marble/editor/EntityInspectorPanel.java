@@ -58,7 +58,7 @@ public class EntityInspectorPanel implements Panel {
 
     private void addRigidBody()
     {
-        var rb = new RigidBody();
+        var rb = new RigidBody(SceneHierarchyPanel.getSelectedEntity());
         SceneHierarchyPanel.getSelectedEntity().addComponent(rb);
         EditorLayer.currentScene.getRegistry().register(rb);
         EditorLayer.currentScene.getPhysicsScene().addActor(rb.rigidActor);

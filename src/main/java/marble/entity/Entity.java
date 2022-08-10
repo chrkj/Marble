@@ -63,8 +63,9 @@ public class Entity {
     {
         if (components.containsKey(RigidBody.class))
         {
-            var rb = (RigidBody)components.get(RigidBody.class);
-            var rbPos = new Vector3f(rb.rigidActor.getGlobalPose().getP().getX(),
+            var rb = (RigidBody) components.get(RigidBody.class);
+            var rbPos = new Vector3f(
+                    rb.rigidActor.getGlobalPose().getP().getX(),
                     rb.rigidActor.getGlobalPose().getP().getY(),
                     rb.rigidActor.getGlobalPose().getP().getZ());
             transform.setPosition(transform.getPosition().add(rbPos));

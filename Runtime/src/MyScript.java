@@ -11,8 +11,8 @@ public class MyScript extends ScriptableComponent {
     @Override
     public void onUpdate(float dt)
     {
-        float speed = 80 * dt;
-        entity.transform.incrementRotation(speed,speed,speed);
+        //float speed = 80 * dt;
+        //entity.transform.incrementRotation(speed,speed,speed);
     }
 
 }

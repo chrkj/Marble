@@ -25,14 +25,15 @@ public class Physics
         // create PhysX main physics object
         tolerances = new PxTolerancesScale();
         physics = PxTopLevelFunctions.CreatePhysics(version, foundation, tolerances);
+
     }
 
     public static PxScene createPhysicsScene()
     {
         // create a physics scene
         int numThreads = 4;
-        var gravity = new PxVec3(0f, -9.81f, 0f);
-        var sceneDesc = new PxSceneDesc(tolerances);
+        PxVec3 gravity = new PxVec3(0f, -9.81f, 0f);
+        PxSceneDesc sceneDesc = new PxSceneDesc(tolerances);
         sceneDesc.setGravity(gravity);
         sceneDesc.setCpuDispatcher(PxTopLevelFunctions.DefaultCpuDispatcherCreate(numThreads));
         sceneDesc.setFilterShader(PxTopLevelFunctions.DefaultFilterShader());

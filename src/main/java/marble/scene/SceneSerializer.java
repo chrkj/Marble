@@ -1,9 +1,6 @@
 package marble.scene;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +28,9 @@ import marble.entity.components.camera.Camera;
 import marble.entity.components.light.*;
 import marble.util.Loader;
 
-@SuppressWarnings("rawtypes")
-public class SceneSerializer {
-
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class SceneSerializer
+{
     private SceneSerializer() { }
 
     public static Scene copyScene(Scene scene)
@@ -47,11 +44,12 @@ public class SceneSerializer {
         mapper.configure(MapperFeature.PROPAGATE_TRANSIENT_MARKER, true);
 
         Scene newScene = null;
-        var File = new File("assets/scenes/temp/tmp.marble");
         try
         {
-            mapper.writeValue(File, scene);
-            newScene = deSerialize(File);
+            var stringData = mapper.writeValueAsString(scene);
+            var yaml = new Yaml();
+            Map<String, Object> data = yaml.load(stringData);
+            newScene = deSerialize(data);
         }
         catch (IOException e)
         {
@@ -82,45 +80,18 @@ public class SceneSerializer {
         }
     }
 
-    // TODO: Fix duplicate methods
     public static Scene deSerialize(String filePath)
     {
         if (!filePath.endsWith(".marble")) return null;
         Scene deserializedScene = null;
         try
         {
-            InputStream io = new FileInputStream(filePath);
-            Yaml yaml = new Yaml();
+            var yaml = new Yaml();
+            var io = new FileInputStream(filePath);
             Map<String, Object> data = yaml.load(io);
 
-            String sceneName = extractString(data, "name");
-            float specularPower = extractFloat(data, "specularPower");
-            Vector3f ambientLight = extractVec3f(data, "ambientLight");
-            EditorCamera editorCamera = extractEditorCamera(data);
+            deserializedScene = deSerialize(data);
 
-            deserializedScene = new Scene(sceneName, specularPower, ambientLight);
-            deserializedScene.editorCamera = editorCamera;
-
-            LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
-            for (Map entity : entities.values())
-            {
-                Entity newEntity = new Entity(extractInt(entity, "uuid"));
-
-                newEntity.name = extractString(entity,"name");
-                newEntity.transform = loadTransform(extractMap(entity,"transform"));
-
-                if (loadScript(entity) != null)
-                    newEntity.setScript(loadScript(entity));
-
-                var components = extractMap(entity, "components");
-                loadComponents(newEntity, components);
-
-                List children = extractList(entity, "children");
-                if (children.size() > 0)
-                    recursiveChildCall(children, newEntity);
-
-                deserializedScene.addEntityToScene(newEntity);
-            }
             ConsolePanel.log("Loading scene: " + filePath);
         }
         catch (IOException e)
@@ -130,47 +101,34 @@ public class SceneSerializer {
         return deserializedScene;
     }
 
-    public static Scene deSerialize(File file)
+    private static Scene deSerialize(Map<String, Object> data)
     {
-        Scene deserializedScene = null;
-        try
-        {
-            InputStream io = new FileInputStream(file);
-            Yaml yaml = new Yaml();
-            Map<String, Object> data = yaml.load(io);
+        String sceneName = extractString(data, "name");
+        float specularPower = extractFloat(data, "specularPower");
+        Vector3f ambientLight = extractVec3f(data, "ambientLight");
+        EditorCamera editorCamera = extractEditorCamera(data);
 
-            String sceneName = extractString(data, "name");
-            float specularPower = extractFloat(data, "specularPower");
-            Vector3f ambientLight = extractVec3f(data, "ambientLight");
-            EditorCamera editorCamera = extractEditorCamera(data);
+        Scene deserializedScene = new Scene(sceneName, specularPower, ambientLight);
+        deserializedScene.editorCamera = editorCamera;
 
-            deserializedScene = new Scene(sceneName, specularPower, ambientLight);
-            deserializedScene.editorCamera = editorCamera;
+        LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
+        for (Map entity : entities.values()) {
+            Entity newEntity = new Entity(extractInt(entity, "uuid"));
 
-            LinkedHashMap<Map, Map> entities = extractMap(data,"entities");
-            for (Map entity : entities.values())
-            {
-                Entity newEntity = new Entity(extractInt(entity, "uuid"));
+            newEntity.name = extractString(entity, "name");
+            newEntity.transform = loadTransform(extractMap(entity, "transform"));
 
-                newEntity.name = extractString(entity,"name");
-                newEntity.transform = loadTransform(extractMap(entity,"transform"));
+            if (loadScript(entity) != null)
+                newEntity.setScript(loadScript(entity));
 
-                if (loadScript(entity) != null)
-                    newEntity.setScript(loadScript(entity));
+            var components = extractMap(entity, "components");
+            loadComponents(newEntity, components);
 
-                var components = extractMap(entity, "components");
-                loadComponents(newEntity, components);
+            List children = extractList(entity, "children");
+            if (children.size() > 0)
+                recursiveChildCall(children, newEntity);
 
-                List children = extractList(entity, "children");
-                if (children.size() > 0)
-                    recursiveChildCall(children, newEntity);
-
-                deserializedScene.addEntityToScene(newEntity);
-            }
-        }
-        catch (IOException e)
-        {
-            ConsolePanel.log("Failed to deserialize scene: " + file.getAbsolutePath());
+            deserializedScene.addEntityToScene(newEntity);
         }
         return deserializedScene;
     }
@@ -206,7 +164,7 @@ public class SceneSerializer {
             switch (componentName)
             {
                 case "marble.entity.components.Mesh"                     -> newEntity.addComponent(loadMesh(componentData));
-                case "marble.entity.components.RigidBody"                -> newEntity.addComponent(loadRigidBody(componentData));
+                case "marble.entity.components.RigidBody"                -> newEntity.addComponent(loadRigidBody(componentData, newEntity));
                 case "marble.entity.components.camera.PerspectiveCamera" -> newEntity.addComponent(loadPerspectiveCamera(componentData));
                 case "marble.entity.components.light.SpotLight"          -> newEntity.addComponent(loadSpotLight(componentData));
                 case "marble.entity.components.light.PointLight"         -> newEntity.addComponent(loadPointLight(componentData));
@@ -232,9 +190,9 @@ public class SceneSerializer {
         return camera;
     }
 
-    private static Component loadRigidBody(Map componentData)
+    private static Component loadRigidBody(Map componentData, Entity newEntity)
     {
-        return new RigidBody(); // TODO: Load data correctly
+        return new RigidBody(newEntity); // TODO: Load data correctly
     }
 
     private static String loadScript(Map componentData)
