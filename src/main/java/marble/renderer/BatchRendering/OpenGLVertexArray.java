@@ -79,6 +79,7 @@ public class OpenGLVertexArray extends VertexArray
                 }
             }
         }
+        vertexBuffers.add(vertexBuffer);
     }
 
     @Override

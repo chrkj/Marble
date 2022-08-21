@@ -13,7 +13,7 @@ import marble.listeners.MouseListener;
 
 public class EditorCamera extends Camera {
 
-    public final Vector3f position = new Vector3f(2.5f, 15, 70);
+    public final Vector3f position = new Vector3f(-2.5f, -15, -70);
     public final Vector3f rotation = new Vector3f(22, 0, 0);
 
     public float near = 0.3f;
@@ -59,23 +59,22 @@ public class EditorCamera extends Camera {
             rotate(-MouseListener.mouseDelta().x * camRotSpeed, -MouseListener.mouseDelta().y * camRotSpeed, 0);
 
             if (KeyListener.isKeyPressed(GLFW_KEY_W))
-                move(0, 0, -camSpeed);
-            if (KeyListener.isKeyPressed(GLFW_KEY_S))
                 move(0, 0, camSpeed);
+            if (KeyListener.isKeyPressed(GLFW_KEY_S))
+                move(0, 0, -camSpeed);
             if (KeyListener.isKeyPressed(GLFW_KEY_A))
-                move(-camSpeed, 0, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_D))
                 move(camSpeed, 0, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_D))
+                move(-camSpeed, 0, 0);
             if (KeyListener.isKeyPressed(GLFW_KEY_E))
-                move(0, -camSpeed, 0);
-            if (KeyListener.isKeyPressed(GLFW_KEY_Q))
                 move(0, camSpeed, 0);
+            if (KeyListener.isKeyPressed(GLFW_KEY_Q))
+                move(0, -camSpeed, 0);
         }
         else
         {
             glfwSetInputMode(Application.windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         }
-
     }
 
     @Override
@@ -83,8 +82,9 @@ public class EditorCamera extends Camera {
     {
         var view = new Matrix4f().identity();
         view.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
-                .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0));
-        view.translate(-position.x, -position.y, -position.z);
+                .rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0))
+                .rotate((float) Math.toRadians(rotation.z), new Vector3f(0, 0, 1));
+        view.translate(position.x, position.y, position.z);
         return view;
     }
 

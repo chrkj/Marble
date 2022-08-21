@@ -5,12 +5,12 @@ import marble.renderer.opengl.OpenGLVertexBuffer;
 
 public abstract class VertexBuffer
 {
-    public static VertexBuffer create(float[] vertices)
+    public static VertexBuffer create(float[] vertices, int index, int size, int type)
     {
         switch (RenderingAPI.getCurrent())
         {
             case None:      return null;
-            case OPENGL:    return new OpenGLVertexBuffer(vertices);
+            case OPENGL:    return new OpenGLVertexBuffer(vertices, index, size, type);
         }
         return null;
     }
@@ -30,5 +30,5 @@ public abstract class VertexBuffer
     public abstract void delete();
     public abstract BufferLayout getLayout();
     public abstract void setLayout(BufferLayout layout);
-    public abstract void setData(int[] data, int size); // TODO: Create custom data obj
+    public abstract void setData(float[] data);
 }

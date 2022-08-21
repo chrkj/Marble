@@ -16,6 +16,8 @@ public class BufferElement
         this.type = type;
         this.name = name;
         this.normalized = normalized;
+        this.size = shaderDataTypeSize(type);
+        this.offset = 0;
     }
 
     public int getComponentCount()
@@ -27,5 +29,24 @@ public class BufferElement
             case Int4, Mat4, Float4 -> 4;
             default -> 0;
         };
+    }
+
+    private int shaderDataTypeSize(ShaderDataType type)
+    {
+        switch (type)
+        {
+            case Float:    return 4;
+            case Float2:   return 4 * 2;
+            case Float3:   return 4 * 3;
+            case Float4:   return 4 * 4;
+            case Mat3:     return 4 * 3 * 3;
+            case Mat4:     return 4 * 4 * 4;
+            case Int:      return 4;
+            case Int2:     return 4 * 2;
+            case Int3:     return 4 * 3;
+            case Int4:     return 4 * 4;
+            case Bool:     return 1;
+        }
+        return 0;
     }
 }

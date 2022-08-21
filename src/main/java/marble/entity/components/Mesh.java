@@ -16,8 +16,8 @@ import marble.gui.MarbleGui;
 import marble.renderer.IndexBuffer;
 import marble.renderer.VertexBuffer;
 
-public class Mesh extends Component {
-
+public class Mesh extends Component
+{
     private Material material;
 
     private String filePath = "";
@@ -47,11 +47,11 @@ public class Mesh extends Component {
         glBindVertexArray(vaoId);
 
         // Create VBO's
-        //vertexBufferObjectIds.add(VertexBuffer.create(verticesArray, 0, 3, GL_FLOAT));
-        //vertexBufferObjectIds.add(VertexBuffer.create(textureArray, 1, 2, GL_FLOAT));
-        //vertexBufferObjectIds.add(VertexBuffer.create(normalsArray, 2, 3, GL_FLOAT));
+        vertexBufferObjectIds.add(VertexBuffer.create(verticesArray, 0, 3, GL_FLOAT));
+        vertexBufferObjectIds.add(VertexBuffer.create(textureArray, 1, 2, GL_FLOAT));
+        vertexBufferObjectIds.add(VertexBuffer.create(normalsArray, 2, 3, GL_FLOAT));
 
-        indexBuffer = IndexBuffer.create(indicesArray, 0);
+        indexBuffer = IndexBuffer.create(indicesArray, 1);
 
         // Unbind VAO
         glBindVertexArray(0);

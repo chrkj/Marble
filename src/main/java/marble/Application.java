@@ -9,6 +9,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
+import marble.renderer.BatchRendering.Renderer2D;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -145,6 +146,7 @@ public class Application {
 
         // Setting rendering API
         RenderingAPI.setAPI(RenderingAPI.APIType.OPENGL);
+        Renderer2D.init();
     }
 
     public void destroy()

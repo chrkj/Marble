@@ -21,8 +21,8 @@ import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import marble.entity.Material;
 import marble.entity.components.light.Light;
 
-public class Shader {
-
+public class Shader
+{
     public String filepath;
 
     private transient int shaderProgramID;
