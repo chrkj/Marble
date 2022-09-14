@@ -17,8 +17,8 @@ import marble.editor.EditorLayer;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 
-public class Entity {
-
+public class Entity
+{
     public String name;
     public String scriptName;
     public Transform transform;

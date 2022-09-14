@@ -21,8 +21,8 @@ import marble.gui.MarbleGui;
 import marble.renderer.Framebuffer;
 import marble.entity.components.Texture;
 
-public class EditorLayer {
-
+public class EditorLayer
+{
     public static boolean inputFlag;
     public static boolean sceneRunning = false;
     public static Framebuffer gameViewportFb;
@@ -76,7 +76,7 @@ public class EditorLayer {
 
     public void onSceneUpdate(float dt)
     {
-        MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender
+        MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender?
         currentScene.onSceneUpdate(dt);
     }
 

@@ -1,10 +1,7 @@
 package marble.renderer;
 
-import marble.entity.components.camera.EditorCamera;
-import marble.renderer.BatchRendering.Renderer2D;
-import marble.renderer.BatchRendering.RendererAPI;
 import org.joml.Vector3f;
-
+import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
@@ -12,7 +9,7 @@ import marble.entity.Material;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.camera.Camera;
-import org.joml.Vector4f;
+import marble.renderer.BatchRendering.Renderer2D;
 
 public class Renderer
 {

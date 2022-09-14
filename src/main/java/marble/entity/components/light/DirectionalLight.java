@@ -7,8 +7,8 @@ import org.joml.Vector4f;
 
 import marble.gui.MarbleGui;
 
-public class DirectionalLight extends Light {
-
+public class DirectionalLight extends Light
+{
     public DirectionalLight()
     {
         this.intensity = 1f;
@@ -20,7 +20,8 @@ public class DirectionalLight extends Light {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Directional Light", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
+        {
             MarbleGui.colorEdit4("Color", color);
             intensity = MarbleGui.dragFloat("Intensity", intensity);
             ImGui.treePop();
@@ -30,6 +31,5 @@ public class DirectionalLight extends Light {
     @Override
     public void renderGizmo()
     {
-
     }
 }

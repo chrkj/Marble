@@ -8,8 +8,8 @@ import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
 import marble.entity.components.light.DirectionalLight;
 
-public class Registry {
-
+public class Registry
+{
     private final List<Mesh> meshes = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<PointLight> pointLights = new ArrayList<>();

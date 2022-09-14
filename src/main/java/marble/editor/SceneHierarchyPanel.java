@@ -5,8 +5,8 @@ import imgui.flag.ImGuiTreeNodeFlags;
 
 import marble.entity.Entity;
 
-public class SceneHierarchyPanel implements Panel {
-
+public class SceneHierarchyPanel implements Panel
+{
     private static Entity selectedEntity;
 
     public SceneHierarchyPanel() { }

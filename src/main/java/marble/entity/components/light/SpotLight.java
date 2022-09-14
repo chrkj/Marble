@@ -3,12 +3,12 @@ package marble.entity.components.light;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.gui.MarbleGui;
-
 import static org.lwjgl.opengl.GL11.*;
 
-public class SpotLight extends Light {
+import marble.gui.MarbleGui;
 
+public class SpotLight extends Light
+{
     // TODO: Fix rotation to match entity direction properly
 
     private float cutOff = 140;

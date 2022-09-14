@@ -1,7 +1,8 @@
 package marble.renderer.BatchRendering;
 
-import marble.renderer.RenderingAPI;
 import org.joml.Vector4f;
+
+import marble.renderer.RenderingAPI;
 
 public abstract class RendererAPI
 {

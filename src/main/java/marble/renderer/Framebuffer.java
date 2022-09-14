@@ -1,12 +1,12 @@
 package marble.renderer;
 
-import marble.renderer.opengl.OpenGLFramebuffer;
-
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class Framebuffer {
+import marble.renderer.opengl.OpenGLFramebuffer;
 
+public abstract class Framebuffer
+{
     protected int framebufferID;
     protected int depthAttachmentID;
     protected FramebufferSpecification specification;

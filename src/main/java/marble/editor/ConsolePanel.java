@@ -6,8 +6,8 @@ import java.text.SimpleDateFormat;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 
-public final class ConsolePanel implements Panel {
-
+public final class ConsolePanel implements Panel
+{
     private static final int MAX_LENGTH = 100000;
     private static final StringBuffer BUFFER = new StringBuffer();
     private static final ImBoolean SHOULD_SCROLL_TO_BOTTOM = new ImBoolean(false);

@@ -9,8 +9,8 @@ import marble.renderer.Shader;
 import marble.gui.MarbleGui;
 import marble.entity.components.Texture;
 
-public class Material {
-
+public class Material
+{
     private Shader shader;
     private Texture texture;
     private float reflectance;

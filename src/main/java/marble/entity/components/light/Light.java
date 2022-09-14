@@ -4,15 +4,10 @@ import org.joml.Vector4f;
 
 import marble.entity.components.Component;
 
-public abstract class Light extends Component {
-
+public abstract class Light extends Component
+{
     protected float intensity = 1;
     protected Vector4f color = new Vector4f(1,1,1,1);
-
-    @Override
-    public void cleanUp()
-    {
-    }
 
     public Vector4f getColor()
     {
@@ -42,9 +37,14 @@ public abstract class Light extends Component {
         this.intensity = intensity;
     }
 
+    public abstract void renderGizmo();
+
     @Override
     public abstract void renderEntityInspector();
 
-    public abstract void renderGizmo();
+    @Override
+    public void cleanUp()
+    {
+    }
 
 }

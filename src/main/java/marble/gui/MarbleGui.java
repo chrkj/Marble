@@ -5,17 +5,17 @@ import imgui.flag.*;
 import imgui.type.ImString;
 import imgui.type.ImBoolean;
 
-import marble.entity.components.Texture;
-import marble.util.Loader;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import marble.util.Loader;
 import marble.listeners.MouseListener;
+import marble.entity.components.Texture;
 
-public final class MarbleGui {
-
+public final class MarbleGui
+{
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
     public static final ImBoolean polygonMode = new ImBoolean(false);

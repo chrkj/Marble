@@ -25,15 +25,15 @@ import marble.listeners.ResizeListener;
 import marble.editor.EditorLayer;
 import marble.gui.MarbleGui;
 
-public class Application {
-
+public class Application
+{
     public static long windowPtr;
 
     private EditorLayer editorLayer;
-    private final String title;
-    private final String glslVersion = "#version 460";
-    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private String title;
+    private String glslVersion = "#version 460";
+    private ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
     private static int width;
     private static int height;

@@ -1,10 +1,11 @@
 package marble.renderer.BatchRendering;
 
-import marble.entity.components.camera.Camera;
-import marble.renderer.Shader;
-import marble.renderer.VertexBuffer;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import marble.renderer.Shader;
+import marble.renderer.VertexBuffer;
+import marble.entity.components.camera.Camera;
 
 public class Renderer2D
 {
@@ -16,17 +17,15 @@ public class Renderer2D
         }
     }
 
+    private static Shader lineShader;
     private static RendererAPI rendererAPI;
-
-    private static int maxVertices = 8000;
-
     private static VertexArray lineVertexArray;
     private static VertexBuffer lineVertexBuffer;
     private static float[] lineVertexData;
-    private static int lineVertexBufferPtr = 0;
-    private static int lineVertexCount = 0;
+    private static int maxVertices = 8000;
     private static int lineWidth = 2;
-    private static Shader lineShader;
+    private static int lineVertexCount = 0;
+    private static int lineVertexBufferPtr = 0;
 
     public static void init()
     {

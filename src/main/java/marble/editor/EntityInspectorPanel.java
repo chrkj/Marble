@@ -9,11 +9,9 @@ import marble.entity.components.Component;
 import marble.entity.components.light.LightFactory;
 import marble.entity.components.light.LightType;
 
-public class EntityInspectorPanel implements Panel {
-
-    public EntityInspectorPanel()
-    {
-    }
+public class EntityInspectorPanel implements Panel
+{
+    public EntityInspectorPanel() { }
 
     @Override
     public void onImGuiRender()

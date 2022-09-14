@@ -13,8 +13,8 @@ import marble.entity.components.Component;
 import marble.entity.components.camera.Camera;
 import marble.entity.components.camera.EditorCamera;
 
-public class Scene {
-
+public class Scene
+{
     public transient final EditorCamera editorCamera = new EditorCamera();
 
     private String name;

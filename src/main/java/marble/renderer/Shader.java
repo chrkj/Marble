@@ -8,18 +8,17 @@ import java.nio.file.Paths;
 import java.nio.FloatBuffer;
 import java.nio.file.NoSuchFileException;
 
-import marble.editor.ConsolePanel;
-import marble.entity.components.light.PointLight;
-import marble.entity.components.light.SpotLight;
 import org.joml.*;
-
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 import marble.entity.Material;
+import marble.editor.ConsolePanel;
 import marble.entity.components.light.Light;
+import marble.entity.components.light.SpotLight;
+import marble.entity.components.light.PointLight;
 
 public class Shader
 {

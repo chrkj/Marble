@@ -29,8 +29,8 @@ import marble.entity.components.light.*;
 import marble.util.Loader;
 
 @SuppressWarnings("rawtypes")
-public class SceneSerializer {
-
+public class SceneSerializer
+{
     private SceneSerializer() { }
 
     public static Scene copyScene(Scene scene)

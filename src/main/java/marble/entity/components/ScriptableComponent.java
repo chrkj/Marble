@@ -3,8 +3,8 @@ package marble.entity.components;
 import marble.editor.EditorLayer;
 import marble.entity.Entity;
 
-public abstract class ScriptableComponent {
-
+public abstract class ScriptableComponent
+{
     public Entity entity;
 
     public abstract void onInit();

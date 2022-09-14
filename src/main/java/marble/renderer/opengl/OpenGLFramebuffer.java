@@ -1,8 +1,8 @@
 package marble.renderer.opengl;
 
+import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -14,8 +14,8 @@ import static org.lwjgl.opengl.GL45.glCreateFramebuffers;
 import marble.editor.ConsolePanel;
 import marble.renderer.Framebuffer;
 
-public class OpenGLFramebuffer extends Framebuffer {
-
+public class OpenGLFramebuffer extends Framebuffer
+{
     public OpenGLFramebuffer(FramebufferSpecification specification)
     {
         this.specification = specification;

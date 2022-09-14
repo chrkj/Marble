@@ -8,8 +8,8 @@ import imgui.extension.imguizmo.flag.Operation;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Gizmo {
-
+public class Gizmo
+{
     private static int currentGizmoOperation = Operation.TRANSLATE;
     private static final int CAM_DISTANCE = 8;
     private static final float[] proj = new float[16];

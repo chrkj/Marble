@@ -2,10 +2,11 @@ package marble.entity.components.light;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
+
 import marble.gui.MarbleGui;
 
-public class PointLight extends Light {
-
+public class PointLight extends Light
+{
     public float linear = 0;
     public float constant = 0;
     public float exponent = 0;
@@ -28,6 +29,5 @@ public class PointLight extends Light {
     @Override
     public void renderGizmo()
     {
-
     }
 }
