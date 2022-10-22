@@ -1,6 +1,6 @@
 package marble.entity;
 
-import marble.entity.components.RigidBody;
+import org.joml.Vector3f;
 import org.joml.Matrix4f;
 
 import javax.tools.*;
@@ -17,7 +17,7 @@ import marble.editor.EditorLayer;
 import marble.editor.ConsolePanel;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
-import org.joml.Vector3f;
+import marble.entity.components.RigidBody;
 
 public class Entity
 {
@@ -79,7 +79,6 @@ public class Entity
             lastX = rb.rigidActor.getGlobalPose().getP().getX();
             lastY = rb.rigidActor.getGlobalPose().getP().getY();
             lastZ = rb.rigidActor.getGlobalPose().getP().getZ();
-
         }
 
         if (script != null)

@@ -1,8 +1,8 @@
 editorCamera:
   position:
-    x: 2.5
-    "y": 15.0
-    z: 70.0
+    x: -2.5
+    "y": -15.0
+    z: -70.0
   rotation:
     x: 22.0
     "y": 0.0

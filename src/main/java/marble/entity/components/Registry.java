@@ -52,6 +52,11 @@ public class Registry
         return directionalLights;
     }
 
+    public List<RigidBody> getRigidBodies()
+    {
+        return rigidBodies;
+    }
+
     public List<Light> getLights()
     {
         List<Light> lights = new ArrayList<>();

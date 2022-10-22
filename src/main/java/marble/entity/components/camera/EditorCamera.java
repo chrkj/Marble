@@ -13,7 +13,7 @@ import marble.listeners.MouseListener;
 
 public class EditorCamera extends Camera
 {
-    public Vector3f position = new Vector3f(2.5f, 15, 70);
+    public Vector3f position = new Vector3f(-2.5f, -15, -70);
     public Vector3f rotation = new Vector3f(22, 0, 0);
 
     public float near = 0.3f;

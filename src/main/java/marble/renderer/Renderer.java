@@ -67,10 +67,10 @@ public class Renderer
 
         if (viewportId == ViewportId.EDITOR)
         {
-            var transform = registry.getMeshes().get(0).getEntity().transform;
             Renderer2D.beginScene(camera);
-            Renderer2D.drawLine(new Vector3f(0,0,0), new Vector3f(10f,10f,10f), new Vector4f(1,1,1,1));
-            Renderer2D.drawRect(new Transform(transform), new Vector3f(5, 5, 5), new Vector4f(1,1,1,1));
+            var rbs = registry.getRigidBodies();
+            for (var rb : rbs)
+                Renderer2D.drawRect(new Transform(rb.getEntity().transform), new Vector3f(5, 5, 5), new Vector4f(1,1,1,1));
             Renderer2D.endScene();
         }
 
