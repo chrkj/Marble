@@ -10,8 +10,8 @@ import imgui.flag.ImGuiMouseButton;
 import marble.util.Loader;
 import marble.entity.components.Texture;
 
-public class ContentBrowserPanel implements Panel {
-
+public class ContentBrowserPanel implements Panel
+{
     private String currentDir;
     private final String assetsDir = "assets";
     private final Texture dirIcon;

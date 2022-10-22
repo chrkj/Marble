@@ -1,10 +1,9 @@
 package marble.entity;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class Transform {
-
+public class Transform
+{
     private Vector3f scale;
     private Vector3f position;
     private Vector3f rotation;
@@ -27,6 +26,11 @@ public class Transform {
     public Transform(Vector3f position, Vector3f rotation, Vector3f scale)
     {
         init(position, rotation, scale);
+    }
+
+    public Transform(Transform transform)
+    {
+        init(transform.position, transform.rotation, transform.scale);
     }
 
     private void init(Vector3f position, Vector3f rotation, Vector3f scale)

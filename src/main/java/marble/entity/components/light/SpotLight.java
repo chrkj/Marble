@@ -3,10 +3,12 @@ package marble.entity.components.light;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import marble.gui.MarbleGui;
 
-public class SpotLight extends Light {
-
+public class SpotLight extends Light
+{
     // TODO: Fix rotation to match entity direction properly
 
     private float cutOff = 140;
@@ -37,7 +39,8 @@ public class SpotLight extends Light {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Spot Light", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
+        {
             cutOff = MarbleGui.dragFloat("CutOff", cutOff);
             MarbleGui.colorEdit4("Color", color);
             intensity = MarbleGui.dragFloat("Intensity", intensity);
@@ -46,5 +49,16 @@ public class SpotLight extends Light {
             pointLight.exponent = MarbleGui.dragFloat("Exponent", pointLight.exponent);
             ImGui.treePop();
         }
+    }
+
+    @Override
+    public void renderGizmo()
+    {
+        var pos = entity.transform.getPosition();
+        glLineWidth(2);
+        glBegin(GL_LINES);
+            glVertex3f(pos.x, pos.y, pos.z);
+            glVertex3f(pos.x + 10, pos.y + 10, pos.z + 10);
+        glEnd();
     }
 }

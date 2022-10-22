@@ -9,8 +9,8 @@ import marble.renderer.Shader;
 import marble.gui.MarbleGui;
 import marble.entity.components.Texture;
 
-public class Material {
-
+public class Material
+{
     private Shader shader;
     private Texture texture;
     private float reflectance;
@@ -122,7 +122,8 @@ public class Material {
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Material", nodeFlags);
-        if (nodeOpen) {
+        if (nodeOpen)
+        {
             MarbleGui.colorEdit4("Ambient", ambient);
             MarbleGui.colorEdit4("Diffuse", diffuse);
             MarbleGui.colorEdit4("Specular", specular);

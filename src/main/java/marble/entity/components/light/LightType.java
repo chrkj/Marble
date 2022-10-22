@@ -2,8 +2,8 @@ package marble.entity.components.light;
 
 import java.util.function.Supplier;
 
-public enum LightType {
-
+public enum LightType
+{
     SPOT(SpotLight::new),
     POINT(PointLight::new),
     DIRECTIONAL(DirectionalLight::new);

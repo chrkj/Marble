@@ -1,17 +1,19 @@
 package marble.renderer;
 
 import org.joml.Vector3f;
-
+import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.entity.Material;
+import marble.entity.Transform;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.camera.Camera;
+import marble.renderer.BatchRendering.Renderer2D;
 
-public class Renderer {
-
+public class Renderer
+{
     public enum ViewportId { EDITOR, GAME }
 
     public void clear()
@@ -62,6 +64,16 @@ public class Renderer {
             mesh.render();
             shader.unbind();
         }
+
+        if (viewportId == ViewportId.EDITOR)
+        {
+            var transform = registry.getMeshes().get(0).getEntity().transform;
+            Renderer2D.beginScene(camera);
+            Renderer2D.drawLine(new Vector3f(0,0,0), new Vector3f(10f,10f,10f), new Vector4f(1,1,1,1));
+            Renderer2D.drawRect(new Transform(transform), new Vector3f(5, 5, 5), new Vector4f(1,1,1,1));
+            Renderer2D.endScene();
+        }
+
         frameBuffer.unbind();
     }
 

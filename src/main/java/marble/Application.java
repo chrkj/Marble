@@ -18,22 +18,23 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.util.Loader;
-import marble.renderer.RenderingAPI;
+import marble.gui.MarbleGui;
+import marble.editor.EditorLayer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
-import marble.editor.EditorLayer;
-import marble.gui.MarbleGui;
+import marble.renderer.RenderingAPI;
+import marble.renderer.BatchRendering.Renderer2D;
 
-public class Application {
-
+public class Application
+{
     public static long windowPtr;
 
     private EditorLayer editorLayer;
-    private final String title;
-    private final String glslVersion = "#version 460";
-    private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
-    private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+    private String title;
+    private String glslVersion = "#version 460";
+    private ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+    private ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
 
     private static int width;
     private static int height;
@@ -67,7 +68,7 @@ public class Application {
             startFrame();
             editorLayer.onImGuiRender();
             editorLayer.onSceneUpdate(dt);
-            editorLayer.onSceneRender();
+            editorLayer.onSceneRender(dt);
             endFrame();
 
             endTime = Time.getTime();
@@ -147,6 +148,7 @@ public class Application {
 
         // Setting rendering API
         RenderingAPI.setAPI(RenderingAPI.APIType.OPENGL);
+        Renderer2D.init();
     }
 
     public void destroy()

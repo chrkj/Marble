@@ -2,8 +2,8 @@ package marble.editor;
 
 import java.util.HashMap;
 
-public class PanelManager {
-
+public class PanelManager
+{
     private final HashMap<Class<? extends Panel>, Panel> panels = new HashMap<>();
 
     public PanelManager() { }

@@ -2,8 +2,8 @@ package marble.listeners;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class KeyListener {
-
+public class KeyListener
+{
     private static final boolean[] keyPressed = new boolean[350];
 
     private KeyListener() { }

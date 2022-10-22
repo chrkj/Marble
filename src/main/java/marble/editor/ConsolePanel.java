@@ -23,18 +23,18 @@ public final class ConsolePanel implements Panel
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
 
-    public static void log(float text)
+    public static void log(float value)
     {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(text).append("\n");
+        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(value).append("\n");
         if(BUFFER.length() > MAX_LENGTH)
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
 
-    public static void log(boolean bool)
+    public static void log(boolean value)
     {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(bool).append("\n");
+        BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(value).append("\n");
         if(BUFFER.length() > MAX_LENGTH)
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
     }
@@ -45,7 +45,7 @@ public final class ConsolePanel implements Panel
         ImGui.setNextWindowSize(500, 400);
         ImGui.begin("Console");
         if (ImGui.button("Clear"))
-            clear();
+            BUFFER.delete(0, BUFFER.length());
         ImGui.separator();
         ImGui.beginChild("scrolling");
         ImGui.textUnformatted(BUFFER.toString());
@@ -53,11 +53,6 @@ public final class ConsolePanel implements Panel
             ImGui.setScrollHereY(1f);
         ImGui.endChild();
         ImGui.end();
-    }
-
-    private static void clear()
-    {
-        BUFFER.delete(0, BUFFER.length());
     }
 
 }

@@ -248,8 +248,8 @@ public class SceneSerializer
     {
         PerspectiveCamera camera = new PerspectiveCamera();
         camera.near = extractFloat(componentsData, "near");
-        camera.far =  extractFloat(componentsData, "far");
-        camera.fov =  extractFloat(componentsData, "fov");
+        camera.far = extractFloat(componentsData, "far");
+        camera.fov = extractFloat(componentsData, "fov");
         return camera;
     }
 

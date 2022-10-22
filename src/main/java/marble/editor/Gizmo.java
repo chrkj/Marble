@@ -8,13 +8,13 @@ import imgui.extension.imguizmo.flag.Operation;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Gizmo {
-
-    private static final int CAM_DISTANCE = 8;
+public class Gizmo
+{
     private static int currentGizmoOperation = Operation.TRANSLATE;
-    private static final float[] VIEW_MANIPULATE_SIZE = new float[]{ 128f, 128f };
+    private static final int CAM_DISTANCE = 8;
     private static final float[] proj = new float[16];
     private static final float[] view = new float[16];
+    private static final float[] VIEW_MANIPULATE_SIZE = new float[]{ 128f, 128f };
 
     public static void onImGuiRender()
     {

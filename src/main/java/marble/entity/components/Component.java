@@ -2,8 +2,8 @@ package marble.entity.components;
 
 import marble.entity.Entity;
 
-public abstract class Component {
-
+public abstract class Component
+{
     protected transient Entity entity = null;
 
     public abstract void cleanUp();
