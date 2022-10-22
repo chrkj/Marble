@@ -28,6 +28,11 @@ public class Transform
         init(position, rotation, scale);
     }
 
+    public Transform(Transform transform)
+    {
+        init(transform.position, transform.rotation, transform.scale);
+    }
+
     private void init(Vector3f position, Vector3f rotation, Vector3f scale)
     {
         this.scale = scale;

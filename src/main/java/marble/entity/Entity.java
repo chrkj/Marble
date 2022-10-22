@@ -12,8 +12,8 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import marble.editor.ConsolePanel;
 import marble.editor.EditorLayer;
+import marble.editor.ConsolePanel;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 
@@ -183,7 +183,7 @@ public class Entity
             );
             task.call();
 
-            for (Diagnostic diagnostic : diagnostics.getDiagnostics())
+            for (var diagnostic : diagnostics.getDiagnostics())
                 ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
             fileManager.close();
 
@@ -203,7 +203,6 @@ public class Entity
         {
             e.printStackTrace();
         }
-
     }
 
 }

@@ -76,13 +76,13 @@ public class EditorLayer
 
     public void onSceneUpdate(float dt)
     {
-        MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender?
         currentScene.onSceneUpdate(dt);
     }
 
-    public void onSceneRender()
+    public void onSceneRender(float dt)
     {
         currentScene.onSceneRender();
+        MarbleGui.renderDiagnostics(dt);
     }
 
     public void cleanUp()
@@ -131,35 +131,33 @@ public class EditorLayer
         }
 
         // Mouse picking
+        ImVec2 windowSize = ImGui.getWindowSize();
+        ImVec2 minBound = ImGui.getWindowPos();
+        minBound.x += viewportOffset.x;
+        minBound.y += viewportOffset.y - 19; // TODO: FIX THIS (hardcoded tab offset)
+
+        ImVec2 maxBound = new ImVec2(minBound.x + windowSize.x, minBound.y + windowSize.y);
+        editorViewportBounds[0] = new ImVec2(minBound.x, minBound.y);
+        editorViewportBounds[1] = new ImVec2(maxBound.x, maxBound.y);
+
+        var mousePos = ImGui.getMousePos();
+        float x = mousePos.x;
+        float y = mousePos.y;
+        x -= editorViewportBounds[0].x;
+        y -= editorViewportBounds[0].y;
+
+        var viewportSize = new ImVec2(editorViewportBounds[1].x - editorViewportBounds[0].x, editorViewportBounds[1].y - editorViewportBounds[0].y);
+        y = viewportSize.y - y;
+
+        int mouseX = (int) x;
+        int mouseY = (int) y;
+
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
         {
-            ImVec2 windowSize = ImGui.getWindowSize();
-            ImVec2 minBound = ImGui.getWindowPos();
-            minBound.x += viewportOffset.x;
-            minBound.y += viewportOffset.y - 19; // TODO: FIX THIS (hardcoded tab offset)
-
-            ImVec2 maxBound = new ImVec2(minBound.x + windowSize.x, minBound.y + windowSize.y);
-            editorViewportBounds[0] = new ImVec2(minBound.x, minBound.y);
-            editorViewportBounds[1] = new ImVec2(maxBound.x, maxBound.y);
-
-            var mousePos = ImGui.getMousePos();
-            float x = mousePos.x;
-            float y = mousePos.y;
-            x -= editorViewportBounds[0].x;
-            y -= editorViewportBounds[0].y;
-
-            var viewportSize = new ImVec2(editorViewportBounds[1].x - editorViewportBounds[0].x, editorViewportBounds[1].y - editorViewportBounds[0].y);
-            y = viewportSize.y - y;
-
-            int mouseX = (int) x;
-            int mouseY = (int) y;
-
-            if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
+            if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
             {
-                if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
-                {
-                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
-                    SceneHierarchyPanel.setSelectedEntity(selectedEntity);
-                }
+                var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
+                SceneHierarchyPanel.setSelectedEntity(selectedEntity);
             }
         }
 
@@ -197,27 +195,21 @@ public class EditorLayer
         ImGuiViewport mainViewport = ImGui.getMainViewport();
 
         // ToolBar
-        {
-            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
-            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), toolBarHeight);
-            ImGui.setNextWindowViewport(mainViewport.getID());
-
-            ImGui.begin("TitleBar", new ImBoolean(true), windowFlags | ImGuiWindowFlags.MenuBar);
-            drawMenuBar();
-            drawToolBar();
-            ImGui.end();
-        }
+        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
+        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), toolBarHeight);
+        ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.begin("TitleBar", new ImBoolean(true), windowFlags | ImGuiWindowFlags.MenuBar);
+        drawMenuBar();
+        drawToolBar();
+        ImGui.end();
 
         // DockSpace
-        {
-            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY() + toolBarHeight);
-            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY() - toolBarHeight);
-            ImGui.setNextWindowViewport(mainViewport.getID());
-
-            ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
-            ImGui.dockSpace(ImGui.getID("Dockspace"));
-            ImGui.end();
-        }
+        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY() + toolBarHeight);
+        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY() - toolBarHeight);
+        ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
+        ImGui.dockSpace(ImGui.getID("Dockspace"));
+        ImGui.end();
     }
 
     private void drawToolBar()

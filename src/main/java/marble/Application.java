@@ -9,7 +9,6 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.flag.ImGuiConfigFlags;
 
-import marble.renderer.BatchRendering.Renderer2D;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -18,12 +17,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.util.Loader;
-import marble.renderer.RenderingAPI;
+import marble.gui.MarbleGui;
+import marble.editor.EditorLayer;
 import marble.listeners.KeyListener;
 import marble.listeners.MouseListener;
 import marble.listeners.ResizeListener;
-import marble.editor.EditorLayer;
-import marble.gui.MarbleGui;
+import marble.renderer.RenderingAPI;
+import marble.renderer.BatchRendering.Renderer2D;
 
 public class Application
 {
@@ -66,7 +66,7 @@ public class Application
             startFrame();
             editorLayer.onImGuiRender();
             editorLayer.onSceneUpdate(dt);
-            editorLayer.onSceneRender();
+            editorLayer.onSceneRender(dt);
             endFrame();
 
             endTime = Time.getTime();

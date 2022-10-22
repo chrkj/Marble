@@ -28,7 +28,7 @@ public final class MarbleGui
         throw new UnsupportedOperationException();
     }
 
-    public static void onImGuiRender(float dt)
+    public static void renderDiagnostics(float dt)
     {
         ImGui.begin("Diagnostics", ImGuiWindowFlags.NoCollapse);
         ImGui.text(String.format("%.1f fps", 1 / dt));

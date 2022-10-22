@@ -3,7 +3,12 @@ package marble.renderer.BatchRendering;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import static org.lwjgl.opengl.GL11C.glClear;
+import static org.lwjgl.opengl.GL11C.GL_DEPTH_BUFFER_BIT;
+
+import marble.gui.MarbleGui;
 import marble.renderer.Shader;
+import marble.entity.Transform;
 import marble.renderer.VertexBuffer;
 import marble.entity.components.camera.Camera;
 
@@ -54,7 +59,6 @@ public class Renderer2D
 
     public static void beginScene(Camera camera)
     {
-        // TODO: Add bind/unbind to setuniform methods
         lineShader.bind();
         lineShader.setUniformMat4("uProjection", camera.getProjectionMatrixEditor());
         lineShader.setUniformMat4("uView", camera.getViewMatrix());
@@ -71,14 +75,15 @@ public class Renderer2D
     {
         if (lineVertexCount > 0)
         {
-            // glClear(GL_DEPTH_BUFFER_BIT); forces subsequent draws in front
+            // forces subsequent draws in front
+            glClear(GL_DEPTH_BUFFER_BIT);
             lineVertexBuffer.setData(lineVertexData);
 
             lineShader.bind();
             rendererAPI.setLineWidth(lineWidth);
             rendererAPI.drawLines(lineVertexArray, lineVertexCount);
             lineShader.unbind();
-            //DrawCalls++;
+            MarbleGui.drawCalls++;
         }
     }
 
@@ -102,4 +107,65 @@ public class Renderer2D
 
         lineVertexCount += 2;
     }
+
+    public static void drawRect(Transform transform, Vector3f size, Vector4f color)
+    {
+        // Might need to be put on the stack?
+        var e0 = rotate(new Vector3f(- size.x/2, - size.y/2, - size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));
+        var e1 = rotate(new Vector3f(+ size.x/2, - size.y/2, - size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        var e2 = rotate(new Vector3f(+ size.x/2, - size.y/2, + size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        var e3 = rotate(new Vector3f(- size.x/2, - size.y/2, + size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+
+        var e4 = rotate(new Vector3f(- size.x/2, + size.y/2, - size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        var e5 = rotate(new Vector3f(+ size.x/2, + size.y/2, - size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        var e6 = rotate(new Vector3f(+ size.x/2, + size.y/2, + size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        var e7 = rotate(new Vector3f(- size.x/2, + size.y/2, + size.z/2), (float)Math.toRadians(transform.getRotation().x), (float)Math.toRadians(transform.getRotation().y), (float)Math.toRadians(transform.getRotation().z));;
+        //
+
+        drawLine(e0, e1, color);
+        drawLine(e1, e2, color);
+        drawLine(e2, e3, color);
+        drawLine(e3, e0, color);
+
+        drawLine(e0, e4, color);
+        drawLine(e1, e5, color);
+        drawLine(e2, e6, color);
+        drawLine(e3, e7, color);
+
+        drawLine(e4, e5, color);
+        drawLine(e5, e6, color);
+        drawLine(e6, e7, color);
+        drawLine(e7, e4, color);
+    }
+
+    private static Vector3f rotate(Vector3f p, float x, float y, float z)
+    {
+        var cosA = Math.cos(z);
+        var sinA = Math.sin(z);
+        var cosB = Math.cos(y);
+        var sinB = Math.sin(y);
+        var cosC = Math.cos(x);
+        var sinC = Math.sin(x);
+
+        var Axx = cosA * cosB;
+        var Axy = cosA * sinB * sinC - sinA * cosC;
+        var Axz = cosA * sinB * cosC + sinA * sinC;
+        var Ayx = sinA * cosB;
+        var Ayy = sinA * sinB * sinC + cosA * cosC;
+        var Ayz = sinA * sinB * cosC - cosA * sinC;
+        var Azx = -sinB;
+        var Azy = cosB * sinC;
+        var Azz = cosB * cosC;
+
+        var px = p.x;
+        var py = p.y;
+        var pz = p.z;
+
+        p.x = (float) (Axx * px + Axy * py + Axz * pz);
+        p.y = (float) (Ayx * px + Ayy * py + Ayz * pz);
+        p.z = (float) (Azx * px + Azy * py + Azz * pz);
+
+        return p;
+    }
+
 }

@@ -47,7 +47,6 @@ public class EntityInspectorPanel implements Panel
                 if (ImGui.selectable("Point light"))       addPointLight();
                 ImGui.endPopup();
             }
-
         }
         ImGui.end();
     }
