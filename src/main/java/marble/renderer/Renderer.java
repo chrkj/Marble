@@ -27,6 +27,7 @@ public class Renderer
     {
         frameBuffer.bind();
         clear();
+        Renderer2D.beginScene(camera);
 
         for (Mesh mesh : registry.getMeshes())
         {
@@ -67,13 +68,12 @@ public class Renderer
 
         if (viewportId == ViewportId.EDITOR)
         {
-            Renderer2D.beginScene(camera);
             var rbs = registry.getRigidBodies();
             for (var rb : rbs)
                 Renderer2D.drawRect(new Transform(rb.getEntity().transform), new Vector3f(5, 5, 5), new Vector4f(1,1,1,1));
-            Renderer2D.endScene();
         }
 
+        Renderer2D.endScene();
         frameBuffer.unbind();
     }
 

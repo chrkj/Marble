@@ -192,7 +192,7 @@ public class SceneSerializer
 
     private static Component loadRigidBody(Map componentData, Entity newEntity)
     {
-        return new RigidBody(newEntity); // TODO: Load data correctly
+        return new RigidBody(newEntity, extractBool(componentData, "isStatic")); // TODO: Load data correctly
     }
 
     private static String loadScript(Map componentData)
@@ -310,6 +310,11 @@ public class SceneSerializer
     private static LinkedHashMap extractMap(Map data, String key)
     {
         return (LinkedHashMap) data.get(key);
+    }
+
+    private static boolean extractBool(Map data, String key)
+    {
+        return (boolean) data.get(key);
     }
 
 }

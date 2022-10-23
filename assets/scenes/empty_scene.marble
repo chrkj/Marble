@@ -36,24 +36,24 @@ entities:
     components:
       marble.entity.components.RigidBody:
         rigidActor:
-          address: 1807337098320
+          address: 2415412213200
           isExternallyAllocated: false
-          sleeping: false
           releasable: true
+        isStatic: false
         shape:
-          address: 1807337094192
+          address: 2415412209072
           isExternallyAllocated: false
           exclusive: true
           releasable: true
         material:
-          address: 1807341069040
+          address: 2415413062208
           isExternallyAllocated: false
           releasable: true
         geometry:
-          address: 1807340220240
+          address: 2415416488512
           isExternallyAllocated: false
         shapeFlags:
-          address: 1807332910160
+          address: 2415411827472
           isExternallyAllocated: false
         vGeo:
           x: 0.0
@@ -155,12 +155,12 @@ entities:
         z: 0.0
     components:
       marble.entity.components.light.PointLight:
+        intensity: 8.2
         color:
           x: 0.16013072
           "y": 0.185025
           z: 0.5833334
           w: 1.0
-        intensity: 8.2
         linear: 0.2
         constant: 8.2
         exponent: 0.0
@@ -225,12 +225,12 @@ entities:
         z: -0.0034083456
     components:
       marble.entity.components.light.DirectionalLight:
+        intensity: 0.1
         color:
           x: 1.0
           "y": 1.0
           z: 1.0
           w: 1.0
-        intensity: 0.1
     uuid: 455960423
     children: []
   666182862:
@@ -251,20 +251,20 @@ entities:
         z: -101.830414
     components:
       marble.entity.components.light.SpotLight:
+        intensity: 23.9
         color:
           x: 0.7009804
           "y": 0.2989475
           z: 0.2989475
           w: 1.0
-        intensity: 23.9
         cutOff: 30.0
         pointLight:
+          intensity: 1.0
           color:
             x: 1.0
             "y": 1.0
             z: 1.0
             w: 1.0
-          intensity: 1.0
           linear: 0.3
           constant: 0.0
           exponent: 0.0
