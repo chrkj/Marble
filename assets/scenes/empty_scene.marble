@@ -34,31 +34,6 @@ entities:
         "y": -0.0
         z: 0.0
     components:
-      marble.entity.components.RigidBody:
-        rigidActor:
-          address: 2415412213200
-          isExternallyAllocated: false
-          releasable: true
-        isStatic: false
-        shape:
-          address: 2415412209072
-          isExternallyAllocated: false
-          exclusive: true
-          releasable: true
-        material:
-          address: 2415413062208
-          isExternallyAllocated: false
-          releasable: true
-        geometry:
-          address: 2415416488512
-          isExternallyAllocated: false
-        shapeFlags:
-          address: 2415411827472
-          isExternallyAllocated: false
-        vGeo:
-          x: 0.0
-          "y": 0.0
-          z: 0.0
       marble.entity.components.Mesh:
         material:
           shader:

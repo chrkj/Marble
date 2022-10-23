@@ -29,7 +29,7 @@ public class Gizmo
         // TODO: Fix view manipulation
         ImGuizmo.viewManipulate(view, CAM_DISTANCE, new float[]{viewManipulateRight - 128, viewManipulateTop}, VIEW_MANIPULATE_SIZE, 0x10101010);
 
-        var selectedEntity = SceneHierarchyPanel.getSelectedEntity();
+        var selectedEntity = SceneHierarchy.getSelectedEntity();
         if (selectedEntity == null) return;
 
         if (ImGui.isKeyPressed(GLFW_KEY_T))
@@ -60,7 +60,7 @@ public class Gizmo
 
     public static boolean inUse()
     {
-        if (SceneHierarchyPanel.getSelectedEntity() == null)
+        if (SceneHierarchy.getSelectedEntity() == null)
             return false;
         return ImGuizmo.isUsing();
     }

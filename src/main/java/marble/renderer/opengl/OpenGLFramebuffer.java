@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL32C.glFramebufferTexture;
 import static org.lwjgl.opengl.GL42.glTexStorage2D;
 import static org.lwjgl.opengl.GL45.glCreateFramebuffers;
 
-import marble.editor.ConsolePanel;
+import marble.editor.Console;
 import marble.renderer.Framebuffer;
 
 public class OpenGLFramebuffer extends Framebuffer
@@ -107,7 +107,7 @@ public class OpenGLFramebuffer extends Framebuffer
         glDrawBuffers(drawBuffers);
 
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-            ConsolePanel.log("glCheckFramebufferStatus failed");
+            Console.log("glCheckFramebufferStatus failed");
 
         unbind();
     }

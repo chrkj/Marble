@@ -50,7 +50,6 @@ public class Application
     {
         initWindow();
         initImGui();
-        Physics.Init();
         editorLayer = new EditorLayer();
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);

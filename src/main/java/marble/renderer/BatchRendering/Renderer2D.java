@@ -111,42 +111,42 @@ public class Renderer2D
     public static void drawRect(Transform transform, Vector3f size, Vector4f color)
     {
         // Might need to be put on the stack?
-        var e0 = rotate(new Vector3f(- size.x/2, - size.y/2, - size.z/2),
+        var e0 = rotate(new Vector3f(- size.x, - size.y, - size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e1 = rotate(new Vector3f(+ size.x/2, - size.y/2, - size.z/2),
+        var e1 = rotate(new Vector3f(+ size.x, - size.y, - size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e2 = rotate(new Vector3f(+ size.x/2, - size.y/2, + size.z/2),
+        var e2 = rotate(new Vector3f(+ size.x, - size.y, + size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e3 = rotate(new Vector3f(- size.x/2, - size.y/2, + size.z/2),
+        var e3 = rotate(new Vector3f(- size.x, - size.y, + size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e4 = rotate(new Vector3f(- size.x/2, + size.y/2, - size.z/2),
+        var e4 = rotate(new Vector3f(- size.x, + size.y, - size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e5 = rotate(new Vector3f(+ size.x/2, + size.y/2, - size.z/2),
+        var e5 = rotate(new Vector3f(+ size.x, + size.y, - size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e6 = rotate(new Vector3f(+ size.x/2, + size.y/2, + size.z/2),
+        var e6 = rotate(new Vector3f(+ size.x, + size.y, + size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))
                 .add(transform.getPosition());
-        var e7 = rotate(new Vector3f(- size.x/2, + size.y/2, + size.z/2),
+        var e7 = rotate(new Vector3f(- size.x, + size.y, + size.z),
                 (float)Math.toRadians(transform.getRotation().x),
                 (float)Math.toRadians(transform.getRotation().y),
                 (float)Math.toRadians(transform.getRotation().z))

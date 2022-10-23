@@ -18,7 +18,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.yaml.snakeyaml.Yaml;
 
-import marble.editor.ConsolePanel;
+import marble.editor.Console;
 import marble.entity.Entity;
 import marble.entity.Transform;
 import marble.entity.components.camera.PerspectiveCamera;
@@ -71,11 +71,11 @@ public class SceneSerializer
         try
         {
             mapper.writeValue(new File("assets/scenes/" + scene.getSaveName() + ".marble"), scene);
-            ConsolePanel.log("Scene saved.");
+            Console.log("Scene saved.");
         }
         catch (IOException e)
         {
-            ConsolePanel.log("Failed to save scene: " + scene.getSaveName());
+            Console.log("Failed to save scene: " + scene.getSaveName());
             e.printStackTrace();
         }
     }
@@ -92,11 +92,11 @@ public class SceneSerializer
 
             deserializedScene = deSerialize(data);
 
-            ConsolePanel.log("Loading scene: " + filePath);
+            Console.log("Loading scene: " + filePath);
         }
         catch (IOException e)
         {
-            ConsolePanel.log("Failed to load scene: " + filePath);
+            Console.log("Failed to load scene: " + filePath);
         }
         return deserializedScene;
     }
@@ -192,7 +192,8 @@ public class SceneSerializer
 
     private static Component loadRigidBody(Map componentData, Entity newEntity)
     {
-        return new RigidBody(newEntity, extractBool(componentData, "isStatic")); // TODO: Load data correctly
+        // TODO: Load data correctly
+        return new RigidBody(newEntity, extractBool(componentData, "isStatic"));
     }
 
     private static String loadScript(Map componentData)

@@ -49,19 +49,20 @@ public class EditorLayer
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
         panelManager = new PanelManager();
-        panelManager.addPanel(new ConsolePanel());
-        panelManager.addPanel(new FileDialogPanel());
-        panelManager.addPanel(new SceneHierarchyPanel());
-        panelManager.addPanel(new ContentBrowserPanel());
-        panelManager.addPanel(new EntityInspectorPanel());
+        panelManager.addPanel(new Console());
+        panelManager.addPanel(new FileDialog());
+        panelManager.addPanel(new SceneHierarchy());
+        panelManager.addPanel(new ContentBrowser());
+        panelManager.addPanel(new EntityInspector());
 
         currentScene = SceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
+        assert currentScene != null;
         currentScene.start();
 
-        ConsolePanel.log("LWJGL Version: " + Version.getVersion() + "!");
-        ConsolePanel.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        ConsolePanel.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        ConsolePanel.log("Version: " + GL30.glGetString(GL_VERSION));
+        Console.log("LWJGL Version: " + Version.getVersion() + "!");
+        Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        Console.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     public void onImGuiRender()
@@ -157,7 +158,7 @@ public class EditorLayer
             if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
             {
                 var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
-                SceneHierarchyPanel.setSelectedEntity(selectedEntity);
+                SceneHierarchy.setSelectedEntity(selectedEntity);
             }
         }
 
@@ -225,14 +226,14 @@ public class EditorLayer
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
             if (EditorLayer.sceneRunning)
             {
-                SceneHierarchyPanel.setSelectedEntity(null);
+                SceneHierarchy.setSelectedEntity(null);
                 EditorLayer.editorScene = EditorLayer.currentScene;
                 EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
                 EditorLayer.currentScene = EditorLayer.runtimeScene;
             }
             else
             {
-                SceneHierarchyPanel.setSelectedEntity(null);
+                SceneHierarchy.setSelectedEntity(null);
                 EditorLayer.currentScene = EditorLayer.editorScene;
             }
         }
@@ -242,7 +243,7 @@ public class EditorLayer
 
     private void drawMenuBar()
     {
-        var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(FileDialogPanel.class);
+        var fileDialogPanel = (FileDialog) panelManager.getPanel(FileDialog.class);
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
@@ -264,7 +265,7 @@ public class EditorLayer
         Scene loadedScene = SceneSerializer.deSerialize(filePath);
         if (loadedScene == null)
             return;
-        SceneHierarchyPanel.setSelectedEntity(null);
+        SceneHierarchy.setSelectedEntity(null);
         currentScene.cleanUp();
         currentScene = loadedScene;
         currentScene.start();

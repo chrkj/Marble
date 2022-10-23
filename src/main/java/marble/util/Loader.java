@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 
 import de.javagl.obj.*;
 
-import marble.editor.ConsolePanel;
+import marble.editor.Console;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
@@ -33,7 +33,7 @@ public final class Loader {
         catch (IOException e)
         {
             e.printStackTrace();
-            ConsolePanel.log("Error: '" + "' invalid filepath.");
+            Console.log("Error: '" + "' invalid filepath.");
             return new Mesh();
         }
     }

@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import marble.editor.EditorLayer;
-import marble.editor.ConsolePanel;
+import marble.editor.Console;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 import marble.entity.components.RigidBody;
@@ -24,13 +24,14 @@ public class Entity
     public String name;
     public String scriptName;
     public Transform transform;
-    public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
+    public transient ScriptableComponent script;
+
     private int uuid;
-    private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
 
+    private transient Entity parent;
     private transient float lastX = 0;
     private transient float lastY = 0;
     private transient float lastZ = 0;
@@ -68,6 +69,7 @@ public class Entity
         if (components.containsKey(RigidBody.class))
         {
             var rb = (RigidBody) components.get(RigidBody.class);
+            if (rb.isStatic) return;
 
             var deltaX = rb.rigidActor.getGlobalPose().getP().getX() + Math.abs(lastX);
             var deltaY = rb.rigidActor.getGlobalPose().getP().getY() + Math.abs(lastY);
@@ -206,7 +208,7 @@ public class Entity
             task.call();
 
             for (var diagnostic : diagnostics.getDiagnostics())
-                ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
+                Console.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
             fileManager.close();
 
             ClassLoader classLoader = Entity.class.getClassLoader();
@@ -219,7 +221,7 @@ public class Entity
         }
         catch (ClassNotFoundException e)
         {
-            ConsolePanel.log("Could not find class: " + name);
+            Console.log("Could not find class: " + name);
         }
         catch (IOException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
         {

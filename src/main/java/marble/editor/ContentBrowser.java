@@ -10,7 +10,7 @@ import imgui.flag.ImGuiMouseButton;
 import marble.util.Loader;
 import marble.entity.components.Texture;
 
-public class ContentBrowserPanel implements Panel
+public class ContentBrowser implements Panel
 {
     private String currentDir;
     private final String assetsDir = "assets";
@@ -19,7 +19,7 @@ public class ContentBrowserPanel implements Panel
     private final float padding = 15f;
     private final float thumbnailSize = 64;
 
-    public ContentBrowserPanel()
+    public ContentBrowser()
     {
         currentDir = assetsDir;
         dirIcon = Loader.loadTexture("assets/textures/DirIcon.png");

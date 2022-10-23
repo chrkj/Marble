@@ -1,24 +1,26 @@
 package marble.entity.components;
 
 import org.joml.Vector3f;
+import org.lwjgl.system.MemoryStack;
 
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import physx.common.PxVec3;
 import physx.physics.*;
+import physx.common.PxVec3;
 import physx.common.PxTransform;
 import physx.common.PxIDENTITYEnum;
 import physx.geomutils.PxBoxGeometry;
 
 import marble.gui.MarbleGui;
 import marble.entity.Entity;
+
 import static marble.physics.Physics.physics;
 
 public class RigidBody extends Component
 {
-    public PxRigidActor rigidActor;
     public boolean isStatic;
+    public PxRigidActor rigidActor;
 
     private final PxShape shape;
     private final PxMaterial material;
@@ -29,31 +31,32 @@ public class RigidBody extends Component
 
     public RigidBody(Entity ent, boolean isStatic)
     {
-        this.isStatic = isStatic;
-        shapeFlags = new PxShapeFlags((byte) (PxShapeFlagEnum.eSCENE_QUERY_SHAPE | PxShapeFlagEnum.eSIMULATION_SHAPE));
-        PxTransform tmpPose = new PxTransform(PxIDENTITYEnum.PxIdentity);
-        var tmpVec = new PxVec3();
-        tmpVec.setX(ent.transform.getPosition().x);
-        tmpVec.setY(ent.transform.getPosition().y);
-        tmpVec.setZ(ent.transform.getPosition().z);
-        tmpPose.setP(tmpVec);
-        PxFilterData tmpFilterData = new PxFilterData(1, 1, 0, 0);
+        try (MemoryStack mem = MemoryStack.stackPush())
+        {
+            this.isStatic = isStatic;
+            var flags = (byte) (PxShapeFlagEnum.eSCENE_QUERY_SHAPE | PxShapeFlagEnum.eSIMULATION_SHAPE);
+            shapeFlags = PxShapeFlags.createAt(mem, MemoryStack::nmalloc, flags);
 
-        geometry = new PxBoxGeometry(1f, 1f, 1f);
-        material = physics.createMaterial(0.5f, 0.5f, 0.5f);
-        shape = physics.createShape(geometry, material, true, shapeFlags);
+            var pos = ent.transform.getPosition();
+            var tmpVec = PxVec3.createAt(mem, MemoryStack::nmalloc, pos.x,pos.y,pos.z);
+            var tmpPose = PxTransform.createAt(mem, MemoryStack::nmalloc, PxIDENTITYEnum.PxIdentity);
+            tmpPose.setP(tmpVec);
 
-        if (isStatic)
-            rigidActor = physics.createRigidStatic(tmpPose);
-        else
-            rigidActor = physics.createRigidDynamic(tmpPose);
+            var tmpFilterData = PxFilterData.createAt(mem, MemoryStack::nmalloc, 1, 1, 0, 0);
 
-        shape.setSimulationFilterData(tmpFilterData);
-        rigidActor.attachShape(shape);
+            var scale = ent.transform.getScale();
+            geometry = new PxBoxGeometry(scale.x, scale.y, scale.z);
+            material = physics.createMaterial(0.5f, 0.5f, 1f);
+            shape = physics.createShape(geometry, material, true, shapeFlags);
+            shape.setSimulationFilterData(tmpFilterData);
 
-        tmpVec.destroy();
-        tmpPose.destroy();
-        tmpFilterData.destroy();
+            if (isStatic)
+                rigidActor = physics.createRigidStatic(tmpPose);
+            else
+                rigidActor = physics.createRigidDynamic(tmpPose);
+
+            rigidActor.attachShape(shape);
+        }
     }
 
     @Override
@@ -68,6 +71,7 @@ public class RigidBody extends Component
     {
         int nodeFlags = ImGuiTreeNodeFlags.Selected | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.SpanAvailWidth;
         boolean nodeOpen = ImGui.treeNodeEx("Rigid Body", nodeFlags);
+        MarbleGui.inputText("isStatic", Boolean.toString(isStatic));
         if (nodeOpen)
         {
             MarbleGui.vec3Controller("Rb box transform", vGeo);
