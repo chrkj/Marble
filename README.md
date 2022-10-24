@@ -35,6 +35,11 @@
 I created this project to learn about 2D/3D rendering by programming a simple game engine using the
 [OpenGL](https://www.opengl.org//) rendering API. 
 
+<div align="center">
+  <a href="https://github.com/chrkj/MarbleEngine">
+    <img src="docs/physics.gif">
+  </a>
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Built With
