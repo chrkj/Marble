@@ -60,8 +60,6 @@ public class Physics
         }
     }
 
-    // TODO: Integrate function into RigidBody class
-
     public static PxRigidDynamic createDefaultBox(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ)
     {
         return createDefaultBox(posX, posY, posZ, sizeX, sizeY, sizeZ, defaultFilterData);

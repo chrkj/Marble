@@ -11,22 +11,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
-import marble.entity.components.Component;
-import marble.entity.components.RigidBody;
-import marble.entity.components.camera.EditorCamera;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.yaml.snakeyaml.Yaml;
 
+import marble.util.Loader;
+import marble.entity.components.light.*;
+import marble.entity.components.Mesh;
+import marble.entity.components.Component;
+import marble.entity.components.RigidBody;
+import marble.entity.components.camera.Camera;
+import marble.entity.components.camera.EditorCamera;
+import marble.entity.components.camera.PerspectiveCamera;
 import marble.editor.Console;
 import marble.entity.Entity;
 import marble.entity.Transform;
-import marble.entity.components.camera.PerspectiveCamera;
 import marble.entity.Material;
-import marble.entity.components.Mesh;
-import marble.entity.components.camera.Camera;
-import marble.entity.components.light.*;
-import marble.util.Loader;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class SceneSerializer

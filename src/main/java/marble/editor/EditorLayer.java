@@ -234,6 +234,8 @@ public class EditorLayer
             else
             {
                 SceneHierarchy.setSelectedEntity(null);
+                EditorLayer.runtimeScene.cleanUp();
+                EditorLayer.runtimeScene = null;
                 EditorLayer.currentScene = EditorLayer.editorScene;
             }
         }
