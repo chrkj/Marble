@@ -52,13 +52,14 @@ Frameworks/libraries used for the project:
 * [ImGui](https://github.com/SpaiR/imgui-java)
 * [Obj](https://github.com/javagl/Obj)
 * [JacksonYaml](https://github.com/FasterXML/jackson-dataformat-yaml)
+* [PhysX](https://github.com/fabmax/physx-jni)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- ⬜ 2D/3D physics
+- 👷 2D/3D physics
 - ⬜ Frustum culling
 - ⬜ Forward+ rendering
 - ⬜ Custom title bar
@@ -72,6 +73,8 @@ Frameworks/libraries used for the project:
 - ✅ Scene serialization / deserialization
 - ✅ Entity gizmos
 - ✅ Mouse picking
+
+👷 *in development*
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
