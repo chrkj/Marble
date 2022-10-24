@@ -37,8 +37,9 @@ I created this project to learn about 2D/3D rendering by programming a simple ga
 
 <div align="center">
   <a href="https://github.com/chrkj/MarbleEngine">
-    <img src="docs/physics.gif">
+    <img src="docs/physics.gif" width="400" height="225">
   </a>
+</div>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
