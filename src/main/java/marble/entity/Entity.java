@@ -18,6 +18,9 @@ import marble.editor.Console;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 import marble.entity.components.RigidBody;
+import physx.common.PxQuat;
+
+import static java.lang.Math.*;
 
 public class Entity
 {
@@ -71,16 +74,10 @@ public class Entity
             var rb = (RigidBody) components.get(RigidBody.class);
             if (rb.isStatic) return;
 
-            var deltaX = rb.rigidActor.getGlobalPose().getP().getX() + Math.abs(lastX);
-            var deltaY = rb.rigidActor.getGlobalPose().getP().getY() + Math.abs(lastY);
-            var deltaZ = rb.rigidActor.getGlobalPose().getP().getZ() + Math.abs(lastZ);
-
-            var deltaPos = new Vector3f(deltaX, deltaY, deltaZ);
-            transform.setPosition(transform.getPosition().add(deltaPos));
-
-            lastX = rb.rigidActor.getGlobalPose().getP().getX();
-            lastY = rb.rigidActor.getGlobalPose().getP().getY();
-            lastZ = rb.rigidActor.getGlobalPose().getP().getZ();
+            var pos = rb.rigidActor.getGlobalPose().getP();
+            var rot = toAxisAngle(rb.rigidActor.getGlobalPose().getQ());
+            transform.setPosition(pos.getX(), pos.getY(), pos.getZ());
+            transform.setRotation(rot.x, rot.y, rot.z);
         }
 
         if (script != null)
@@ -227,6 +224,36 @@ public class Entity
         {
             e.printStackTrace();
         }
+    }
+
+    public Vector3f toAxisAngle(PxQuat q)
+    {
+        float x = q.getX();
+        float y = q.getY();
+        float z = q.getZ();
+        float w = q.getW();
+
+        var theta = sqrt(1 - (w * w));
+        var angle = Math.toDegrees(2 * acos(w));
+
+        if (theta * angle == 0) return new Vector3f();
+
+        var ax = x / theta * angle;
+        var ay = y / theta * angle;
+        var az = z / theta * angle;
+
+        return new Vector3f((float) ax, (float) ay, (float) az);
+
+        //var x = -0.003;
+        //var y = 0.014;
+        //var z = 0.284;
+        //var w = 0.959;
+        //var theta = sqrt(1 - (0.7071068 * 0.7071068));
+        //var angle = Math.toDegrees(2 * acos(w));
+        //System.out.println(Math.toDegrees(2 * acos(w)));
+        //System.out.println("x " + x / theta * angle);
+        //System.out.println("y " + y / theta * angle);
+        //System.out.println("z " + z / theta * angle);
     }
 
 }

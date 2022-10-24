@@ -33,7 +33,7 @@ public class Physics
         // PhysX main physics object
         PxTolerancesScale tolerances = new PxTolerancesScale();
         physics = PxTopLevelFunctions.CreatePhysics(PX_PHYSICS_VERSION, foundation, tolerances);
-        defaultMaterial = physics.createMaterial(0.5f, 0.5f, 0.5f);
+        defaultMaterial = physics.createMaterial(0.2f, 0.2f, 0.1f);
         defaultFilterData = new PxFilterData(0, 0, 0, 0);
         defaultFilterData.setWord0(1);          // collision group: 0 (i.e. 1 << 0)
         defaultFilterData.setWord1(0xffffffff); // collision mask: collide with everything
@@ -62,16 +62,16 @@ public class Physics
 
     // TODO: Integrate function into RigidBody class
 
-    public static PxRigidDynamic createDefaultBox(float posX, float posY, float posZ)
+    public static PxRigidDynamic createDefaultBox(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ)
     {
-        return createDefaultBox(posX, posY, posZ, defaultFilterData);
+        return createDefaultBox(posX, posY, posZ, sizeX, sizeY, sizeZ, defaultFilterData);
     }
 
-    public static PxRigidDynamic createDefaultBox(float posX, float posY, float posZ, PxFilterData simFilterData)
+    public static PxRigidDynamic createDefaultBox(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ, PxFilterData simFilterData)
     {
         try (MemoryStack mem = MemoryStack.stackPush())
         {
-            PxBoxGeometry box = PxBoxGeometry.createAt(mem, MemoryStack::nmalloc, 0.5f, 0.5f, 0.5f);
+            PxBoxGeometry box = PxBoxGeometry.createAt(mem, MemoryStack::nmalloc, sizeX, sizeY, sizeZ);
             PxTransform pose = PxTransform.createAt(mem, MemoryStack::nmalloc, PxIDENTITYEnum.PxIdentity);
             pose.setP(PxVec3.createAt(mem, MemoryStack::nmalloc, posX, posY, posZ));
 
@@ -83,7 +83,7 @@ public class Physics
         }
     }
 
-    public static PxRigidStatic createGroundPlane()
+    public static PxRigidStatic createGroundPlane(float posX, float posY, float posZ)
     {
         try (MemoryStack mem = MemoryStack.stackPush())
         {
@@ -94,7 +94,7 @@ public class Physics
             PxQuat q = PxQuat.createAt(mem, MemoryStack::nmalloc, 0f, 0f, r, r);
             PxVec3 p = PxVec3.createAt(mem, MemoryStack::nmalloc, 0, 0, 0);
             shape.setLocalPose(PxTransform.createAt(mem, MemoryStack::nmalloc, p, q));
-            return createStaticBody(shape, 0f, 0f, 0f);
+            return createStaticBody(shape, posX, posY, posZ);
         }
     }
 

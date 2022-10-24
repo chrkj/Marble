@@ -192,7 +192,6 @@ public class SceneSerializer
 
     private static Component loadRigidBody(Map componentData, Entity newEntity)
     {
-        // TODO: Load data correctly
         return new RigidBody(newEntity, extractBool(componentData, "isStatic"));
     }
 

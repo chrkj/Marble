@@ -1,7 +1,7 @@
 import marble.entity.components.ScriptableComponent;
 
-public class MyScript extends ScriptableComponent {
-
+public class MyScript extends ScriptableComponent
+{
     @Override
     public void onInit()
     {
@@ -14,5 +14,4 @@ public class MyScript extends ScriptableComponent {
         //float speed = 80 * dt;
         //entity.transform.incrementRotation(speed,speed,speed);
     }
-
 }

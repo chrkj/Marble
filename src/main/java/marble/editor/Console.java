@@ -17,26 +17,29 @@ public final class Console implements Panel
 
     public static void log(String text)
     {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = getTimestamp();
         BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(text).append("\n");
         if(BUFFER.length() > MAX_LENGTH)
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
+        SHOULD_SCROLL_TO_BOTTOM.set(true);
     }
 
     public static void log(float value)
     {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = getTimestamp();
         BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(value).append("\n");
         if(BUFFER.length() > MAX_LENGTH)
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
+        SHOULD_SCROLL_TO_BOTTOM.set(true);
     }
 
     public static void log(boolean value)
     {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = getTimestamp();
         BUFFER.append("[").append(FORMATTER.format(timestamp)).append("]: ").append(value).append("\n");
         if(BUFFER.length() > MAX_LENGTH)
             BUFFER.delete(0, BUFFER.length() - MAX_LENGTH);
+        SHOULD_SCROLL_TO_BOTTOM.set(true);
     }
 
     @Override
@@ -53,6 +56,12 @@ public final class Console implements Panel
             ImGui.setScrollHereY(1f);
         ImGui.endChild();
         ImGui.end();
+        SHOULD_SCROLL_TO_BOTTOM.set(false);
+    }
+
+    private static Timestamp getTimestamp()
+    {
+        return new Timestamp(System.currentTimeMillis());
     }
 
 }
