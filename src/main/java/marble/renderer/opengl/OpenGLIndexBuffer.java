@@ -1,26 +1,21 @@
 package marble.renderer.opengl;
 
-import marble.renderer.Indexbuffer;
-import org.lwjgl.system.MemoryUtil;
-
-import java.nio.IntBuffer;
-
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 
-public class OpenGLIndexbuffer extends Indexbuffer {
+import marble.renderer.IndexBuffer;
 
+public class OpenGLIndexBuffer extends IndexBuffer
+{
     private final int ID;
+    private final int count;
 
-    public OpenGLIndexbuffer(int[] data)
+    public OpenGLIndexBuffer(int[] data, int count)
     {
         ID = glGenBuffers();
-        IntBuffer buffer = MemoryUtil.memAllocInt(data.length);
-        buffer.put(data).flip();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-        MemoryUtil.memFree(buffer);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, data, GL_STATIC_DRAW);
+        this.count = count;
     }
 
     @Override
@@ -33,6 +28,12 @@ public class OpenGLIndexbuffer extends Indexbuffer {
     public void unbind()
     {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    @Override
+    public int getCount()
+    {
+        return this.count;
     }
 
     @Override

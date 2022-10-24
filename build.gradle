@@ -52,4 +52,8 @@ dependencies {
     // Jackson yaml
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.1'
 
+    // Physx
+    implementation("de.fabmax:physx-jni:1.0.0")
+    runtimeOnly("de.fabmax:physx-jni:1.0.0:natives-windows")
+
 }

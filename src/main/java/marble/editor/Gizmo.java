@@ -8,13 +8,13 @@ import imgui.extension.imguizmo.flag.Operation;
 import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Gizmo {
-
-    private static final int CAM_DISTANCE = 8;
+public class Gizmo
+{
     private static int currentGizmoOperation = Operation.TRANSLATE;
-    private static final float[] VIEW_MANIPULATE_SIZE = new float[]{ 128f, 128f };
+    private static final int CAM_DISTANCE = 8;
     private static final float[] proj = new float[16];
     private static final float[] view = new float[16];
+    private static final float[] VIEW_MANIPULATE_SIZE = new float[]{ 128f, 128f };
 
     public static void onImGuiRender()
     {
@@ -29,7 +29,7 @@ public class Gizmo {
         // TODO: Fix view manipulation
         ImGuizmo.viewManipulate(view, CAM_DISTANCE, new float[]{viewManipulateRight - 128, viewManipulateTop}, VIEW_MANIPULATE_SIZE, 0x10101010);
 
-        var selectedEntity = SceneHierarchyPanel.getSelectedEntity();
+        var selectedEntity = SceneHierarchy.getSelectedEntity();
         if (selectedEntity == null) return;
 
         if (ImGui.isKeyPressed(GLFW_KEY_T))
@@ -60,7 +60,7 @@ public class Gizmo {
 
     public static boolean inUse()
     {
-        if (SceneHierarchyPanel.getSelectedEntity() == null)
+        if (SceneHierarchy.getSelectedEntity() == null)
             return false;
         return ImGuizmo.isUsing();
     }

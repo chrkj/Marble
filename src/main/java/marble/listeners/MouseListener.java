@@ -5,15 +5,15 @@ import org.joml.Vector2f;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
-public class MouseListener {
-
+public class MouseListener
+{
     private static double scrollX, scrollY;
     private static double xPos, yPos, lastY, lastX;
     private static boolean inWindow = false;
     private static boolean isDragging = false;
-    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private static final Vector2f delta = new Vector2f();
+    private static final boolean[] mouseButtonPressed = new boolean[3];
 
     private MouseListener()
     {
@@ -36,11 +36,15 @@ public class MouseListener {
 
     public static void mouseButtonCallback(long window, int button, int action, int mods)
     {
-        if (action == GLFW_PRESS) {
+        if (action == GLFW_PRESS)
+        {
             if (button < mouseButtonPressed.length)
                 mouseButtonPressed[button] = true;
-        } else if (action == GLFW_RELEASE) {
-            if (button < mouseButtonPressed.length) {
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            if (button < mouseButtonPressed.length)
+            {
                 mouseButtonPressed[button] = false;
                 isDragging = false;
             }

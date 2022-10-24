@@ -2,17 +2,16 @@ package marble.entity.components.camera;
 
 import org.joml.Matrix4f;
 
-public class OrthographicCamera extends Camera {
+public class OrthographicCamera extends Camera
+{
     @Override
     public void cleanUp()
     {
-
     }
 
     @Override
     public void renderEntityInspector()
     {
-
     }
 
     @Override

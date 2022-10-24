@@ -21,8 +21,8 @@ import marble.gui.MarbleGui;
 import marble.renderer.Framebuffer;
 import marble.entity.components.Texture;
 
-public class EditorLayer {
-
+public class EditorLayer
+{
     public static boolean inputFlag;
     public static boolean sceneRunning = false;
     public static Framebuffer gameViewportFb;
@@ -49,19 +49,20 @@ public class EditorLayer {
         editorViewportFb = Framebuffer.create(editorFbSpec);
 
         panelManager = new PanelManager();
-        panelManager.addPanel(new ConsolePanel());
-        panelManager.addPanel(new FileDialogPanel());
-        panelManager.addPanel(new SceneHierarchyPanel());
-        panelManager.addPanel(new ContentBrowserPanel());
-        panelManager.addPanel(new EntityInspectorPanel());
+        panelManager.addPanel(new Console());
+        panelManager.addPanel(new FileDialog());
+        panelManager.addPanel(new SceneHierarchy());
+        panelManager.addPanel(new ContentBrowser());
+        panelManager.addPanel(new EntityInspector());
 
         currentScene = SceneSerializer.deSerialize("assets/scenes/empty_scene.marble");
+        assert currentScene != null;
         currentScene.start();
 
-        ConsolePanel.log("LWJGL Version: " + Version.getVersion() + "!");
-        ConsolePanel.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
-        ConsolePanel.log("Renderer: " + GL30.glGetString(GL_RENDERER));
-        ConsolePanel.log("Version: " + GL30.glGetString(GL_VERSION));
+        Console.log("LWJGL Version: " + Version.getVersion() + "!");
+        Console.log("Vendor: " + GL30.glGetString(GL30.GL_VENDOR));
+        Console.log("Renderer: " + GL30.glGetString(GL_RENDERER));
+        Console.log("Version: " + GL30.glGetString(GL_VERSION));
     }
 
     public void onImGuiRender()
@@ -76,13 +77,13 @@ public class EditorLayer {
 
     public void onSceneUpdate(float dt)
     {
-        MarbleGui.onImGuiRender(dt); // TODO: Move this to onImGuiRender
         currentScene.onSceneUpdate(dt);
     }
 
-    public void onSceneRender()
+    public void onSceneRender(float dt)
     {
         currentScene.onSceneRender();
+        MarbleGui.renderDiagnostics(dt);
     }
 
     public void cleanUp()
@@ -131,35 +132,33 @@ public class EditorLayer {
         }
 
         // Mouse picking
+        ImVec2 windowSize = ImGui.getWindowSize();
+        ImVec2 minBound = ImGui.getWindowPos();
+        minBound.x += viewportOffset.x;
+        minBound.y += viewportOffset.y - 19; // TODO: FIX THIS (hardcoded tab offset)
+
+        ImVec2 maxBound = new ImVec2(minBound.x + windowSize.x, minBound.y + windowSize.y);
+        editorViewportBounds[0] = new ImVec2(minBound.x, minBound.y);
+        editorViewportBounds[1] = new ImVec2(maxBound.x, maxBound.y);
+
+        var mousePos = ImGui.getMousePos();
+        float x = mousePos.x;
+        float y = mousePos.y;
+        x -= editorViewportBounds[0].x;
+        y -= editorViewportBounds[0].y;
+
+        var viewportSize = new ImVec2(editorViewportBounds[1].x - editorViewportBounds[0].x, editorViewportBounds[1].y - editorViewportBounds[0].y);
+        y = viewportSize.y - y;
+
+        int mouseX = (int) x;
+        int mouseY = (int) y;
+
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
         {
-            ImVec2 windowSize = ImGui.getWindowSize();
-            ImVec2 minBound = ImGui.getWindowPos();
-            minBound.x += viewportOffset.x;
-            minBound.y += viewportOffset.y - 19; // TODO: FIX THIS (hardcoded tab offset)
-
-            ImVec2 maxBound = new ImVec2(minBound.x + windowSize.x, minBound.y + windowSize.y);
-            editorViewportBounds[0] = new ImVec2(minBound.x, minBound.y);
-            editorViewportBounds[1] = new ImVec2(maxBound.x, maxBound.y);
-
-            var mousePos = ImGui.getMousePos();
-            float x = mousePos.x;
-            float y = mousePos.y;
-            x -= editorViewportBounds[0].x;
-            y -= editorViewportBounds[0].y;
-
-            var viewportSize = new ImVec2(editorViewportBounds[1].x - editorViewportBounds[0].x, editorViewportBounds[1].y - editorViewportBounds[0].y);
-            y = viewportSize.y - y;
-
-            int mouseX = (int) x;
-            int mouseY = (int) y;
-
-            if (mouseX >= 0 && mouseY >= 0 && mouseX < (int) viewportSize.x && mouseY < (int) viewportSize.y)
+            if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
             {
-                if (ImGui.isMouseClicked(GLFW_MOUSE_BUTTON_1) && !Gizmo.inUse())
-                {
-                    var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
-                    SceneHierarchyPanel.setSelectedEntity(selectedEntity);
-                }
+                var selectedEntity = currentScene.getEntityFromUUID(EditorLayer.editorViewportFb.readPixel(mouseX, mouseY, 1));
+                SceneHierarchy.setSelectedEntity(selectedEntity);
             }
         }
 
@@ -197,27 +196,21 @@ public class EditorLayer {
         ImGuiViewport mainViewport = ImGui.getMainViewport();
 
         // ToolBar
-        {
-            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
-            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), toolBarHeight);
-            ImGui.setNextWindowViewport(mainViewport.getID());
-
-            ImGui.begin("TitleBar", new ImBoolean(true), windowFlags | ImGuiWindowFlags.MenuBar);
-            drawMenuBar();
-            drawToolBar();
-            ImGui.end();
-        }
+        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY());
+        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), toolBarHeight);
+        ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.begin("TitleBar", new ImBoolean(true), windowFlags | ImGuiWindowFlags.MenuBar);
+        drawMenuBar();
+        drawToolBar();
+        ImGui.end();
 
         // DockSpace
-        {
-            ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY() + toolBarHeight);
-            ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY() - toolBarHeight);
-            ImGui.setNextWindowViewport(mainViewport.getID());
-
-            ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
-            ImGui.dockSpace(ImGui.getID("Dockspace"));
-            ImGui.end();
-        }
+        ImGui.setNextWindowPos(mainViewport.getWorkPosX(), mainViewport.getWorkPosY() + toolBarHeight);
+        ImGui.setNextWindowSize(mainViewport.getWorkSizeX(), mainViewport.getWorkSizeY() - toolBarHeight);
+        ImGui.setNextWindowViewport(mainViewport.getID());
+        ImGui.begin("Dockspace", new ImBoolean(true), windowFlags);
+        ImGui.dockSpace(ImGui.getID("Dockspace"));
+        ImGui.end();
     }
 
     private void drawToolBar()
@@ -233,14 +226,14 @@ public class EditorLayer {
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
             if (EditorLayer.sceneRunning)
             {
-                SceneHierarchyPanel.setSelectedEntity(null);
+                SceneHierarchy.setSelectedEntity(null);
                 EditorLayer.editorScene = EditorLayer.currentScene;
                 EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
                 EditorLayer.currentScene = EditorLayer.runtimeScene;
             }
             else
             {
-                SceneHierarchyPanel.setSelectedEntity(null);
+                SceneHierarchy.setSelectedEntity(null);
                 EditorLayer.currentScene = EditorLayer.editorScene;
             }
         }
@@ -250,7 +243,7 @@ public class EditorLayer {
 
     private void drawMenuBar()
     {
-        var fileDialogPanel = (FileDialogPanel) panelManager.getPanel(FileDialogPanel.class);
+        var fileDialogPanel = (FileDialog) panelManager.getPanel(FileDialog.class);
         ImGui.beginMenuBar();
         if (ImGui.beginMenu("File"))
         {
@@ -272,7 +265,7 @@ public class EditorLayer {
         Scene loadedScene = SceneSerializer.deSerialize(filePath);
         if (loadedScene == null)
             return;
-        SceneHierarchyPanel.setSelectedEntity(null);
+        SceneHierarchy.setSelectedEntity(null);
         currentScene.cleanUp();
         currentScene = loadedScene;
         currentScene.start();

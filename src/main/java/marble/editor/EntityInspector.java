@@ -3,23 +3,22 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.entity.components.RigidBody;
 import marble.gui.MarbleGui;
 import marble.entity.Entity;
 import marble.entity.components.Component;
 import marble.entity.components.light.LightFactory;
 import marble.entity.components.light.LightType;
 
-public class EntityInspectorPanel implements Panel {
-
-    public EntityInspectorPanel()
-    {
-    }
+public class EntityInspector implements Panel
+{
+    public EntityInspector() { }
 
     @Override
     public void onImGuiRender()
     {
         ImGui.begin("Inspector");
-        Entity selectedEntity = SceneHierarchyPanel.getSelectedEntity();
+        Entity selectedEntity = SceneHierarchy.getSelectedEntity();
         if (selectedEntity != null)
         {
             // Entity name field
@@ -41,37 +40,46 @@ public class EntityInspectorPanel implements Panel {
                 ImGui.openPopup("add_component_popup");
             if (ImGui.beginPopup("add_component_popup"))
             {
-                if (ImGui.selectable("Mesh"))              ConsolePanel.log("NOT IMPLEMENTED");
+                if (ImGui.selectable("Mesh"))              Console.log("NOT IMPLEMENTED");
                 if (ImGui.selectable("Script"))            selectedEntity.scriptName = "None";
-                if (ImGui.selectable("Camera"))            ConsolePanel.log("NOT IMPLEMENTED");
+                if (ImGui.selectable("Camera"))            Console.log("NOT IMPLEMENTED");
                 if (ImGui.selectable("Directional light")) addDirLight();
                 if (ImGui.selectable("Spot light"))        addSpotLight();
                 if (ImGui.selectable("Point light"))       addPointLight();
+                if (ImGui.selectable("RigidBody Static"))  addRigidBody(true);
+                if (ImGui.selectable("RigidBody Dynamic")) addRigidBody(false);
                 ImGui.endPopup();
             }
-
         }
         ImGui.end();
+    }
+
+    private void addRigidBody(boolean isStatic)
+    {
+        var rb = new RigidBody(SceneHierarchy.getSelectedEntity(), isStatic);
+        SceneHierarchy.getSelectedEntity().addComponent(rb);
+        EditorLayer.currentScene.getRegistry().register(rb);
+        EditorLayer.currentScene.getPhysicsScene().addActor(rb.rigidActor);
     }
 
     private void addSpotLight()
     {
         var sl = LightFactory.getLight(LightType.SPOT);
-        SceneHierarchyPanel.getSelectedEntity().addComponent(sl);
+        SceneHierarchy.getSelectedEntity().addComponent(sl);
         EditorLayer.currentScene.getRegistry().register(sl);
     }
 
     private void addPointLight()
     {
         var pl = LightFactory.getLight(LightType.POINT);
-        SceneHierarchyPanel.getSelectedEntity().addComponent(pl);
+        SceneHierarchy.getSelectedEntity().addComponent(pl);
         EditorLayer.currentScene.getRegistry().register(pl);
     }
 
     private void addDirLight()
     {
         var dl = LightFactory.getLight(LightType.DIRECTIONAL);
-        SceneHierarchyPanel.getSelectedEntity().addComponent(dl);
+        SceneHierarchy.getSelectedEntity().addComponent(dl);
         EditorLayer.currentScene.getRegistry().register(dl);
     }
 

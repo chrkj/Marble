@@ -4,18 +4,22 @@ import java.util.*;
 
 import org.joml.Vector3f;
 
+import physx.physics.PxScene;
+
 import marble.util.Time;
 import marble.renderer.Renderer;
 import marble.editor.EditorLayer;
+import marble.physics.Physics;
 import marble.entity.Entity;
 import marble.entity.components.Registry;
+import marble.entity.components.RigidBody;
 import marble.entity.components.Component;
 import marble.entity.components.camera.Camera;
 import marble.entity.components.camera.EditorCamera;
 
-public class Scene {
-
-    public transient final EditorCamera editorCamera = new EditorCamera();
+public class Scene
+{
+    public EditorCamera editorCamera = new EditorCamera();
 
     private String name;
     private float specularPower;
@@ -25,6 +29,7 @@ public class Scene {
     private transient Camera mainCamera;
     private transient float sceneStartedTime;
     private transient boolean isRunning = false;
+    private transient final PxScene physicsScene;
     private transient final Renderer renderer = new Renderer();
     private transient final Registry registry = new Registry();
 
@@ -33,6 +38,7 @@ public class Scene {
         this.name = name;
         this.specularPower = specularPower;
         this.ambientLight = ambientLight;
+        this.physicsScene = Physics.createPhysicsScene();
     }
 
     public void start()
@@ -47,6 +53,9 @@ public class Scene {
     {
         editorCamera.onUpdate(dt);
         if (!EditorLayer.sceneRunning) return;
+
+        physicsScene.simulate(1/60f);
+        physicsScene.fetchResults(true);
         for (Entity entity : entities.values())
             entity.update(dt);
     }
@@ -73,6 +82,8 @@ public class Scene {
         {
             if (component instanceof Camera)
                 mainCamera = (Camera) component;
+            if (component instanceof RigidBody)
+                physicsScene.addActor(((RigidBody) component).rigidActor);
             registry.register(component);
         }
     }
@@ -107,5 +118,11 @@ public class Scene {
     {
         return registry;
     }
+
+    public PxScene getPhysicsScene()
+    {
+        return physicsScene;
+    }
+
 
 }

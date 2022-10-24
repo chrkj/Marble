@@ -5,8 +5,8 @@ import java.util.Map;
 import imgui.extension.imguifiledialog.ImGuiFileDialog;
 import imgui.extension.imguifiledialog.flag.ImGuiFileDialogFlags;
 
-public class FileDialogPanel implements Panel {
-
+public class FileDialog implements Panel
+{
     private Map<String, String> selection = null;
 
     public String getSelectedFilePath()

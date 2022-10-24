@@ -9,8 +9,8 @@ import org.joml.Vector3f;
 import marble.gui.MarbleGui;
 import marble.editor.EditorLayer;
 
-public class PerspectiveCamera extends Camera {
-
+public class PerspectiveCamera extends Camera
+{
     public float near = 0.3f;
     public float far = 1000.f;
     public float fov = 60.0f;

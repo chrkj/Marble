@@ -8,21 +8,20 @@ import java.nio.file.Paths;
 import java.nio.FloatBuffer;
 import java.nio.file.NoSuchFileException;
 
-import marble.editor.ConsolePanel;
-import marble.entity.components.light.PointLight;
-import marble.entity.components.light.SpotLight;
 import org.joml.*;
-
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 
 import marble.entity.Material;
+import marble.editor.Console;
 import marble.entity.components.light.Light;
+import marble.entity.components.light.SpotLight;
+import marble.entity.components.light.PointLight;
 
-public class Shader {
-
+public class Shader
+{
     public String filepath;
 
     private transient int shaderProgramID;
@@ -80,13 +79,13 @@ public class Shader {
         {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            ConsolePanel.log("NoSuchFileException: " + filepath);
+            Console.log("NoSuchFileException: " + filepath);
         }
         catch (IOException e)
         {
             vertexSource = fallbackShader;
             fragmentSource = fallbackShader;
-            ConsolePanel.log("IOException: '" + filepath + "' " + e.getMessage());
+            Console.log("IOException: '" + filepath + "' " + e.getMessage());
         }
     }
 
@@ -106,7 +105,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            ConsolePanel.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
+            Console.log("ERROR: '" + filepath + "' Vertex shader compilation failed.\n" + glGetShaderInfoLog(vertexID, len));
         }
 
         // Load and compile fragment shader
@@ -121,7 +120,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            ConsolePanel.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
+            Console.log("ERROR: '" + filepath + "' Fragment shader compilation failed.\n" + glGetShaderInfoLog(fragmentID, len));
         }
 
         // Link shaders
@@ -135,7 +134,7 @@ public class Shader {
         if (success == GL_FALSE)
         {
             int len = glGetProgrami(shaderProgramID, GL_INFO_LOG_LENGTH);
-            ConsolePanel.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
+            Console.log("ERROR: '" + filepath + "' Linking shaders failed.\n" + glGetProgramInfoLog(shaderProgramID, len));
         }
         uniformLocationCache.clear();
     }

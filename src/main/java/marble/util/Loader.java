@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 
 import de.javagl.obj.*;
 
-import marble.editor.ConsolePanel;
+import marble.editor.Console;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.system.MemoryStack;
 import static org.lwjgl.opengl.GL11.*;
@@ -23,14 +23,17 @@ public final class Loader {
 
     public static Mesh loadMeshObj(String filePath)
     {
-        try {
+        try
+        {
             InputStream stream = new FileInputStream(filePath);
             Obj mesh = ObjUtils.convertToRenderable(ObjReader.read(stream));
             return new Mesh(ObjData.getVerticesArray(mesh), ObjData.getTexCoordsArray(mesh, 2),
                     ObjData.getFaceVertexIndicesArray(mesh), ObjData.getNormalsArray(mesh), filePath);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
-            ConsolePanel.log("Error: '" + "' invalid filepath.");
+            Console.log("Error: '" + "' invalid filepath.");
             return new Mesh();
         }
     }
@@ -40,7 +43,8 @@ public final class Loader {
         int height = 0;
         ByteBuffer buf = null;
 
-        try (MemoryStack stack = MemoryStack.stackPush()) {
+        try (MemoryStack stack = MemoryStack.stackPush())
+        {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
@@ -51,7 +55,9 @@ public final class Loader {
 
             width = w.get();
             height = h.get();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -72,7 +78,8 @@ public final class Loader {
     public static GLFWImage.Buffer loadIcon(String filePath)
     {
         ByteBuffer buf;
-        try (MemoryStack stack = MemoryStack.stackPush()) {
+        try (MemoryStack stack = MemoryStack.stackPush())
+        {
             IntBuffer h = stack.mallocInt(1);
             IntBuffer w = stack.mallocInt(1);
             IntBuffer channels = stack.mallocInt(1);
@@ -87,7 +94,9 @@ public final class Loader {
             imageBuffer.put(0, image);
             return imageBuffer;
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;

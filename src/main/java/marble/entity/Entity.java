@@ -1,5 +1,6 @@
 package marble.entity;
 
+import org.joml.Vector3f;
 import org.joml.Matrix4f;
 
 import javax.tools.*;
@@ -12,22 +13,31 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import marble.editor.ConsolePanel;
 import marble.editor.EditorLayer;
+import marble.editor.Console;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
+import marble.entity.components.RigidBody;
+import physx.common.PxQuat;
 
-public class Entity {
+import static java.lang.Math.*;
 
+public class Entity
+{
     public String name;
     public String scriptName;
     public Transform transform;
-    public transient ScriptableComponent script;
     public final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
+    public transient ScriptableComponent script;
+
     private int uuid;
-    private transient Entity parent;
     private final List<Entity> children = new ArrayList<>();
+
+    private transient Entity parent;
+    private transient float lastX = 0;
+    private transient float lastY = 0;
+    private transient float lastZ = 0;
 
     public Entity()
     {
@@ -59,6 +69,17 @@ public class Entity {
 
     public void update(float dt)
     {
+        if (components.containsKey(RigidBody.class))
+        {
+            var rb = (RigidBody) components.get(RigidBody.class);
+            if (rb.isStatic) return;
+
+            var pos = rb.rigidActor.getGlobalPose().getP();
+            var rot = toAxisAngle(rb.rigidActor.getGlobalPose().getQ());
+            transform.setPosition(pos.getX(), pos.getY(), pos.getZ());
+            transform.setRotation(rot.x, rot.y, rot.z);
+        }
+
         if (script != null)
             script.onUpdate(dt);
     }
@@ -183,8 +204,8 @@ public class Entity {
             );
             task.call();
 
-            for (Diagnostic diagnostic : diagnostics.getDiagnostics())
-                ConsolePanel.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
+            for (var diagnostic : diagnostics.getDiagnostics())
+                Console.log("Error on line " + diagnostic.getLineNumber() + " in " + diagnostic.getSource());
             fileManager.close();
 
             ClassLoader classLoader = Entity.class.getClassLoader();
@@ -197,13 +218,42 @@ public class Entity {
         }
         catch (ClassNotFoundException e)
         {
-            ConsolePanel.log("Could not find class: " + name);
+            Console.log("Could not find class: " + name);
         }
         catch (IOException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e)
         {
             e.printStackTrace();
         }
+    }
 
+    public Vector3f toAxisAngle(PxQuat q)
+    {
+        float x = q.getX();
+        float y = q.getY();
+        float z = q.getZ();
+        float w = q.getW();
+
+        var theta = sqrt(1 - (w * w));
+        var angle = Math.toDegrees(2 * acos(w));
+
+        if (theta * angle == 0) return new Vector3f();
+
+        var ax = x / theta * angle;
+        var ay = y / theta * angle;
+        var az = z / theta * angle;
+
+        return new Vector3f((float) ax, (float) ay, (float) az);
+
+        //var x = -0.003;
+        //var y = 0.014;
+        //var z = 0.284;
+        //var w = 0.959;
+        //var theta = sqrt(1 - (0.7071068 * 0.7071068));
+        //var angle = Math.toDegrees(2 * acos(w));
+        //System.out.println(Math.toDegrees(2 * acos(w)));
+        //System.out.println("x " + x / theta * angle);
+        //System.out.println("y " + y / theta * angle);
+        //System.out.println("z " + z / theta * angle);
     }
 
 }

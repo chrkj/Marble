@@ -5,17 +5,17 @@ import imgui.flag.*;
 import imgui.type.ImString;
 import imgui.type.ImBoolean;
 
-import marble.entity.components.Texture;
-import marble.util.Loader;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+import marble.util.Loader;
 import marble.listeners.MouseListener;
+import marble.entity.components.Texture;
 
-public final class MarbleGui {
-
+public final class MarbleGui
+{
     public static int drawCalls = 0;
     public static int totalVertexCount = 0;
     public static final ImBoolean polygonMode = new ImBoolean(false);
@@ -28,7 +28,7 @@ public final class MarbleGui {
         throw new UnsupportedOperationException();
     }
 
-    public static void onImGuiRender(float dt)
+    public static void renderDiagnostics(float dt)
     {
         ImGui.begin("Diagnostics", ImGuiWindowFlags.NoCollapse);
         ImGui.text(String.format("%.1f fps", 1 / dt));
@@ -165,6 +165,50 @@ public final class MarbleGui {
         ImGui.dragFloat("##Z", vecValuesZ, 0.1f);
         ImGui.sameLine();
         ImGui.text("Z");
+        ImGui.popItemWidth();
+
+        ImGui.popID();
+        values.x = vecValuesX[0];
+        values.y = vecValuesY[0];
+        values.z = vecValuesZ[0];
+    }
+
+    public static void vec4Controller(String label, Vector4f values)
+    {
+        ImGui.pushID(label);
+        ImGui.text(label);
+        ImGui.nextColumn();
+
+        float widthEach = ImGui.calcItemWidth() / 3.0f;
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesX = {values.x};
+        ImGui.dragFloat("##X", vecValuesX, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("X");
+        ImGui.sameLine();
+        ImGui.popItemWidth();
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesY = {values.y};
+        ImGui.dragFloat("##Y", vecValuesY, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("Y");
+        ImGui.sameLine();
+        ImGui.popItemWidth();
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesZ = {values.z};
+        ImGui.dragFloat("##Z", vecValuesZ, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("Z");
+        ImGui.popItemWidth();
+
+        ImGui.pushItemWidth(widthEach);
+        float[] vecValuesW = {values.w};
+        ImGui.dragFloat("##Z", vecValuesW, 0.1f);
+        ImGui.sameLine();
+        ImGui.text("W");
         ImGui.popItemWidth();
 
         ImGui.popID();
