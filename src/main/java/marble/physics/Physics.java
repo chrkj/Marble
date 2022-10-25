@@ -33,7 +33,7 @@ public class Physics
         // PhysX main physics object
         PxTolerancesScale tolerances = new PxTolerancesScale();
         physics = PxTopLevelFunctions.CreatePhysics(PX_PHYSICS_VERSION, foundation, tolerances);
-        defaultMaterial = physics.createMaterial(0.2f, 0.2f, 0.4f);
+        defaultMaterial = physics.createMaterial(0.3f, 0.3f, 0.3f);
         defaultFilterData = new PxFilterData(0, 0, 0, 0);
         defaultFilterData.setWord0(1);
         defaultFilterData.setWord1(0xffffffff);

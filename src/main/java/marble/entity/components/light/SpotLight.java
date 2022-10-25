@@ -47,6 +47,8 @@ public class SpotLight extends Light
             pointLight.linear = MarbleGui.dragFloat("Linear", pointLight.linear);
             pointLight.constant = MarbleGui.dragFloat("Constant", pointLight.constant);
             pointLight.exponent = MarbleGui.dragFloat("Exponent", pointLight.exponent);
+            if (MarbleGui.ButtonCenteredOnLine("Delete", 0))
+                cleanUp();
             ImGui.treePop();
         }
     }

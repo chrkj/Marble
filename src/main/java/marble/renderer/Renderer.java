@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.entity.Material;
-import marble.entity.Transform;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.camera.Camera;
@@ -70,7 +69,7 @@ public class Renderer
         {
             var rbs = registry.getRigidBodies();
             for (var rb : rbs)
-                Renderer2D.drawRect(rb, new Vector4f(1,1,1,1));
+                Renderer2D.drawRect(rb, new Vector4f(0,1,0,1));
         }
 
         Renderer2D.endScene();

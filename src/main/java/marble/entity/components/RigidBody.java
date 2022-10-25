@@ -1,7 +1,6 @@
 package marble.entity.components;
 
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import imgui.ImGui;
@@ -18,8 +17,6 @@ public class RigidBody extends Component
 {
     public boolean isStatic;
     public PxRigidActor rigidActor;
-
-    private final Vector3f vGeo = new Vector3f();
 
     public RigidBody(Entity ent, boolean isStatic)
     {
@@ -44,6 +41,7 @@ public class RigidBody extends Component
     public void cleanUp()
     {
         rigidActor.release();
+        entity.removeComponent(this);
     }
 
     @Override
@@ -53,14 +51,8 @@ public class RigidBody extends Component
         boolean nodeOpen = ImGui.treeNodeEx("Rigid Body", nodeFlags);
         if (nodeOpen)
         {
-            MarbleGui.inputText("isStatic", Boolean.toString(isStatic));
-            var pos = rigidActor.getGlobalPose().getP();
-            vGeo.x = pos.getX();
-            vGeo.y = pos.getY();
-            vGeo.z = pos.getZ();
-            var rot = rigidActor.getGlobalPose().getQ();
-            MarbleGui.vec3Controller("Rb box pos", vGeo);
-            MarbleGui.vec4Controller("Rb box rot", new Vector4f(rot.getX(), rot.getY(), rot.getZ(), rot.getW()));
+            if (MarbleGui.ButtonCenteredOnLine("Delete", 0))
+                cleanUp();
             ImGui.treePop();
         }
 
