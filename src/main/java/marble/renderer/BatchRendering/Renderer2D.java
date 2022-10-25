@@ -1,5 +1,7 @@
 package marble.renderer.BatchRendering;
 
+import marble.entity.components.RigidBody;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -87,7 +89,7 @@ public class Renderer2D
         }
     }
 
-    public static void drawLine(Vector3f p0, Vector3f p1, Vector4f color)
+    public static void drawLine(Vector4f p0, Vector4f p1, Vector4f color)
     {
         lineVertexData[lineVertexBufferPtr++] = p0.x;
         lineVertexData[lineVertexBufferPtr++] = p0.y;
@@ -108,50 +110,17 @@ public class Renderer2D
         lineVertexCount += 2;
     }
 
-    public static void drawRect(Transform transform, Vector3f size, Vector4f color)
+    public static void drawRect(RigidBody rb, Vector4f color)
     {
-        // Might need to be put on the stack?
-        var e0 = rotate(new Vector3f(- size.x, - size.y, - size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e1 = rotate(new Vector3f(+ size.x, - size.y, - size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e2 = rotate(new Vector3f(+ size.x, - size.y, + size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e3 = rotate(new Vector3f(- size.x, - size.y, + size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e4 = rotate(new Vector3f(- size.x, + size.y, - size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e5 = rotate(new Vector3f(+ size.x, + size.y, - size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e6 = rotate(new Vector3f(+ size.x, + size.y, + size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        var e7 = rotate(new Vector3f(- size.x, + size.y, + size.z),
-                (float)Math.toRadians(transform.getRotation().x),
-                (float)Math.toRadians(transform.getRotation().y),
-                (float)Math.toRadians(transform.getRotation().z))
-                .add(transform.getPosition());
-        //
+        var world = rb.getEntity().getWorldMatrix();
+        var e0 = new Vector4f(- 1, - 1, - 1, 1).mul(world);
+        var e1 = new Vector4f(+ 1, - 1, - 1, 1).mul(world);
+        var e2 = new Vector4f(+ 1, - 1, + 1, 1).mul(world);
+        var e3 = new Vector4f(- 1, - 1, + 1, 1).mul(world);
+        var e4 = new Vector4f(- 1, + 1, - 1, 1).mul(world);
+        var e5 = new Vector4f(+ 1, + 1, - 1, 1).mul(world);
+        var e6 = new Vector4f(+ 1, + 1, + 1, 1).mul(world);
+        var e7 = new Vector4f(- 1, + 1, + 1, 1).mul(world);
 
         drawLine(e0, e1, color);
         drawLine(e1, e2, color);
@@ -167,36 +136,6 @@ public class Renderer2D
         drawLine(e5, e6, color);
         drawLine(e6, e7, color);
         drawLine(e7, e4, color);
-    }
-
-    private static Vector3f rotate(Vector3f p, float x, float y, float z)
-    {
-        var cosA = Math.cos(z);
-        var sinA = Math.sin(z);
-        var cosB = Math.cos(y);
-        var sinB = Math.sin(y);
-        var cosC = Math.cos(x);
-        var sinC = Math.sin(x);
-
-        var Axx = cosA * cosB;
-        var Axy = cosA * sinB * sinC - sinA * cosC;
-        var Axz = cosA * sinB * cosC + sinA * sinC;
-        var Ayx = sinA * cosB;
-        var Ayy = sinA * sinB * sinC + cosA * cosC;
-        var Ayz = sinA * sinB * cosC - cosA * sinC;
-        var Azx = -sinB;
-        var Azy = cosB * sinC;
-        var Azz = cosB * cosC;
-
-        var px = p.x;
-        var py = p.y;
-        var pz = p.z;
-
-        p.x = (float) (Axx * px + Axy * py + Axz * pz);
-        p.y = (float) (Ayx * px + Ayy * py + Ayz * pz);
-        p.z = (float) (Azx * px + Azy * py + Azz * pz);
-
-        return p;
     }
 
 }

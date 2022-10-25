@@ -70,7 +70,7 @@ public class Renderer
         {
             var rbs = registry.getRigidBodies();
             for (var rb : rbs)
-                Renderer2D.drawRect(new Transform(rb.getEntity().transform), rb.getEntity().transform.getScale(), new Vector4f(1,1,1,1));
+                Renderer2D.drawRect(rb, new Vector4f(1,1,1,1));
         }
 
         Renderer2D.endScene();
