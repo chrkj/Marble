@@ -18,9 +18,8 @@ import marble.editor.Console;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 import marble.entity.components.RigidBody;
+import org.joml.Vector4f;
 import physx.common.PxQuat;
-
-import static java.lang.Math.*;
 
 public class Entity
 {
@@ -35,9 +34,6 @@ public class Entity
     private final List<Entity> children = new ArrayList<>();
 
     private transient Entity parent;
-    private transient float lastX = 0;
-    private transient float lastY = 0;
-    private transient float lastZ = 0;
 
     public Entity()
     {
@@ -75,7 +71,7 @@ public class Entity
             if (rb.isStatic) return;
 
             var pos = rb.rigidActor.getGlobalPose().getP();
-            var rot = toAxisAngle(rb.rigidActor.getGlobalPose().getQ());
+            var rot = quatToAxisRot(rb.rigidActor.getGlobalPose().getQ());
             transform.setPosition(pos.getX(), pos.getY(), pos.getZ());
             transform.setRotation(rot.x, rot.y, rot.z);
         }
@@ -226,34 +222,30 @@ public class Entity
         }
     }
 
-    public Vector3f toAxisAngle(PxQuat q)
+    private static Vector3f quatToAxisRot(PxQuat q)
     {
-        float x = q.getX();
-        float y = q.getY();
-        float z = q.getZ();
-        float w = q.getW();
+        double ax, ay, az;
+        var tmpVec = new Vector4f(q.getX(), q.getY(), q.getZ(), q.getW()).normalize();
+        float x = tmpVec.x;
+        float y = tmpVec.y;
+        float z = tmpVec.z;
+        float w = tmpVec.w;
 
-        var theta = sqrt(1 - (w * w));
-        var angle = Math.toDegrees(2 * acos(w));
-
-        if (theta * angle == 0) return new Vector3f();
-
-        var ax = x / theta * angle;
-        var ay = y / theta * angle;
-        var az = z / theta * angle;
-
-        return new Vector3f((float) ax, (float) ay, (float) az);
-
-        //var x = -0.003;
-        //var y = 0.014;
-        //var z = 0.284;
-        //var w = 0.959;
-        //var theta = sqrt(1 - (0.7071068 * 0.7071068));
-        //var angle = Math.toDegrees(2 * acos(w));
-        //System.out.println(Math.toDegrees(2 * acos(w)));
-        //System.out.println("x " + x / theta * angle);
-        //System.out.println("y " + y / theta * angle);
-        //System.out.println("z " + z / theta * angle);
+        double theta = Math.sqrt(1 - w * w);
+        double angle = Math.toDegrees(2 * Math.acos(w));
+        if (theta < 0.001)
+        {
+            ax = x;
+            ay = y;
+            az = z;
+        }
+        else
+        {
+            ax = x / theta;
+            ay = y / theta;
+            az = z / theta;
+        }
+        return new Vector3f((float) (ax * angle), (float) (ay * angle),  (float) (az * angle));
     }
 
 }

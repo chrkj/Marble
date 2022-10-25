@@ -21,13 +21,13 @@ public class Physics
     public static final PxFilterData defaultFilterData;
     public static final int PX_PHYSICS_VERSION = PxTopLevelFunctions.getPHYSICS_VERSION();
 
-    private static final int numThreads = 4;
+    private static final int numThreads = 8;
 
     static
     {
         // PhysX foundation object
-        PxDefaultAllocator allocator = new PxDefaultAllocator();
         PxErrorCallback errorCb = new PxDefaultErrorCallback();
+        PxDefaultAllocator allocator = new PxDefaultAllocator();
         foundation = PxTopLevelFunctions.CreateFoundation(PX_PHYSICS_VERSION, allocator, errorCb);
 
         // PhysX main physics object
@@ -35,10 +35,10 @@ public class Physics
         physics = PxTopLevelFunctions.CreatePhysics(PX_PHYSICS_VERSION, foundation, tolerances);
         defaultMaterial = physics.createMaterial(0.2f, 0.2f, 0.1f);
         defaultFilterData = new PxFilterData(0, 0, 0, 0);
-        defaultFilterData.setWord0(1);          // collision group: 0 (i.e. 1 << 0)
-        defaultFilterData.setWord1(0xffffffff); // collision mask: collide with everything
-        defaultFilterData.setWord2(0);          // no additional collision flags
-        defaultFilterData.setWord3(0);          // word3 is currently not used
+        defaultFilterData.setWord0(1);
+        defaultFilterData.setWord1(0xffffffff);
+        defaultFilterData.setWord2(0);
+        defaultFilterData.setWord3(0);
 
         var cookingParams = new PxCookingParams(tolerances);
         cooking = PxTopLevelFunctions.CreateCooking(PX_PHYSICS_VERSION, foundation, cookingParams);

@@ -5,7 +5,6 @@ import imgui.extension.imguizmo.ImGuizmo;
 import imgui.extension.imguizmo.flag.Mode;
 import imgui.extension.imguizmo.flag.Operation;
 
-import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Gizmo
@@ -53,9 +52,9 @@ public class Gizmo
         ImGuizmo.manipulate(view, proj, modelMatrix, currentGizmoOperation, Mode.LOCAL);
 
         ImGuizmo.decomposeMatrixToComponents(modelMatrix, pos, rot, scale);
-        selectedEntity.transform.setPosition(new Vector3f(pos[0], pos[1], pos[2]));
-        selectedEntity.transform.setRotation( new Vector3f(rot[0], rot[1], rot[2]));
-        selectedEntity.transform.setScale(new Vector3f(scale[0], scale[1], scale[2]));
+        selectedEntity.transform.setPosition(pos[0], pos[1], pos[2]);
+        selectedEntity.transform.setRotation(rot[0], rot[1], rot[2]);
+        selectedEntity.transform.setScale(scale[0], scale[1], scale[2]);
     }
 
     public static boolean inUse()

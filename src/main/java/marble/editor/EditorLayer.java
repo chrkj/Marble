@@ -161,7 +161,6 @@ public class EditorLayer
                 SceneHierarchy.setSelectedEntity(selectedEntity);
             }
         }
-
         ImGui.end();
     }
 
