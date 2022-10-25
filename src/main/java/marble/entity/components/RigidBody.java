@@ -43,6 +43,7 @@ public class RigidBody extends Component
     @Override
     public void cleanUp()
     {
+        rigidActor.release();
     }
 
     @Override
