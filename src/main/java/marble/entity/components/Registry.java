@@ -20,16 +20,16 @@ public class Registry
 
     public void register(Component component)
     {
-        if (component instanceof Mesh)
-            meshes.add((Mesh) component);
-        if (component instanceof SpotLight)
-            spotLights.add((SpotLight) component);
-        if (component instanceof PointLight)
-            pointLights.add((PointLight) component);
-        if (component instanceof DirectionalLight)
-            directionalLights.add((DirectionalLight) component);
-        if (component instanceof RigidBody)
-            rigidBodies.add((RigidBody) component);
+        if (component instanceof Mesh mesh)
+            meshes.add(mesh);
+        else if (component instanceof SpotLight spotLight)
+            spotLights.add(spotLight);
+        else if (component instanceof PointLight pointLight)
+            pointLights.add(pointLight);
+        else if (component instanceof DirectionalLight directionalLight)
+            directionalLights.add(directionalLight);
+        else if (component instanceof RigidBody rigidBody)
+            rigidBodies.add(rigidBody);
     }
 
     public List<Mesh> getMeshes()
@@ -68,16 +68,16 @@ public class Registry
 
     public void remove(Component component)
     {
-        if (component instanceof Mesh)
-            meshes.remove((Mesh) component);
-        if (component instanceof SpotLight)
-            spotLights.remove((SpotLight) component);
-        if (component instanceof PointLight)
-            pointLights.remove((PointLight) component);
-        if (component instanceof DirectionalLight)
-            directionalLights.remove((DirectionalLight) component);
-        if (component instanceof RigidBody)
-            rigidBodies.remove((RigidBody) component);
+        if (component instanceof Mesh mesh)
+            meshes.remove(mesh);
+        else if (component instanceof SpotLight spotLight)
+            spotLights.remove(spotLight);
+        else if (component instanceof PointLight pointLight)
+            pointLights.remove(pointLight);
+        else if (component instanceof DirectionalLight directionalLight)
+            directionalLights.remove(directionalLight);
+        else if (component instanceof RigidBody rigidBody)
+            rigidBodies.remove(rigidBody);
     }
 
 }
