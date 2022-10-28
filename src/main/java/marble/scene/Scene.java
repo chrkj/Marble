@@ -80,10 +80,10 @@ public class Scene
 
         for (Component component : entity.getAllComponents())
         {
-            if (component instanceof Camera)
-                mainCamera = (Camera) component;
-            if (component instanceof RigidBody)
-                physicsScene.addActor(((RigidBody) component).rigidActor);
+            if (component instanceof Camera camera)
+                mainCamera = camera;
+            else if (component instanceof RigidBody rigidBody)
+                physicsScene.addActor(rigidBody.rigidActor);
             registry.register(component);
         }
     }
