@@ -1,11 +1,11 @@
 editorCamera:
   position:
-    x: 19.139261
-    "y": -15.83516
-    z: -34.068665
+    x: 3.1657364
+    "y": -20.596684
+    z: -18.99429
   rotation:
-    x: 29.190632
-    "y": 43.674034
+    x: 41.05
+    "y": 37.23989
     z: 0.0
   near: 0.3
   far: 1000.0
@@ -34,17 +34,6 @@ entities:
         "y": -0.0
         z: 0.0
     components:
-      marble.entity.components.RigidBody:
-        isStatic: false
-        rigidActor:
-          address: 2038011224544
-          isExternallyAllocated: false
-          sleeping: false
-          releasable: true
-        vGeo:
-          x: 0.0
-          "y": 0.0
-          z: 0.0
       marble.entity.components.Mesh:
         material:
           shader:
@@ -67,6 +56,17 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/helm.obj"
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445813296
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
     uuid: 1874338040
     children:
     - name: "ChildEntity1"
@@ -152,34 +152,65 @@ entities:
         exponent: 0.0
     uuid: 603228053
     children: []
-  1927964606:
-    name: "Slab"
+  1652608195:
+    name: "Box1"
     scriptName: null
     transform:
       scale:
-        x: 8.0
+        x: 1.0
         "y": 1.0
-        z: 8.0
+        z: 1.0
       position:
-        x: 0.0
-        "y": -8.349297
-        z: -8.0578785
+        x: -2.7626145
+        "y": 2.874296
+        z: 0.0
       rotation:
         x: 0.0
         "y": -0.0
         z: 0.0
     components:
       marble.entity.components.RigidBody:
-        isStatic: true
+        isStatic: false
         rigidActor:
-          address: 2038006998336
+          address: 3043445813680
           isExternallyAllocated: false
+          sleeping: false
           releasable: true
         vGeo:
           x: 0.0
           "y": 0.0
           z: 0.0
-    uuid: 1927964606
+    uuid: 1652608195
+    children: []
+  2003978833:
+    name: "Box2"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 4.1396112
+        "y": 3.2519562
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445814064
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 2003978833
     children: []
   2116144710:
     name: "Rect1"
@@ -201,7 +232,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2038011224928
+          address: 3043445814448
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -210,57 +241,6 @@ entities:
           "y": 0.0
           z: 0.0
     uuid: 2116144710
-    children: []
-  4445915:
-    name: "Plane"
-    scriptName: null
-    transform:
-      scale:
-        x: 64.48792
-        "y": 0.001
-        z: 81.62534
-      position:
-        x: 2.4479988
-        "y": -22.08662
-        z: 31.497757
-      rotation:
-        x: 0.0
-        "y": -0.0
-        z: 0.0
-    components:
-      marble.entity.components.RigidBody:
-        isStatic: true
-        rigidActor:
-          address: 2038006996928
-          isExternallyAllocated: false
-          releasable: true
-        vGeo:
-          x: 0.0
-          "y": 0.0
-          z: 0.0
-      marble.entity.components.Mesh:
-        material:
-          shader:
-            filepath: "assets/shaders/default.glsl"
-          texture: null
-          reflectance: 0.0
-          ambient:
-            x: 0.0
-            "y": 0.0
-            z: 0.0
-            w: 1.0
-          diffuse:
-            x: 1.0
-            "y": 1.0
-            z: 1.0
-            w: 1.0
-          specular:
-            x: 1.0
-            "y": 1.0
-            z: 1.0
-            w: 1.0
-        filePath: "assets/obj/cube.obj"
-    uuid: 4445915
     children: []
   455960423:
     name: "Directional light"
@@ -288,8 +268,231 @@ entities:
           w: 1.0
     uuid: 455960423
     children: []
+  1586110567:
+    name: "Main Camera"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 3.0
+        "y": -2.5
+        z: 35.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.camera.PerspectiveCamera:
+        near: 0.3
+        far: 1000.0
+        fov: 60.0
+    uuid: 1586110567
+    children: []
+  1554161836:
+    name: "Box3"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 28.170399
+        "y": -11.96833
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445814832
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 1554161836
+    children: []
+  1117725009:
+    name: "Box4"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": 5.590966
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445815216
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 1117725009
+    children: []
+  1976014838:
+    name: "Box5"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": 8.612276
+        z: -1.9518988
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445815600
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 1976014838
+    children: []
+  1927964606:
+    name: "Slab"
+    scriptName: null
+    transform:
+      scale:
+        x: 8.0
+        "y": 1.0
+        z: 8.0
+      position:
+        x: 0.0
+        "y": -8.349297
+        z: -8.0578785
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: true
+        rigidActor:
+          address: 3043446779472
+          isExternallyAllocated: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 1927964606
+    children: []
+  4445915:
+    name: "Plane"
+    scriptName: null
+    transform:
+      scale:
+        x: 64.48792
+        "y": 0.001
+        z: 81.62534
+      position:
+        x: 2.4479988
+        "y": -22.08662
+        z: 31.497757
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.Mesh:
+        material:
+          shader:
+            filepath: "assets/shaders/default.glsl"
+          texture: null
+          reflectance: 0.0
+          ambient:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+            w: 1.0
+          diffuse:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+          specular:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+        filePath: "assets/obj/cube.obj"
+      marble.entity.components.RigidBody:
+        isStatic: true
+        rigidActor:
+          address: 3043446779648
+          isExternallyAllocated: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 4445915
+    children: []
+  603368079:
+    name: "Box6"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.0
+        "y": 8.72915
+        z: 3.3380637
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445815984
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 603368079
+    children: []
   1577092442:
-    name: "Box1"
+    name: "Box7"
     scriptName: null
     transform:
       scale:
@@ -308,7 +511,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2038006997104
+          address: 3043446779824
           isExternallyAllocated: false
           releasable: true
         vGeo:
@@ -354,8 +557,8 @@ entities:
           exponent: 0.0
     uuid: 666182862
     children: []
-  1586110567:
-    name: "Main Camera"
+  38011866:
+    name: "Box8"
     scriptName: null
     transform:
       scale:
@@ -363,22 +566,29 @@ entities:
         "y": 1.0
         z: 1.0
       position:
-        x: 3.0
-        "y": -2.5
-        z: 35.0
+        x: -5.422825
+        "y": 10.451703
+        z: 2.4630213
       rotation:
         x: 0.0
         "y": -0.0
         z: 0.0
     components:
-      marble.entity.components.camera.PerspectiveCamera:
-        near: 0.3
-        far: 1000.0
-        fov: 60.0
-    uuid: 1586110567
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445816368
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 38011866
     children: []
-  1554161836:
-    name: "Box2"
+  1936710097:
+    name: "Box9"
     scriptName: null
     transform:
       scale:
@@ -386,8 +596,8 @@ entities:
         "y": 1.0
         z: 1.0
       position:
-        x: 28.170399
-        "y": -11.96833
+        x: 0.0
+        "y": 11.614877
         z: 0.0
       rotation:
         x: 0.0
@@ -397,7 +607,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2038011225312
+          address: 3043445816752
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -405,5 +615,95 @@ entities:
           x: 0.0
           "y": 0.0
           z: 0.0
-    uuid: 1554161836
+    uuid: 1936710097
+    children: []
+  259564263:
+    name: "Box10"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: -2.7198708
+        "y": 14.23804
+        z: 0.5266924
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445104512
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 259564263
+    children: []
+  2146450863:
+    name: "Box11"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 3.0043967
+        "y": 12.012498
+        z: 0.0
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445104896
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 2146450863
+    children: []
+  47661224:
+    name: "Box12"
+    scriptName: null
+    transform:
+      scale:
+        x: 1.0
+        "y": 1.0
+        z: 1.0
+      position:
+        x: 0.43771353
+        "y": 14.172773
+        z: 0.18310522
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 3043445105280
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        vGeo:
+          x: 0.0
+          "y": 0.0
+          z: 0.0
+    uuid: 47661224
     children: []

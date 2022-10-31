@@ -222,21 +222,21 @@ public class EditorLayer
         Texture icon = EditorLayer.sceneRunning ? stopButtonIcon : playButtonIcon;
         if (ImGui.imageButton(icon.getId(), buttonSize, buttonSize))
         {
-            EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
             if (EditorLayer.sceneRunning)
-            {
-                SceneHierarchy.setSelectedEntity(null);
-                EditorLayer.editorScene = EditorLayer.currentScene;
-                EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
-                EditorLayer.currentScene = EditorLayer.runtimeScene;
-            }
-            else
             {
                 SceneHierarchy.setSelectedEntity(null);
                 EditorLayer.runtimeScene.cleanUp();
                 EditorLayer.runtimeScene = null;
                 EditorLayer.currentScene = EditorLayer.editorScene;
             }
+            else
+            {
+                SceneHierarchy.setSelectedEntity(null);
+                EditorLayer.editorScene = EditorLayer.currentScene;
+                EditorLayer.runtimeScene = SceneSerializer.copyScene(EditorLayer.currentScene);
+                EditorLayer.currentScene = EditorLayer.runtimeScene;
+            }
+            EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
         }
         ImGui.popStyleVar(1);
     }

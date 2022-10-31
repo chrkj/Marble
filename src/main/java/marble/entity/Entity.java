@@ -2,6 +2,7 @@ package marble.entity;
 
 import org.joml.Vector3f;
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import javax.tools.*;
 import java.io.File;
@@ -13,13 +14,13 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import physx.common.PxQuat;
+
 import marble.editor.EditorLayer;
 import marble.editor.Console;
 import marble.entity.components.Component;
 import marble.entity.components.ScriptableComponent;
 import marble.entity.components.RigidBody;
-import org.joml.Vector4f;
-import physx.common.PxQuat;
 
 public class Entity
 {
@@ -37,6 +38,7 @@ public class Entity
 
     public Entity()
     {
+
         init("Empty Entity", new Transform(), Math.abs(UUID.randomUUID().hashCode()));
     }
 
@@ -82,17 +84,14 @@ public class Entity
 
     public <T extends Component> T getComponent(Class<T> componentClass)
     {
-        Component component = components.get(componentClass);
-        if (component != null)
-            return componentClass.cast(component);
-        return null;
+        return componentClass.cast(components.get(componentClass));
     }
 
     public <T extends Component> T removeComponent(Class<T> componentClass)
     {
-        var comp = componentClass.cast(components.remove(componentClass));
-        EditorLayer.currentScene.getRegistry().remove(comp);
-        return comp;
+        var component = componentClass.cast(components.remove(componentClass));
+        EditorLayer.currentScene.getRegistry().remove(component);
+        return component;
     }
 
     public <T extends Component> void removeComponent(T component)

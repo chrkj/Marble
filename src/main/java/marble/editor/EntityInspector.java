@@ -3,12 +3,13 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import marble.entity.components.RigidBody;
 import marble.gui.MarbleGui;
+import marble.entity.components.RigidBody;
 import marble.entity.Entity;
 import marble.entity.components.Component;
 import marble.entity.components.light.LightFactory;
 import marble.entity.components.light.LightType;
+import marble.physics.Physics;
 
 public class EntityInspector implements Panel
 {
@@ -48,12 +49,13 @@ public class EntityInspector implements Panel
                 if (ImGui.selectable("Point light"))       addPointLight();
                 if (ImGui.selectable("RigidBody Static"))  addRigidBody(true);
                 if (ImGui.selectable("RigidBody Dynamic")) addRigidBody(false);
+
                 ImGui.endPopup();
             }
         }
         ImGui.end();
     }
-
+    
     private void addRigidBody(boolean isStatic)
     {
         var rb = new RigidBody(SceneHierarchy.getSelectedEntity(), isStatic);
