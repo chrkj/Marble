@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import marble.util.Time;
 import marble.entity.Material;
-import marble.entity.Transform;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.camera.Camera;

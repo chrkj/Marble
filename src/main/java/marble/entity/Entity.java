@@ -113,7 +113,7 @@ public class Entity
 
     public Collection<Component> getAllComponents()
     {
-        return components.values();
+        return new ArrayList<>(components.values());
     }
 
     public void cleanUp()

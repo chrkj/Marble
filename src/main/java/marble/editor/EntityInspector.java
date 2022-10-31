@@ -29,7 +29,7 @@ public class EntityInspector implements Panel
             renderTransformInspector(selectedEntity);
 
             // Entity components fields
-            for (Component component : selectedEntity.components.values())
+            for (Component component : selectedEntity.getAllComponents())
                 component.renderEntityInspector();
 
             // Script component fields
