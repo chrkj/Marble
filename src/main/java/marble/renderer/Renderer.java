@@ -3,9 +3,12 @@ package marble.renderer;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30C.GL_RED_INTEGER;
+import static org.lwjgl.opengl.GL44.glClearTexImage;
 
 import marble.util.Time;
 import marble.entity.Material;
+import marble.editor.EditorLayer;
 import marble.entity.components.Mesh;
 import marble.entity.components.Registry;
 import marble.entity.components.camera.Camera;
@@ -15,17 +18,19 @@ public class Renderer
 {
     public enum ViewportId { EDITOR, GAME }
 
-    public void clear()
+    public void clear(ViewportId viewportId)
     {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //glClearTexImage(EditorLayer.editorViewportFb.getColorAttachmentRendererID(1), 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 }); // TODO: FIX clear tex image not working properly
+        if (viewportId == ViewportId.EDITOR)
+            glClearTexImage(EditorLayer.editorViewportFb.getColorAttachmentRendererID(1), 0, GL_RED_INTEGER, GL_INT, new int[]{ -1 });
+
     }
 
     public void render(Camera camera, Registry registry, Framebuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)
     {
         frameBuffer.bind();
-        clear();
+        clear(viewportId);
         Renderer2D.beginScene(camera);
 
         for (Mesh mesh : registry.getMeshes())
