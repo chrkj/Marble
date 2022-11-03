@@ -1,5 +1,6 @@
 package marble.renderer;
 
+import marble.entity.components.light.Light;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL11.*;
@@ -75,6 +76,8 @@ public class Renderer
             var rbs = registry.getRigidBodies();
             for (var rb : rbs)
                 Renderer2D.drawRect(rb, new Vector4f(0,1,0,1));
+            for (Light light : registry.getLights())
+                light.renderGizmo();
         }
 
         Renderer2D.endScene();

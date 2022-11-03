@@ -220,13 +220,9 @@ public class Shader
 
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
-        Vector4f dir = new Vector4f(
-                (float) Math.sin(Math.toRadians(light.getEntity().transform.getRotation().y)),
-                (float) -(Math.cos(Math.toRadians(light.getEntity().transform.getRotation().y)) * Math.sin(Math.toRadians(light.getEntity().transform.getRotation().x))),
-                (float) (Math.cos(Math.toRadians(light.getEntity().transform.getRotation().y)) * Math.cos(Math.toRadians(light.getEntity().transform.getRotation().x))),
-                0).mul(viewMatrix);
+        var lightDir = light.getLightDir(viewMatrix);
         setUniform4f("uDirectionalLight[" + i + "].color", light.getColor());
-        setUniform3f("uDirectionalLight[" + i + "].direction", dir.x, dir.y, dir.z);
+        setUniform3f("uDirectionalLight[" + i + "].direction", lightDir.x, lightDir.y, lightDir.z);
         setUniform1f("uDirectionalLight[" + i + "].intensity", light.getIntensity());
     }
 
@@ -243,15 +239,15 @@ public class Shader
 
     public void setUniformSpotLight(SpotLight light, Matrix4f viewMatrix, int i)
     {
-        var position = new Vector4f(light.getEntity().transform.getPosition(), 1).mul(viewMatrix);
-        var coneDir = new Vector4f(light.getEntity().transform.getRotation(), 0).mul(viewMatrix).normalize();
+        var entPos = new Vector4f(light.getEntity().transform.getPosition(), 1).mul(viewMatrix);
+        var lightDir = light.getLightDir(viewMatrix);
         setUniform4f("uSpotLight[" + i + "].pl.color", light.getColor());
-        setUniform3f("uSpotLight[" + i + "].pl.position", new Vector3f(position.x, position.y, position.z));
+        setUniform3f("uSpotLight[" + i + "].pl.position", new Vector3f(entPos.x, entPos.y, entPos.z));
         setUniform1f("uSpotLight[" + i + "].pl.intensity", light.getIntensity());
         setUniform1f("uSpotLight[" + i + "].pl.att.constant", light.getPointLight().constant);
         setUniform1f("uSpotLight[" + i + "].pl.att.linear", light.getPointLight().linear);
         setUniform1f("uSpotLight[" + i + "].pl.att.exponent", light.getPointLight().exponent);
-        setUniform3f("uSpotLight[" + i + "].conedir", new Vector3f(coneDir.x, coneDir.y, coneDir.z));
+        setUniform3f("uSpotLight[" + i + "].conedir", new Vector3f(lightDir.x, lightDir.y, lightDir.z));
         setUniform1f("uSpotLight[" + i + "].cutoff", light.getCutOff());
     }
 

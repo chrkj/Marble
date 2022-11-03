@@ -6,6 +6,8 @@ import imgui.flag.ImGuiTreeNodeFlags;
 import static org.lwjgl.opengl.GL11.*;
 
 import marble.gui.MarbleGui;
+import marble.renderer.BatchRendering.Renderer2D;
+import org.joml.Vector4f;
 
 public class SpotLight extends Light
 {
@@ -56,11 +58,10 @@ public class SpotLight extends Light
     @Override
     public void renderGizmo()
     {
-        var pos = entity.transform.getPosition();
-        glLineWidth(2);
-        glBegin(GL_LINES);
-            glVertex3f(pos.x, pos.y, pos.z);
-            glVertex3f(pos.x + 10, pos.y + 10, pos.z + 10);
-        glEnd();
+        // TODO: Add rotation specifically to the light so it doesn't rely on ent rot
+        var entPos = entity.transform.getPosition();
+        var p0 = new Vector4f(entPos, 0);
+        var p1 = new Vector4f(0, -gizmoLength, 0, 1).mul(entity.getWorldMatrix());
+        Renderer2D.drawLine(p0, p1, new Vector4f(1,1,0,1));
     }
 }

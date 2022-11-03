@@ -3,6 +3,7 @@ package marble.entity.components.light;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.renderer.BatchRendering.Renderer2D;
 import org.joml.Vector4f;
 
 import marble.gui.MarbleGui;
@@ -31,5 +32,9 @@ public class DirectionalLight extends Light
     @Override
     public void renderGizmo()
     {
+        var entPos = entity.transform.getPosition();
+        var p0 = new Vector4f(entPos, 0);
+        var p1 = new Vector4f(0, gizmoLength, 0, 1).mul(entity.getWorldMatrix());
+        Renderer2D.drawLine(p0, p1, new Vector4f(1,1,0,1));
     }
 }
