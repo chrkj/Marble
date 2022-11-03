@@ -75,7 +75,7 @@ public class Renderer
         {
             var rbs = registry.getRigidBodies();
             for (var rb : rbs)
-                Renderer2D.drawRect(rb, new Vector4f(0,1,0,1));
+                rb.renderCollider();
             for (Light light : registry.getLights())
                 light.renderGizmo();
         }

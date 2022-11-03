@@ -1,6 +1,9 @@
 package marble.entity.components;
 
+import imgui.type.ImBoolean;
+import marble.renderer.BatchRendering.Renderer2D;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import imgui.ImGui;
@@ -17,6 +20,8 @@ public class RigidBody extends Component
 {
     public boolean isStatic;
     public PxRigidActor rigidActor;
+
+    private final ImBoolean shouldRenderCollider = new ImBoolean(true);
 
     public RigidBody(Entity ent, boolean isStatic)
     {
@@ -37,6 +42,12 @@ public class RigidBody extends Component
         }
     }
 
+    public void renderCollider()
+    {
+        if (shouldRenderCollider.get())
+            Renderer2D.drawRect(this, new Vector4f(0,1,0,1));
+    }
+
     @Override
     public void cleanUp()
     {
@@ -51,6 +62,7 @@ public class RigidBody extends Component
         boolean nodeOpen = ImGui.treeNodeEx("Rigid Body", nodeFlags);
         if (nodeOpen)
         {
+            ImGui.checkbox("Show collider", shouldRenderCollider);
             if (MarbleGui.ButtonCenteredOnLine("Delete", 0))
                 cleanUp();
             ImGui.treePop();
