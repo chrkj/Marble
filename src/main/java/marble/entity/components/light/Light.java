@@ -1,5 +1,6 @@
 package marble.entity.components.light;
 
+import imgui.type.ImBoolean;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -11,6 +12,7 @@ public abstract class Light extends Component
     protected float intensity = 1;
     protected float gizmoLength = 2.5f;
     protected Vector4f color = new Vector4f(1,1,1,1);
+    protected final ImBoolean shouldRenderGizmo = new ImBoolean(true);
 
     public Vector4f getColor()
     {

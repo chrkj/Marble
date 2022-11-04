@@ -3,12 +3,12 @@ editorCamera:
     data:
     - true
   position:
-    x: 14.207263
-    "y": -28.933119
-    z: -41.253483
+    x: 15.100846
+    "y": -24.848919
+    z: -30.916523
   rotation:
-    x: 33.475883
-    "y": 19.672361
+    x: 31.70774
+    "y": 61.864124
     z: 0.0
   near: 0.3
   far: 1000.0
@@ -40,7 +40,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427769344
+          address: 2582167545296
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -175,7 +175,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427769728
+          address: 2582167545680
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -204,7 +204,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427770112
+          address: 2582167546064
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -233,7 +233,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427770496
+          address: 2582167546448
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -247,24 +247,24 @@ entities:
     scriptName: null
     transform:
       scale:
-        x: 0.9999948
-        "y": 1.0
-        z: 1.0
+        x: 0.9999828
+        "y": 0.9999842
+        z: 0.9999842
       position:
         x: 0.0
         "y": 17.647455
         z: 27.539612
       rotation:
-        x: -125.54169
+        x: 45.0
         "y": -0.0
         z: 0.0
     components:
       marble.entity.components.light.DirectionalLight:
-        intensity: 0.2
+        intensity: 0.1
         gizmoLength: 2.5
         color:
-          x: 1.0
-          "y": 1.0
+          x: 0.78431374
+          "y": 0.0
           z: 1.0
           w: 1.0
     uuid: 455960423
@@ -315,7 +315,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427770880
+          address: 2582167546832
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -344,7 +344,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427771264
+          address: 2582167547216
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -373,7 +373,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427771648
+          address: 2582167547600
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -402,7 +402,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 1955425017280
+          address: 2582170742112
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -430,7 +430,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 1955425017456
+          address: 2582170742288
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -480,7 +480,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427772032
+          address: 2582167547984
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -509,7 +509,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 1955425017632
+          address: 2582170742464
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -576,7 +576,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427772416
+          address: 2582167548368
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -605,7 +605,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955427772800
+          address: 2582167548752
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -634,7 +634,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955424977696
+          address: 2582168573680
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -663,7 +663,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955424978080
+          address: 2582168574064
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -692,7 +692,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 1955424978464
+          address: 2582168574448
           isExternallyAllocated: false
           sleeping: false
           releasable: true
