@@ -76,14 +76,14 @@ public class OpenGLFramebuffer extends Framebuffer
         framebufferID = glCreateFramebuffers();
         bind();
 
-        createColorTextures(specification.getTextureFormats().size(), colorAttachmentIDs);
+        createColorTextures(specification.getTextureFormats().size());
         for (int i = 0; i < specification.getTextureFormats().size(); i++)
         {
             glBindTexture(GL_TEXTURE_2D, colorAttachmentIDs.get(i));
             switch (specification.getTextureFormats().get(i))
             {
-                case RGB8 ->        attachColorTexture(colorAttachmentIDs.get(i), GL_RGB, GL_RGB, i);
-                case RED_INTEGER -> attachColorTexture(colorAttachmentIDs.get(i), GL_R32I, GL_RED_INTEGER, i);
+                case RGB8 -> attachColorTexture(colorAttachmentIDs.get(i), GL_RGB8, GL_RGB, i);
+                case R32I -> attachColorTexture(colorAttachmentIDs.get(i), GL_R32I, GL_RED_INTEGER, i);
             }
         }
 
@@ -112,9 +112,9 @@ public class OpenGLFramebuffer extends Framebuffer
         unbind();
     }
 
-    private void attachColorTexture(int id, int format, int internalFormat, int index)
+    private void attachColorTexture(int id, int sizedInternalFormat, int baseInternalFormat, int index)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, format, specification.width, specification.height, 0, internalFormat, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, sizedInternalFormat, specification.width, specification.height, 0, baseInternalFormat, GL_UNSIGNED_BYTE, 0);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -137,10 +137,10 @@ public class OpenGLFramebuffer extends Framebuffer
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        glFramebufferTexture2D(GL_FRAMEBUFFER, org.lwjgl.opengl.GL30.GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachmentID, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachmentID, 0);
     }
 
-    private void createColorTextures(int size, List<Integer> data)
+    private void createColorTextures(int size)
     {
         int[] ids = new int[size];
         glGenTextures(ids);

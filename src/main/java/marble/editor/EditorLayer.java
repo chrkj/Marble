@@ -38,12 +38,17 @@ public class EditorLayer
 
     public EditorLayer()
     {
-        var gameFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
+        var gameFbSpec = new Framebuffer.FramebufferSpecification(
+                Framebuffer.TextureFormat.RGB8,
+                Framebuffer.TextureFormat.DEPTH24_STENCIL8);
         gameFbSpec.width = 1280;
         gameFbSpec.height = 720;
         gameViewportFb = Framebuffer.create(gameFbSpec);
 
-        var editorFbSpec = new Framebuffer.FramebufferSpecification(Framebuffer.TextureFormat.RGB8, Framebuffer.TextureFormat.RED_INTEGER, Framebuffer.TextureFormat.DEPTH24_STENCIL8);
+        var editorFbSpec = new Framebuffer.FramebufferSpecification(
+                Framebuffer.TextureFormat.RGB8,
+                Framebuffer.TextureFormat.R32I,
+                Framebuffer.TextureFormat.DEPTH24_STENCIL8);
         editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
@@ -215,10 +220,10 @@ public class EditorLayer
     private void drawToolBar()
     {
         ImGui.pushStyleVar(ImGuiStyleVar.FrameBorderSize, 0f);
+
         int buttonSize = 17;
         ImGui.setCursorPosX(Application.getWidth() / 2f - buttonSize / 2f);
         ImGui.setCursorPosY(ImGui.getContentRegionAvailY() / 2f + buttonSize / 2f);
-
         Texture icon = EditorLayer.sceneRunning ? stopButtonIcon : playButtonIcon;
         if (ImGui.imageButton(icon.getId(), buttonSize, buttonSize))
         {
@@ -238,6 +243,7 @@ public class EditorLayer
             }
             EditorLayer.sceneRunning = !EditorLayer.sceneRunning;
         }
+
         ImGui.popStyleVar(1);
     }
 

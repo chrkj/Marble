@@ -14,7 +14,7 @@ public abstract class Framebuffer
 
     public enum TextureFormat
     {
-        NONE, RGB8, RED_INTEGER, DEPTH_COMPONENT32F, DEPTH_COMPONENT24, DEPTH_COMPONENT16, DEPTH32F_STENCIL8, DEPTH24_STENCIL8, STENCIL_INDEX8
+        NONE, RGB8, R32I, DEPTH_COMPONENT32F, DEPTH_COMPONENT24, DEPTH_COMPONENT16, DEPTH32F_STENCIL8, DEPTH24_STENCIL8, STENCIL_INDEX8
     }
 
     public static Framebuffer create(FramebufferSpecification specification)
