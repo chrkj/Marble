@@ -16,8 +16,8 @@ public class EditorCamera extends Camera
     public Vector3f position = new Vector3f(-2.5f, -15, -70);
     public Vector3f rotation = new Vector3f(22, 0, 0);
 
-    public float near = 0.3f;
-    public float far = 1000.f;
+    public float near = 0.1f;
+    public float far = 2000.f;
     public float fov = (float) Math.toRadians(60.0f);
 
     public void move(float x, float y, float z)
@@ -110,6 +110,11 @@ public class EditorCamera extends Camera
 
     @Override
     public void renderEntityInspector()
+    {
+    }
+
+    @Override
+    public void renderFrustum()
     {
     }
 }

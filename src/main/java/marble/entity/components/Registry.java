@@ -3,6 +3,7 @@ package marble.entity.components;
 import java.util.List;
 import java.util.ArrayList;
 
+import marble.entity.components.camera.Camera;
 import marble.entity.components.light.Light;
 import marble.entity.components.light.SpotLight;
 import marble.entity.components.light.PointLight;
@@ -11,6 +12,7 @@ import marble.entity.components.light.DirectionalLight;
 public class Registry
 {
     private final List<Mesh> meshes = new ArrayList<>();
+    private final List<Camera> cameras = new ArrayList<>();
     private final List<SpotLight> spotLights = new ArrayList<>();
     private final List<RigidBody> rigidBodies = new ArrayList<>();
     private final List<PointLight> pointLights = new ArrayList<>();
@@ -30,6 +32,8 @@ public class Registry
             directionalLights.add(directionalLight);
         else if (component instanceof RigidBody rigidBody)
             rigidBodies.add(rigidBody);
+        else if (component instanceof Camera camera)
+            cameras.add(camera);
     }
 
     public List<Mesh> getMeshes()
@@ -57,6 +61,11 @@ public class Registry
         return rigidBodies;
     }
 
+    public List<Camera> getCameras()
+    {
+        return cameras;
+    }
+
     public List<Light> getLights()
     {
         List<Light> lights = new ArrayList<>();
@@ -78,6 +87,8 @@ public class Registry
             directionalLights.remove(directionalLight);
         else if (component instanceof RigidBody rigidBody)
             rigidBodies.remove(rigidBody);
+        else if (component instanceof Camera camera)
+            cameras.remove(camera);
     }
 
 }

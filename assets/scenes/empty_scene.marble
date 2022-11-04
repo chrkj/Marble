@@ -1,11 +1,14 @@
 editorCamera:
+  shouldRenderFrustum:
+    data:
+    - true
   position:
-    x: 11.022517
-    "y": -22.144215
-    z: -45.79163
+    x: 14.207263
+    "y": -28.933119
+    z: -41.253483
   rotation:
-    x: 39.50553
-    "y": 27.861546
+    x: 33.475883
+    "y": 19.672361
     z: 0.0
   near: 0.3
   far: 1000.0
@@ -34,6 +37,16 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 1955427769344
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -56,13 +69,6 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/helm.obj"
-      marble.entity.components.RigidBody:
-        isStatic: false
-        rigidActor:
-          address: 2601924708736
-          isExternallyAllocated: false
-          sleeping: false
-          releasable: true
     uuid: 1874338040
     children:
     - name: "ChildEntity1"
@@ -169,10 +175,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924709120
+          address: 1955427769728
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1652608195
     children: []
   2003978833:
@@ -195,10 +204,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924709504
+          address: 1955427770112
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 2003978833
     children: []
   2116144710:
@@ -221,10 +233,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924709888
+          address: 1955427770496
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 2116144710
     children: []
   455960423:
@@ -272,8 +287,11 @@ entities:
         z: 0.0
     components:
       marble.entity.components.camera.PerspectiveCamera:
+        shouldRenderFrustum:
+          data:
+          - true
         near: 0.3
-        far: 1000.0
+        far: 500.0
         fov: 60.0
     uuid: 1586110567
     children: []
@@ -297,10 +315,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924710272
+          address: 1955427770880
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1554161836
     children: []
   1117725009:
@@ -323,10 +344,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924710656
+          address: 1955427771264
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1117725009
     children: []
   1976014838:
@@ -349,10 +373,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924711040
+          address: 1955427771648
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1976014838
     children: []
   1927964606:
@@ -375,9 +402,12 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2601924712864
+          address: 1955425017280
           isExternallyAllocated: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1927964606
     children: []
   4445915:
@@ -397,6 +427,15 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        isStatic: true
+        rigidActor:
+          address: 1955425017456
+          isExternallyAllocated: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -419,12 +458,6 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/cube.obj"
-      marble.entity.components.RigidBody:
-        isStatic: true
-        rigidActor:
-          address: 2601924713040
-          isExternallyAllocated: false
-          releasable: true
     uuid: 4445915
     children: []
   603368079:
@@ -447,10 +480,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924711424
+          address: 1955427772032
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 603368079
     children: []
   1577092442:
@@ -473,9 +509,12 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2601924713216
+          address: 1955425017632
           isExternallyAllocated: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1577092442
     children: []
   666182862:
@@ -537,10 +576,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924711808
+          address: 1955427772416
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 38011866
     children: []
   1936710097:
@@ -563,10 +605,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601924712192
+          address: 1955427772800
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1936710097
     children: []
   259564263:
@@ -589,10 +634,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601926041696
+          address: 1955424977696
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 259564263
     children: []
   2146450863:
@@ -615,10 +663,13 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601926042080
+          address: 1955424978080
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 2146450863
     children: []
   47661224:
@@ -641,9 +692,12 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2601926042464
+          address: 1955424978464
           isExternallyAllocated: false
           sleeping: false
           releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 47661224
     children: []

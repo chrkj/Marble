@@ -23,10 +23,7 @@ public final class MarbleGui
     private static final ImBoolean vsync = new ImBoolean(true);
     private static final ImBoolean showImGuiDemo = new ImBoolean(false);
 
-    private MarbleGui()
-    {
-        throw new UnsupportedOperationException();
-    }
+    private MarbleGui() { }
 
     public static void renderDiagnostics(float dt)
     {

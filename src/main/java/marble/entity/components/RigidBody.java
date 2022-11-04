@@ -1,20 +1,19 @@
 package marble.entity.components;
 
-import imgui.type.ImBoolean;
-import marble.renderer.BatchRendering.Renderer2D;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import imgui.ImGui;
+import imgui.type.ImBoolean;
 import imgui.flag.ImGuiTreeNodeFlags;
 
-import physx.geomutils.PxBoxGeometry;
 import physx.physics.*;
+import physx.geomutils.PxBoxGeometry;
 
 import marble.gui.MarbleGui;
 import marble.entity.Entity;
 import marble.physics.Physics;
+import marble.renderer.BatchRendering.Renderer2D;
 
 public class RigidBody extends Component
 {

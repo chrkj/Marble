@@ -31,4 +31,9 @@ public class OrthographicCamera extends Camera
     {
         return null;
     }
+
+    @Override
+    public void renderFrustum() {
+
+    }
 }

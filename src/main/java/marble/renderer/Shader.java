@@ -222,7 +222,7 @@ public class Shader
     {
         var lightDir = light.getLightDir(viewMatrix);
         setUniform4f("uDirectionalLight[" + i + "].color", light.getColor());
-        setUniform3f("uDirectionalLight[" + i + "].direction", lightDir.x, lightDir.y, lightDir.z);
+        setUniform3f("uDirectionalLight[" + i + "].direction", -lightDir.x, -lightDir.y, -lightDir.z);
         setUniform1f("uDirectionalLight[" + i + "].intensity", light.getIntensity());
     }
 

@@ -3,6 +3,8 @@ package marble.renderer;
 import marble.entity.components.light.Light;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import static marble.editor.EditorLayer.currentScene;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30C.GL_RED_INTEGER;
 import static org.lwjgl.opengl.GL44.glClearTexImage;
@@ -78,7 +80,10 @@ public class Renderer
                 rb.renderCollider();
             for (Light light : registry.getLights())
                 light.renderGizmo();
+            for (Camera cam : registry.getCameras())
+                cam.renderFrustum();
         }
+
 
         Renderer2D.endScene();
         frameBuffer.unbind();
