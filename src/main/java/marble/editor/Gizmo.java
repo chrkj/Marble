@@ -26,7 +26,7 @@ public class Gizmo
         float viewManipulateTop = ImGui.getWindowPosY();
 
         // TODO: Fix view manipulation
-        ImGuizmo.viewManipulate(view, CAM_DISTANCE, new float[]{viewManipulateRight - 128, viewManipulateTop}, VIEW_MANIPULATE_SIZE, 0x10101010);
+        ImGuizmo.viewManipulate(view, CAM_DISTANCE, new float[]{viewManipulateRight - 128, viewManipulateTop + 25}, VIEW_MANIPULATE_SIZE, 0x10101010);
 
         var selectedEntity = SceneHierarchy.getSelectedEntity();
         if (selectedEntity == null) return;
