@@ -1,8 +1,5 @@
 package marble.renderer.BatchRendering;
 
-import marble.entity.components.RigidBody;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11C.glClear;
@@ -10,8 +7,8 @@ import static org.lwjgl.opengl.GL11C.GL_DEPTH_BUFFER_BIT;
 
 import marble.gui.MarbleGui;
 import marble.renderer.Shader;
-import marble.entity.Transform;
 import marble.renderer.VertexBuffer;
+import marble.entity.components.RigidBody;
 import marble.entity.components.camera.Camera;
 
 public class Renderer2D
@@ -29,8 +26,8 @@ public class Renderer2D
     private static VertexArray lineVertexArray;
     private static VertexBuffer lineVertexBuffer;
     private static float[] lineVertexData;
-    private static int maxVertices = 8000;
     private static int lineWidth = 2;
+    private static int maxVertices = 1000;
     private static int lineVertexCount = 0;
     private static int lineVertexBufferPtr = 0;
 
@@ -89,8 +86,17 @@ public class Renderer2D
         }
     }
 
+    private static void flushAndReset()
+    {
+        flush();
+        startBatch();
+    }
+
     public static void drawLine(Vector4f p0, Vector4f p1, Vector4f color)
     {
+        if (maxVertices * LineVertex.getSize() - lineVertexBufferPtr < 14)
+            flushAndReset();
+
         lineVertexData[lineVertexBufferPtr++] = p0.x;
         lineVertexData[lineVertexBufferPtr++] = p0.y;
         lineVertexData[lineVertexBufferPtr++] = p0.z;
