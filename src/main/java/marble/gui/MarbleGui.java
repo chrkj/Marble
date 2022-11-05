@@ -266,7 +266,7 @@ public final class MarbleGui
     {
         ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding, 0f);
         ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 4f, 2f);
-        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0f, 0f);
+        ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 4f, 4f);
         ImGui.pushStyleVar(ImGuiStyleVar.FramePadding, 4f, 7f);
         ImGui.pushStyleVar(ImGuiStyleVar.ItemSpacing, 6f, 2f);
     }

@@ -3,13 +3,13 @@ package marble.editor;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 
+import marble.util.Loader;
 import marble.gui.MarbleGui;
-import marble.entity.components.RigidBody;
 import marble.entity.Entity;
 import marble.entity.components.Component;
-import marble.entity.components.light.LightFactory;
+import marble.entity.components.RigidBody;
 import marble.entity.components.light.LightType;
-import marble.physics.Physics;
+import marble.entity.components.light.LightFactory;
 
 public class EntityInspector implements Panel
 {
@@ -41,19 +41,30 @@ public class EntityInspector implements Panel
                 ImGui.openPopup("add_component_popup");
             if (ImGui.beginPopup("add_component_popup"))
             {
-                if (ImGui.selectable("Mesh"))              Console.log("NOT IMPLEMENTED");
-                if (ImGui.selectable("Script"))            selectedEntity.scriptName = "None";
-                if (ImGui.selectable("Camera"))            Console.log("NOT IMPLEMENTED");
-                if (ImGui.selectable("Directional light")) addDirLight();
-                if (ImGui.selectable("Spot light"))        addSpotLight();
-                if (ImGui.selectable("Point light"))       addPointLight();
-                if (ImGui.selectable("RigidBody Static"))  addRigidBody(true);
-                if (ImGui.selectable("RigidBody Dynamic")) addRigidBody(false);
+                if (ImGui.beginMenu("Mesh"))
+                {
+                    if (ImGui.menuItem("Cube")) addCubeMesh();
+                    ImGui.endMenu();
+                }
+                if (ImGui.menuItem("Script"))            selectedEntity.scriptName = "None";
+                if (ImGui.menuItem("Camera"))            Console.log("NOT IMPLEMENTED");
+                if (ImGui.menuItem("Directional light")) addDirLight();
+                if (ImGui.menuItem("Spot light"))        addSpotLight();
+                if (ImGui.menuItem("Point light"))       addPointLight();
+                if (ImGui.menuItem("RigidBody Static"))  addRigidBody(true);
+                if (ImGui.menuItem("RigidBody Dynamic")) addRigidBody(false);
 
                 ImGui.endPopup();
             }
         }
         ImGui.end();
+    }
+
+    private void addCubeMesh()
+    {
+        var mesh =  Loader.loadMeshObj("assets/obj/cube.obj");
+        SceneHierarchy.getSelectedEntity().addComponent(mesh);
+        EditorLayer.currentScene.getRegistry().register(mesh);
     }
     
     private void addRigidBody(boolean isStatic)
