@@ -49,6 +49,7 @@ public abstract class Framebuffer
     public abstract FramebufferSpecification getSpecification();
     public abstract int getColorAttachmentRendererID();
     public abstract int getColorAttachmentRendererID(int index);
+    public abstract int getDepthAttachmentID();
 
     public static final class FramebufferSpecification
     {

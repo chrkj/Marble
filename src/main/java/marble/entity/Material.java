@@ -26,7 +26,6 @@ public class Material
         this.diffuse = new Vector4f(1f, 1f, 1f, 1f);
         this.specular = new Vector4f(1f, 1f, 1f, 1f);
         this.reflectance = 0;
-        shader.compile();
     }
 
     public void setAmbient(float r, float g, float b, float a)

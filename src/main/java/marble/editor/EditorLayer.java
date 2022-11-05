@@ -27,6 +27,7 @@ public class EditorLayer
     public static boolean sceneRunning = false;
     public static Framebuffer gameViewportFb;
     public static Framebuffer editorViewportFb;
+    public static Framebuffer depthMapFb;
     public static ImVec2 gameViewportSize = new ImVec2();
     public static ImVec2 editorViewportSize = new ImVec2();
     public static Scene currentScene, runtimeScene, editorScene;
@@ -52,6 +53,12 @@ public class EditorLayer
         editorFbSpec.width = 1280;
         editorFbSpec.height = 720;
         editorViewportFb = Framebuffer.create(editorFbSpec);
+
+        var depthMapSpec = new Framebuffer.FramebufferSpecification(
+                Framebuffer.TextureFormat.DEPTH32F_STENCIL8);
+        depthMapSpec.width = 1280;
+        depthMapSpec.height = 720;
+        depthMapFb = Framebuffer.create(depthMapSpec);
 
         panelManager = new PanelManager();
         panelManager.addPanel(new Console());
@@ -120,6 +127,7 @@ public class EditorLayer
         ImGui.begin("Scene", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoCollapse);
 
         ImVec2 viewportOffset = ImGui.getCursorPos();
+        handleWindowResize(editorViewportSize, depthMapFb);
         handleWindowResize(editorViewportSize, editorViewportFb);
         editorViewportSize = ImGui.getContentRegionAvail();
         setEditorViewportInputFlag();

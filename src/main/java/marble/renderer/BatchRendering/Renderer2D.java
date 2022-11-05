@@ -37,7 +37,6 @@ public class Renderer2D
         rendererAPI.init();
 
         lineShader = new Shader("assets/shaders/lineShader.glsl");
-        lineShader.compile();
 
         lineVertexArray = VertexArray.create();
         lineVertexBuffer = VertexBuffer.create(maxVertices * LineVertex.getSize());

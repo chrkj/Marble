@@ -158,4 +158,9 @@ public class OpenGLFramebuffer extends Framebuffer
         return colorAttachmentIDs.get(index);
     }
 
+    @Override
+    public int getDepthAttachmentID() {
+        return depthAttachmentID;
+    }
+
 }

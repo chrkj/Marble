@@ -87,6 +87,7 @@ public class Shader
             fragmentSource = fallbackShader;
             Console.log("IOException: '" + filepath + "' " + e.getMessage());
         }
+        compile();
     }
 
     public void compile()
@@ -221,6 +222,7 @@ public class Shader
     public void setUniformDirLight(Light light, Matrix4f viewMatrix, int i)
     {
         var lightDir = light.getLightDir(viewMatrix);
+        setUniform3f("uDirectionalLight[" + i + "].position", light.getEntity().transform.getPosition());
         setUniform4f("uDirectionalLight[" + i + "].color", light.getColor());
         setUniform3f("uDirectionalLight[" + i + "].direction", -lightDir.x, -lightDir.y, -lightDir.z);
         setUniform1f("uDirectionalLight[" + i + "].intensity", light.getIntensity());
