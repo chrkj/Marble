@@ -18,14 +18,23 @@ import marble.entity.components.Registry;
 import marble.entity.components.light.Light;
 import marble.entity.components.camera.Camera;
 import marble.renderer.BatchRendering.Renderer2D;
-import static marble.editor.EditorLayer.depthMapFb;
 
 public class Renderer
 {
     public enum ViewportId { EDITOR, GAME }
 
     private Matrix4f lightSpaceMatrix;
+    private static Framebuffer depthMapFb;
     private final Shader depthMapShader = new Shader("assets/shaders/depthMapShader.glsl");
+
+    public Renderer()
+    {
+        var depthMapSpec = new Framebuffer.FramebufferSpecification(
+                Framebuffer.TextureFormat.DEPTH32F_STENCIL8);
+        depthMapSpec.width = 1280;
+        depthMapSpec.height = 720;
+        depthMapFb = Framebuffer.create(depthMapSpec);
+    }
 
     public void clear(ViewportId viewportId)
     {
@@ -38,42 +47,6 @@ public class Renderer
 
     public void render(Camera camera, Registry registry, Framebuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)
     {
-        // Render depth map
-        if (ViewportId.EDITOR == viewportId) {
-            depthMapFb.bind();
-            depthMapShader.bind();
-            glClear(GL_DEPTH_BUFFER_BIT);
-
-            float near_plane = 0.3f, far_plane = 1000f;
-            Matrix4f lightProjection = new Matrix4f().setOrtho(-20f, 20f, -20f, 20f, near_plane, far_plane);
-
-            var dirLight = registry.getDirectionalLights().get(0);
-            var entRot = dirLight.getEntity().transform.getRotation();
-            var rotMat = new Matrix4f().identity()
-                    .rotate((float) Math.toRadians(entRot.x), new Vector3f(1, 0, 0))
-                    .rotate((float) Math.toRadians(entRot.y), new Vector3f(0, 1, 0))
-                    .rotate((float) Math.toRadians(entRot.z), new Vector3f(0, 0, 1));
-            var lightDir = new Vector4f(0,-1,0,0).mul(rotMat);
-
-            Matrix4f lightView = new Matrix4f().lookAt(
-                    new Vector3f(dirLight.getEntity().transform.getPosition()),
-                    new Vector3f(lightDir.x, lightDir.y, lightDir.z),
-                    new Vector3f(0.0f, 1.0f, 0.0f));
-
-            lightSpaceMatrix = lightProjection.mul(lightView);
-
-            depthMapShader.setUniformMat4("lightSpaceMatrix", lightSpaceMatrix);
-
-
-            for (Mesh mesh : registry.getMeshes()) {
-                depthMapShader.setUniformMat4("model", mesh.getEntity().getWorldMatrix());
-                mesh.render();
-            }
-
-            depthMapShader.unbind();
-            depthMapFb.unbind();
-        }
-
         // Render scene
         frameBuffer.bind();
         clear(viewportId);
@@ -133,9 +106,44 @@ public class Renderer
                 cam.renderFrustum();
         }
 
-
         Renderer2D.endScene();
         frameBuffer.unbind();
+    }
+
+    public void shadowPass(Registry registry)
+    {
+        // Render depth map
+        depthMapFb.bind();
+        depthMapShader.bind();
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        float near_plane = 0.3f, far_plane = 1000f;
+        Matrix4f lightProjection = new Matrix4f().setOrtho(-200f, 200f, -200f, 200f, near_plane, far_plane);
+
+        var dirLight = registry.getDirectionalLights().get(0);
+        var entRot = dirLight.getEntity().transform.getRotation();
+        var rotMat = new Matrix4f().identity()
+                .rotate((float) Math.toRadians(entRot.x), new Vector3f(1, 0, 0))
+                .rotate((float) Math.toRadians(entRot.y), new Vector3f(0, 1, 0))
+                .rotate((float) Math.toRadians(entRot.z), new Vector3f(0, 0, 1));
+        var lightDir = new Vector4f(0,-1,0,0).mul(rotMat);
+
+        Matrix4f lightView = new Matrix4f().lookAt(
+                new Vector3f(dirLight.getEntity().transform.getPosition()),
+                new Vector3f(lightDir.x, lightDir.y, lightDir.z),
+                new Vector3f(0.0f, 1.0f, 0.0f));
+
+        lightSpaceMatrix = lightProjection.mul(lightView);
+
+        depthMapShader.setUniformMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+        for (Mesh mesh : registry.getMeshes())
+        {
+            depthMapShader.setUniformMat4("model", mesh.getEntity().getWorldMatrix());
+            mesh.render();
+        }
+        depthMapShader.unbind();
+        depthMapFb.unbind();
     }
 
 }

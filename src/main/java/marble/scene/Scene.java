@@ -62,6 +62,7 @@ public class Scene
 
     public void onSceneRender()
     {
+        renderer.shadowPass(registry);
         renderer.render(editorCamera, registry, EditorLayer.editorViewportFb, ambientLight, specularPower, Renderer.ViewportId.EDITOR);
         renderer.render(mainCamera, registry, EditorLayer.gameViewportFb, ambientLight, specularPower, Renderer.ViewportId.GAME);
     }
