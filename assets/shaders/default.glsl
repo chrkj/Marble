@@ -185,7 +185,7 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     // calculate bias (based on depth map resolution and slope)
     vec3 normal = normalize(fVertexNormal);
     vec3 lightDir = normalize(lightPos - fFragPos);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    float bias = max(0.009 * (1.0 - dot(normal, lightDir)), 0.0005);
 
     // PCF
     float shadow = 0.0;

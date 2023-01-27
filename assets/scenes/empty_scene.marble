@@ -3,12 +3,12 @@ editorCamera:
     data:
     - true
   position:
-    x: 15.100846
-    "y": -24.848919
-    z: -30.916523
+    x: -26.676939
+    "y": -20.128593
+    z: -3.6928184
   rotation:
-    x: 31.70774
-    "y": 61.864124
+    x: 47.24148
+    "y": -80.046364
     z: 0.0
   near: 0.3
   far: 1000.0
@@ -30,23 +30,13 @@ entities:
         z: 1.0
       position:
         x: 0.0
-        "y": 0.0
+        "y": -9.063628
         z: 0.0
       rotation:
         x: 0.0
         "y": -0.0
         z: 0.0
     components:
-      marble.entity.components.RigidBody:
-        isStatic: false
-        rigidActor:
-          address: 2582167545296
-          isExternallyAllocated: false
-          sleeping: false
-          releasable: true
-        shouldRenderCollider:
-          data:
-          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -69,6 +59,16 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/helm.obj"
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 2570326507408
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 1874338040
     children:
     - name: "ChildEntity1"
@@ -150,10 +150,54 @@ entities:
           "y": 0.185025
           z: 0.5833334
           w: 1.0
+        shouldRenderGizmo:
+          data:
+          - true
         linear: 0.2
         constant: 8.2
         exponent: 0.0
     uuid: 603228053
+    children: []
+  1652636448:
+    name: "Empty Entity"
+    scriptName: null
+    transform:
+      scale:
+        x: 7.3040085
+        "y": 5.4389405
+        z: 1.05
+      position:
+        x: 7.802224
+        "y": 1.439124
+        z: 12.696326
+      rotation:
+        x: 0.0
+        "y": -0.0
+        z: 0.0
+    components:
+      marble.entity.components.Mesh:
+        material:
+          shader:
+            filepath: "assets/shaders/default.glsl"
+          texture: null
+          reflectance: 0.0
+          ambient:
+            x: 0.0
+            "y": 0.0
+            z: 0.0
+            w: 1.0
+          diffuse:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+          specular:
+            x: 1.0
+            "y": 1.0
+            z: 1.0
+            w: 1.0
+        filePath: "assets/obj/cube.obj"
+    uuid: 1652636448
     children: []
   1652608195:
     name: "Box1"
@@ -175,7 +219,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167545680
+          address: 2570326507792
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -204,7 +248,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167546064
+          address: 2570326508176
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -233,7 +277,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167546448
+          address: 2570326508560
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -260,13 +304,16 @@ entities:
         z: 0.0
     components:
       marble.entity.components.light.DirectionalLight:
-        intensity: 0.1
+        intensity: 0.5
         gizmoLength: 2.5
         color:
-          x: 0.78431374
-          "y": 0.0
+          x: 1.0
+          "y": 1.0
           z: 1.0
           w: 1.0
+        shouldRenderGizmo:
+          data:
+          - true
     uuid: 455960423
     children: []
   1586110567:
@@ -315,7 +362,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167546832
+          address: 2570326508944
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -344,7 +391,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167547216
+          address: 2570326509328
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -373,7 +420,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167547600
+          address: 2570326509712
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -402,7 +449,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2582170742112
+          address: 2570209874480
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -427,15 +474,6 @@ entities:
         "y": -0.0
         z: 0.0
     components:
-      marble.entity.components.RigidBody:
-        isStatic: true
-        rigidActor:
-          address: 2582170742288
-          isExternallyAllocated: false
-          releasable: true
-        shouldRenderCollider:
-          data:
-          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -458,6 +496,15 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/cube.obj"
+      marble.entity.components.RigidBody:
+        isStatic: true
+        rigidActor:
+          address: 2570209874656
+          isExternallyAllocated: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
     uuid: 4445915
     children: []
   603368079:
@@ -480,7 +527,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167547984
+          address: 2570326510096
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -509,7 +556,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2582170742464
+          address: 2570209874832
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -542,6 +589,9 @@ entities:
           "y": 0.2989475
           z: 0.2989475
           w: 1.0
+        shouldRenderGizmo:
+          data:
+          - true
         cutOff: 30.0
         pointLight:
           intensity: 1.0
@@ -551,6 +601,9 @@ entities:
             "y": 1.0
             z: 1.0
             w: 1.0
+          shouldRenderGizmo:
+            data:
+            - true
           linear: 0.3
           constant: 0.0
           exponent: 0.0
@@ -576,7 +629,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167548368
+          address: 2570326510480
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -605,7 +658,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582167548752
+          address: 2570326510864
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -634,7 +687,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582168573680
+          address: 2570210479168
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -663,7 +716,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582168574064
+          address: 2570210479552
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -692,7 +745,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2582168574448
+          address: 2570210479936
           isExternallyAllocated: false
           sleeping: false
           releasable: true

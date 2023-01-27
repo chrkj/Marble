@@ -97,6 +97,7 @@ public class OpenGLFramebuffer extends Framebuffer
                 case DEPTH32F_STENCIL8  -> attachDepthTexture(GL_DEPTH32F_STENCIL8);
                 case DEPTH24_STENCIL8   -> attachDepthTexture(GL_DEPTH24_STENCIL8);
                 case STENCIL_INDEX8     -> attachDepthTexture(GL_STENCIL_INDEX8);
+                case SHADOW_MAP         -> attachShadowMap();
             }
 
         }
@@ -110,6 +111,22 @@ public class OpenGLFramebuffer extends Framebuffer
             Console.log("glCheckFramebufferStatus failed");
 
         unbind();
+    }
+
+    private void attachShadowMap()
+    {
+        depthAttachmentID = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, depthAttachmentID);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT32, specification.width, specification.height, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthAttachmentID, 0);
+
+        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            Console.log("Framebuffer: Shadow map status failed.");
     }
 
     private void attachColorTexture(int id, int sizedInternalFormat, int baseInternalFormat, int index)
@@ -142,6 +159,7 @@ public class OpenGLFramebuffer extends Framebuffer
 
     private void createColorTextures(int size)
     {
+        if (size == 0) return;
         int[] ids = new int[size];
         glGenTextures(ids);
         Integer[] idsI = Arrays.stream(ids).boxed().toArray(Integer[]::new);

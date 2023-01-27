@@ -30,9 +30,9 @@ public class Renderer
     public Renderer()
     {
         var depthMapSpec = new Framebuffer.FramebufferSpecification(
-                Framebuffer.TextureFormat.DEPTH32F_STENCIL8);
-        depthMapSpec.width = 1280;
-        depthMapSpec.height = 720;
+                Framebuffer.TextureFormat.SHADOW_MAP);
+        depthMapSpec.width = 3840;
+        depthMapSpec.height = 2160;
         depthMapFb = Framebuffer.create(depthMapSpec);
     }
 

@@ -14,7 +14,7 @@ public abstract class Framebuffer
 
     public enum TextureFormat
     {
-        NONE, RGB8, R32I, DEPTH_COMPONENT32F, DEPTH_COMPONENT24, DEPTH_COMPONENT16, DEPTH32F_STENCIL8, DEPTH24_STENCIL8, STENCIL_INDEX8
+        NONE, RGB8, R32I, DEPTH_COMPONENT32F, DEPTH_COMPONENT24, DEPTH_COMPONENT16, DEPTH32F_STENCIL8, DEPTH24_STENCIL8, STENCIL_INDEX8, SHADOW_MAP;
     }
 
     public static Framebuffer create(FramebufferSpecification specification)
@@ -37,6 +37,7 @@ public abstract class Framebuffer
             case DEPTH32F_STENCIL8  -> { return true; }
             case DEPTH24_STENCIL8   -> { return true; }
             case STENCIL_INDEX8     -> { return true; }
+            case SHADOW_MAP         -> { return true; }
         }
         return false;
     }
