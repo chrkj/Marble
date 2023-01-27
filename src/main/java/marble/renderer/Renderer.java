@@ -112,6 +112,8 @@ public class Renderer
 
     public void shadowPass(Registry registry)
     {
+        // TODO: Fix dir light shadow direction to be only dependent on the rotation of the light and not the pos.
+        // TODO: Add shadows for spot and point lights
         // Render depth map
         depthMapFb.bind();
         depthMapShader.bind();
