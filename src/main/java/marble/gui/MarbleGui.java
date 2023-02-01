@@ -230,6 +230,14 @@ public final class MarbleGui
         return valArr[0];
     }
 
+    public static float dragFloat(String label, float value, float increment)
+    {
+        ImGui.text(label);
+        float[] valArr = {value};
+        ImGui.dragFloat("##" + label, valArr, increment);
+        return valArr[0];
+    }
+
     public static void text(String text)
     {
         ImGui.text(text);
