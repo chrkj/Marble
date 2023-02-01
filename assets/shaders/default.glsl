@@ -252,14 +252,13 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     // calculate bias (based on depth map resolution and slope)
     vec3 normal = normalize(fVertexNormal);
     vec3 lightDir = normalize(lightPos - fFragPos);
-    //float bias = max(0.0009 * (1.0 - dot(normal, lightDir)), 0.00005);
+    float bias = max(0.0009 * (1.0 - dot(normal, lightDir)), 0.00005);
 
     // PCF
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
     for(int x = 0; x < 64; ++x)
     {
-        float bias = 0;
         float pcfDepth = texture(shadowMap, projCoords.xy + poissonDisk[x] * texelSize).r;
         shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
     }

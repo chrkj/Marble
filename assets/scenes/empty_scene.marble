@@ -3,12 +3,12 @@ editorCamera:
     data:
     - true
   position:
-    x: -24.518063
-    "y": -2.9364617
-    z: -18.803345
+    x: -28.497992
+    "y": -7.8826556
+    z: -29.651802
   rotation:
-    x: 31.537567
-    "y": -40.207924
+    x: 32.474747
+    "y": -45.98281
     z: 0.0
   near: 0.3
   far: 1000.0
@@ -37,6 +37,16 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        isStatic: false
+        rigidActor:
+          address: 1318824640208
+          isExternallyAllocated: false
+          sleeping: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -59,16 +69,6 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/helm.obj"
-      marble.entity.components.RigidBody:
-        isStatic: false
-        rigidActor:
-          address: 2140645943440
-          isExternallyAllocated: false
-          sleeping: false
-          releasable: true
-        shouldRenderCollider:
-          data:
-          - true
     uuid: 1874338040
     children:
     - name: "ChildEntity1"
@@ -168,7 +168,7 @@ entities:
         z: 1.05
       position:
         x: 7.802224
-        "y": -20.251303
+        "y": -19.010668
         z: 12.696326
       rotation:
         x: 0.0
@@ -219,7 +219,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645943824
+          address: 1318824640592
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -248,7 +248,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645944208
+          address: 1318824640976
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -277,7 +277,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645944592
+          address: 1318824641360
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -362,7 +362,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645944976
+          address: 1318824641744
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -391,7 +391,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645945360
+          address: 1318824642128
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -420,7 +420,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645945744
+          address: 1318824642512
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -449,7 +449,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2140531006528
+          address: 1318823012800
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -474,6 +474,15 @@ entities:
         "y": -0.0
         z: 0.0
     components:
+      marble.entity.components.RigidBody:
+        isStatic: true
+        rigidActor:
+          address: 1318823012976
+          isExternallyAllocated: false
+          releasable: true
+        shouldRenderCollider:
+          data:
+          - true
       marble.entity.components.Mesh:
         material:
           shader:
@@ -496,15 +505,6 @@ entities:
             z: 1.0
             w: 1.0
         filePath: "assets/obj/cube.obj"
-      marble.entity.components.RigidBody:
-        isStatic: true
-        rigidActor:
-          address: 2140531006704
-          isExternallyAllocated: false
-          releasable: true
-        shouldRenderCollider:
-          data:
-          - true
     uuid: 4445915
     children: []
   603368079:
@@ -527,7 +527,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645946128
+          address: 1318824642896
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -556,7 +556,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: true
         rigidActor:
-          address: 2140531006880
+          address: 1318823013152
           isExternallyAllocated: false
           releasable: true
         shouldRenderCollider:
@@ -629,7 +629,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645946512
+          address: 1318824643280
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -658,7 +658,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140645946896
+          address: 1318824643664
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -687,7 +687,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140528714256
+          address: 1318824335888
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -716,7 +716,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140528714640
+          address: 1318824336272
           isExternallyAllocated: false
           sleeping: false
           releasable: true
@@ -745,7 +745,7 @@ entities:
       marble.entity.components.RigidBody:
         isStatic: false
         rigidActor:
-          address: 2140528715024
+          address: 1318824336656
           isExternallyAllocated: false
           sleeping: false
           releasable: true

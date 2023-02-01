@@ -31,8 +31,8 @@ public class Renderer
     {
         var depthMapSpec = new Framebuffer.FramebufferSpecification(
                 Framebuffer.TextureFormat.SHADOW_MAP);
-        depthMapSpec.width = 3840*8;
-        depthMapSpec.height = 2160*8;
+        depthMapSpec.width = 3840;
+        depthMapSpec.height = 2160;
         depthMapFb = Framebuffer.create(depthMapSpec);
     }
 
