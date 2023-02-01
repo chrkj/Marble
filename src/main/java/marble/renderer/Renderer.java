@@ -31,8 +31,8 @@ public class Renderer
     {
         var depthMapSpec = new Framebuffer.FramebufferSpecification(
                 Framebuffer.TextureFormat.SHADOW_MAP);
-        depthMapSpec.width = 3840;
-        depthMapSpec.height = 2160;
+        depthMapSpec.width = 3840*8;
+        depthMapSpec.height = 2160*8;
         depthMapFb = Framebuffer.create(depthMapSpec);
     }
 
@@ -48,6 +48,7 @@ public class Renderer
     public void render(Camera camera, Registry registry, Framebuffer frameBuffer, Vector3f ambientLight, float specularPower, ViewportId viewportId)
     {
         // Render scene
+        glCullFace(GL_BACK);
         frameBuffer.bind();
         clear(viewportId);
         Renderer2D.beginScene(camera);
@@ -82,8 +83,6 @@ public class Renderer
             shader.setUniformMat4("uView", camera.getViewMatrix());
             shader.setUniformMat4("uLightSpaceMatrix", lightSpaceMatrix);
 
-
-
             if (viewportId == ViewportId.GAME)
                 shader.setUniformMat4("uProjection", camera.getProjectionMatrixGame());
             else
@@ -115,11 +114,12 @@ public class Renderer
         // TODO: Fix dir light shadow direction to be only dependent on the rotation of the light and not the pos.
         // TODO: Add shadows for spot and point lights
         // Render depth map
+        glCullFace(GL_FRONT);
         depthMapFb.bind();
         depthMapShader.bind();
         glClear(GL_DEPTH_BUFFER_BIT);
 
-        float near_plane = 0.3f, far_plane = 1000f;
+        float near_plane = 1f, far_plane = 500f;
         Matrix4f lightProjection = new Matrix4f().setOrtho(-200f, 200f, -200f, 200f, near_plane, far_plane);
 
         var dirLight = registry.getDirectionalLights().get(0);
@@ -146,6 +146,7 @@ public class Renderer
         }
         depthMapShader.unbind();
         depthMapFb.unbind();
+        //glCullFace(GL_BACK);
     }
 
 }
