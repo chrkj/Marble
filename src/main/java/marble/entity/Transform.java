@@ -1,5 +1,6 @@
 package marble.entity;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Transform
@@ -91,6 +92,16 @@ public class Transform
     public Vector3f getRotation()
     {
         return rotation;
+    }
+
+    // Rotation convention for the whole engine: R = Rz * Ry * Rx (degrees),
+    // matching ImGuizmo's recompose/decompose and the camera view matrix.
+    public Matrix4f getRotationMatrix()
+    {
+        return new Matrix4f()
+                .rotateZ((float) Math.toRadians(rotation.z))
+                .rotateY((float) Math.toRadians(rotation.y))
+                .rotateX((float) Math.toRadians(rotation.x));
     }
 
     public void setRotation(Vector3f rotation)

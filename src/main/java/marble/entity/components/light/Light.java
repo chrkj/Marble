@@ -27,14 +27,17 @@ public abstract class Light extends Component
         this.color.w = a;
     }
 
+    // World-space direction the light points in (unrotated lights point straight down)
+    public Vector3f getDirection()
+    {
+        var dir = new Vector4f(0, -1, 0, 0).mul(entity.transform.getRotationMatrix());
+        return new Vector3f(dir.x, dir.y, dir.z).normalize();
+    }
+
     public Vector3f getLightDir(Matrix4f viewMatrix)
     {
-        var entRot = entity.transform.getRotation();
-        var rotMat = new Matrix4f().identity()
-                .rotate((float) Math.toRadians(entRot.x), new Vector3f(1, 0, 0))
-                .rotate((float) Math.toRadians(entRot.y), new Vector3f(0, 1, 0))
-                .rotate((float) Math.toRadians(entRot.z), new Vector3f(0, 0, 1));
-        var lightDir = new Vector4f(0,-1,0,0).mul(rotMat).mul(viewMatrix);
+        var dir = getDirection();
+        var lightDir = new Vector4f(dir.x, dir.y, dir.z, 0).mul(viewMatrix);
         return new Vector3f(lightDir.x, lightDir.y, lightDir.z);
     }
 

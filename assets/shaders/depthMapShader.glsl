@@ -12,12 +12,8 @@ void main()
 
 #type fragment
 #version 460 core
-out vec4 FragColor;
 
-layout(location = 0) out vec4 depthColor;
-
-uniform sampler2D depthMap;
-
+// Depth-only pass; the depth buffer is written automatically
 void main()
 {
 }

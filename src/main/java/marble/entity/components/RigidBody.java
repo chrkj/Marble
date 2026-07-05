@@ -1,6 +1,7 @@
 package marble.entity.components;
 
 import org.joml.Vector4f;
+import org.joml.Quaternionf;
 import org.lwjgl.system.MemoryStack;
 
 import imgui.ImGui;
@@ -8,6 +9,9 @@ import imgui.type.ImBoolean;
 import imgui.flag.ImGuiTreeNodeFlags;
 
 import physx.physics.*;
+import physx.common.PxQuat;
+import physx.common.PxVec3;
+import physx.common.PxTransform;
 import physx.geomutils.PxBoxGeometry;
 
 import marble.gui.MarbleGui;
@@ -28,6 +32,7 @@ public class RigidBody extends Component
         {
             this.isStatic = isStatic;
             var pos = ent.transform.getPosition();
+            var rot = ent.transform.getRotation();
             var scale = ent.transform.getScale();
             if (isStatic)
             {
@@ -38,6 +43,15 @@ public class RigidBody extends Component
             {
                 rigidActor = Physics.createDefaultBox(pos.x, pos.y, pos.z, scale.x, scale.y, scale.z);
             }
+
+            // Same convention as Transform.getRotationMatrix(): R = Rz * Ry * Rx
+            var quat = new Quaternionf()
+                    .rotateZ((float) Math.toRadians(rot.z))
+                    .rotateY((float) Math.toRadians(rot.y))
+                    .rotateX((float) Math.toRadians(rot.x));
+            var pxPos = PxVec3.createAt(mem, MemoryStack::nmalloc, pos.x, pos.y, pos.z);
+            var pxRot = PxQuat.createAt(mem, MemoryStack::nmalloc, quat.x, quat.y, quat.z, quat.w);
+            rigidActor.setGlobalPose(PxTransform.createAt(mem, MemoryStack::nmalloc, pxPos, pxRot));
         }
     }
 

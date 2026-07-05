@@ -2,7 +2,6 @@ package marble.renderer;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE1;
@@ -23,7 +22,7 @@ public class Renderer
 {
     public enum ViewportId { EDITOR, GAME }
 
-    private Matrix4f lightSpaceMatrix;
+    private Matrix4f lightSpaceMatrix = new Matrix4f();
     private static Framebuffer depthMapFb;
     private final Shader depthMapShader = new Shader("assets/shaders/depthMapShader.glsl");
 
@@ -111,8 +110,13 @@ public class Renderer
 
     public void shadowPass(Registry registry)
     {
-        // TODO: Fix dir light shadow direction to be only dependent on the rotation of the light and not the pos.
         // TODO: Add shadows for spot and point lights
+        if (registry.getDirectionalLights().isEmpty())
+        {
+            lightSpaceMatrix.identity();
+            return;
+        }
+
         // Render depth map
         glCullFace(GL_FRONT);
         depthMapFb.bind();
@@ -123,17 +127,15 @@ public class Renderer
         Matrix4f lightProjection = new Matrix4f().setOrtho(-200f, 200f, -200f, 200f, near_plane, far_plane);
 
         var dirLight = registry.getDirectionalLights().get(0);
-        var entRot = dirLight.getEntity().transform.getRotation();
-        var rotMat = new Matrix4f().identity()
-                .rotate((float) Math.toRadians(entRot.x), new Vector3f(1, 0, 0))
-                .rotate((float) Math.toRadians(entRot.y), new Vector3f(0, 1, 0))
-                .rotate((float) Math.toRadians(entRot.z), new Vector3f(0, 0, 1));
-        var lightDir = new Vector4f(0,-1,0,0).mul(rotMat);
+        var lightPos = dirLight.getEntity().transform.getPosition();
+        var lightDir = dirLight.getDirection();
 
+        // lookAt degenerates when the view direction is parallel to the up vector
+        var up = Math.abs(lightDir.y) > 0.99f ? new Vector3f(0, 0, 1) : new Vector3f(0, 1, 0);
         Matrix4f lightView = new Matrix4f().lookAt(
-                new Vector3f(dirLight.getEntity().transform.getPosition()),
-                new Vector3f(lightDir.x, lightDir.y, lightDir.z),
-                new Vector3f(0.0f, 1.0f, 0.0f));
+                new Vector3f(lightPos),
+                new Vector3f(lightPos).add(lightDir),
+                up);
 
         lightSpaceMatrix = lightProjection.mul(lightView);
 
@@ -146,7 +148,6 @@ public class Renderer
         }
         depthMapShader.unbind();
         depthMapFb.unbind();
-        //glCullFace(GL_BACK);
     }
 
 }

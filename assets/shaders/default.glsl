@@ -15,17 +15,15 @@ out vec2 fTexCoord;
 out vec3 fVertexPos;
 out vec3 fVertexNormal;
 out vec4 fFragPosLightSpace;
-out vec3 fFragPos;
 
 void main()
 {
     gl_Position = uProjection * uView * uWorld * vec4(aPos, 1.0);
 
-    fFragPos = vec3(uWorld * vec4(aPos, 1.0));
     fTexCoord = aTexCoord;
     fVertexNormal = normalize(uView * uWorld * vec4(aVertexNormal, 0.0)).xyz;
     fVertexPos = (uView * uWorld * vec4(aPos, 1.0)).xyz;
-    fFragPosLightSpace = uLightSpaceMatrix * vec4(fFragPos, 1.0);
+    fFragPosLightSpace = uLightSpaceMatrix * uWorld * vec4(aPos, 1.0);
 }
 
 #type fragment
@@ -35,7 +33,6 @@ in vec2 fTexCoord;
 in vec3 fVertexPos;
 in vec3 fVertexNormal;
 in vec4 fFragPosLightSpace;
-in vec3 fFragPos;
 
 layout(location = 0) out vec4 fragColor;
 layout(location = 1) out int redColor;
@@ -44,7 +41,6 @@ layout(location = 2) out vec4 depthColor;
 const int MAX_DIR_LIGHTS = 10;
 struct DirectionalLight
 {
-    vec3 position;
     vec4 color;
     vec3 direction;
     float intensity;
@@ -235,7 +231,7 @@ vec4 calcSpotLight(SpotLight light, vec3 position, vec3 normal)
     return color;
 }
 
-float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 toLightDir)
 {
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -243,16 +239,12 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 lightPos)
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
 
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
-
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
 
-    // calculate bias (based on depth map resolution and slope)
+    // calculate bias (based on depth map resolution and slope); normal and toLightDir are both view space
     vec3 normal = normalize(fVertexNormal);
-    vec3 lightDir = normalize(lightPos - fFragPos);
-    float bias = max(0.0009 * (1.0 - dot(normal, lightDir)), 0.00005);
+    float bias = max(0.0009 * (1.0 - dot(normal, normalize(toLightDir))), 0.00005);
 
     // PCF
     float shadow = 0.0;
@@ -280,7 +272,7 @@ void main()
     {
         if (uDirectionalLight[i].intensity > 0)
         {
-            float shadow = ShadowCalculation(fFragPosLightSpace, uDirectionalLight[i].position);
+            float shadow = ShadowCalculation(fFragPosLightSpace, uDirectionalLight[i].direction);
             diffuseSpecularComp += (1 - shadow) * calcDirectionalLight(uDirectionalLight[i], fVertexPos, fVertexNormal);
         }
     }

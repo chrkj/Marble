@@ -73,7 +73,7 @@ public class Entity
             if (rb.isStatic) return;
 
             var pos = rb.rigidActor.getGlobalPose().getP();
-            var rot = quatToAxisRot(rb.rigidActor.getGlobalPose().getQ());
+            var rot = quatToEuler(rb.rigidActor.getGlobalPose().getQ());
             transform.setPosition(pos.getX(), pos.getY(), pos.getZ());
             transform.setRotation(rot.x, rot.y, rot.z);
         }
@@ -164,11 +164,9 @@ public class Entity
 
     public Matrix4f getWorldMatrix()
     {
-        return new Matrix4f().translation(transform.getPosition()).
-                rotateX((float)Math.toRadians(transform.getRotation().x)).
-                rotateY((float)Math.toRadians(transform.getRotation().y)).
-                rotateZ((float)Math.toRadians(transform.getRotation().z)).
-                scale(transform.getScale().x, transform.getScale().y, transform.getScale().z);
+        return new Matrix4f().translation(transform.getPosition())
+                .mul(transform.getRotationMatrix())
+                .scale(transform.getScale().x, transform.getScale().y, transform.getScale().z);
     }
 
     public void setScript(String name)
@@ -221,30 +219,21 @@ public class Entity
         }
     }
 
-    private static Vector3f quatToAxisRot(PxQuat q)
+    // Extracts Euler angles (degrees) such that R = Rz * Ry * Rx, matching Transform.getRotationMatrix()
+    private static Vector3f quatToEuler(PxQuat q)
     {
-        double ax, ay, az;
         var tmpVec = new Vector4f(q.getX(), q.getY(), q.getZ(), q.getW()).normalize();
         float x = tmpVec.x;
         float y = tmpVec.y;
         float z = tmpVec.z;
         float w = tmpVec.w;
 
-        double theta = Math.sqrt(1 - w * w);
-        double angle = Math.toDegrees(2 * Math.acos(w));
-        if (theta < 0.001)
-        {
-            ax = x;
-            ay = y;
-            az = z;
-        }
-        else
-        {
-            ax = x / theta;
-            ay = y / theta;
-            az = z / theta;
-        }
-        return new Vector3f((float) (ax * angle), (float) (ay * angle),  (float) (az * angle));
+        double rx = Math.atan2(2.0 * (w * x + y * z), 1.0 - 2.0 * (x * x + y * y));
+        double sinp = 2.0 * (w * y - z * x);
+        double ry = Math.abs(sinp) >= 1.0 ? Math.copySign(Math.PI / 2.0, sinp) : Math.asin(sinp);
+        double rz = Math.atan2(2.0 * (w * z + x * y), 1.0 - 2.0 * (y * y + z * z));
+
+        return new Vector3f((float) Math.toDegrees(rx), (float) Math.toDegrees(ry), (float) Math.toDegrees(rz));
     }
 
 }
