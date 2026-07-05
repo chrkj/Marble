@@ -21,8 +21,6 @@
   <p align="center">
     A game engine made in Java
     <br />
-    <a href="https://github.com/chrkj/Marble"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://github.com/chrkj/Marble/issues">Report Bug</a>
     ·
@@ -33,7 +31,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 I created this project to learn about 2D/3D rendering by programming a simple game engine using the
-[OpenGL](https://www.opengl.org//) rendering API. 
+[OpenGL](https://www.opengl.org//) rendering API. The engine features a dockable editor with separate scene and
+game viewports, play/stop scene simulation, PhysX-driven physics, scene serialization, shadow mapping and entity
+behaviour through Java scripts that are compiled and hot-loaded at runtime.
 
 <div align="center">
   <a href="https://github.com/chrkj/Marble">
@@ -56,13 +56,52 @@ Frameworks/libraries used for the project:
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Prerequisites
+
+* Windows (the build is configured with Windows natives for LWJGL and PhysX)
+* JDK 16 (the project uses Gradle 7.0, which supports up to Java 16)
+
+### Build and run
+
+```sh
+git clone https://github.com/chrkj/Marble.git
+cd Marble
+gradlew shadowJar
+java -jar build/libs/Marble-1.0-all.jar
+```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- EDITOR CONTROLS -->
+## Editor Controls
+
+| Input | Action |
+|-------|--------|
+| Hold right mouse in the Scene view | Fly camera (move the mouse to look around) |
+| `W` / `A` / `S` / `D` | Move camera (while flying) |
+| `Q` / `E` | Move camera vertically (while flying) |
+| `T` / `R` / `S` | Switch gizmo to translate / rotate / scale |
+| Left click | Select entity |
+
+Press the play button in the toolbar to start the scene simulation and the stop button to return to editing.
+Scenes can be saved from the `File` menu and opened by dragging a `.marble` file from the Content Browser
+into the Scene view.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 <!-- ROADMAP -->
 ## Roadmap
 
-- 👷 2D/3D physics
+- ✅ 2D/3D physics
 - ⬜ Frustum culling
 - ⬜ Forward+ rendering
 - ⬜ Custom title bar
+- ⬜ Shadows for spot / point lights
+- ✅ Shadow mapping (directional light)
+- ✅ Runtime-compiled Java scripting
 - ✅ Spot light
 - ✅ Multiple lights in scenes
 - ✅ Point light
@@ -73,8 +112,6 @@ Frameworks/libraries used for the project:
 - ✅ Scene serialization / deserialization
 - ✅ Entity gizmos
 - ✅ Mouse picking
-
-👷 *in development*
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
